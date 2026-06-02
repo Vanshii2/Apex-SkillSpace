@@ -9,9 +9,11 @@ import { initDB, getProjects, getCreators, likeProject, bookmarkProject } from '
 import { initTheme } from './core/theme.js';
 import { initCustomCursor, initSpotlightCards, initScrollProgress, initLazyLoadSections, initPageTransitions, showToast, initAntigravityParticles, initTypewriter } from './core/global.js';
 import { initNavbarScroll, initFloatingDock, initNotifications, initCommandPalette } from './core/ui.js';
+import { addToCart, getCart, removeFromCart } from './modules/db.js';
 
 // --- Page Specific Imports ---
 import { initPortfolioPage, openGlobalPreviewDrawer, closeGlobalPreviewDrawer } from './modules/portfolio.js';
+import { initShopPage } from './modules/shop.js';
 import { initDashboard } from './modules/dashboard.js';
 import { initProfilePage } from './modules/profile.js';
 import { logoutUser, requireAuth, getCurrentUser } from './auth.js';
@@ -44,7 +46,85 @@ document.addEventListener('DOMContentLoaded', () => {
     // 5. Page-Specific Coordinators
     window.detectPageAndLoadModule = detectPageAndLoadModule;
     detectPageAndLoadModule();
+
+    // 6. Global Cart Logic
+    initGlobalCart();
 });
+
+function initGlobalCart() {
+    window.addToCart = addToCart;
+    window.removeFromCart = removeFromCart;
+
+    window.updateCartDrawer = () => {
+        const cartIds = getCart();
+        const allProjects = getProjects();
+        const cartItems = cartIds.map(id => allProjects.find(p => p.id === id)).filter(Boolean);
+        
+        const cartBadge = document.getElementById('cart-count-badge');
+        if (cartBadge) {
+            cartBadge.textContent = cartItems.length;
+            cartBadge.style.display = cartItems.length > 0 ? 'flex' : 'none';
+        }
+        
+        const cartContainer = document.getElementById('cart-items');
+        const totalAmountEl = document.getElementById('cart-total-amount');
+        
+        if (cartContainer) {
+            if (cartItems.length === 0) {
+                cartContainer.innerHTML = '<div class="empty-cart-state">Your cart is empty.</div>';
+                if (totalAmountEl) totalAmountEl.textContent = '₹0.00';
+            } else {
+                let total = 0;
+                cartContainer.innerHTML = cartItems.map(item => {
+                    total += item.price;
+                    return `
+                        <div class="cart-item">
+                            <img src="${item.image}" alt="" class="cart-item-img">
+                            <div class="cart-item-details">
+                                <h4 class="cart-item-title">${item.title}</h4>
+                                <span class="cart-item-price">₹${item.price.toFixed(2)}</span>
+                            </div>
+                            <button class="cart-item-remove clickable" data-id="${item.id}">✕</button>
+                        </div>
+                    `;
+                }).join('');
+                if (totalAmountEl) totalAmountEl.textContent = `₹${total.toFixed(2)}`;
+                
+                // Bind remove buttons
+                cartContainer.querySelectorAll('.cart-item-remove').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const id = btn.dataset.id;
+                        removeFromCart(id);
+                        window.updateCartDrawer();
+                        // Re-render shop projects if we are on shop page
+                        if (typeof window.filterAndRenderProjects === 'function') {
+                            window.filterAndRenderProjects();
+                        }
+                    });
+                });
+            }
+        }
+    };
+
+    const cartBackdrop = document.getElementById('cart-backdrop');
+    const cartDrawer = document.getElementById('cart-drawer');
+    const cartCloseBtn = document.getElementById('cart-close');
+    
+    window.toggleCart = () => {
+        if (cartDrawer && cartBackdrop) {
+            cartDrawer.classList.toggle('active');
+            cartBackdrop.classList.toggle('active');
+        }
+    };
+    
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.cart-toggle-btn') || e.target === cartCloseBtn || e.target === cartBackdrop) {
+            window.toggleCart();
+        }
+    });
+
+    window.updateCartDrawer();
+}
 
 function detectPageAndLoadModule() {
     // We check for key semantic IDs in the markup to load modules safely
@@ -83,8 +163,10 @@ function detectPageAndLoadModule() {
         initPortfolioPage();
     }
 
-
-    // D. USER HUB DASHBOARD
+    // C. MARKETPLACE / SHOP PAGE
+    if (document.getElementById('shop-projects-grid')) {
+        initShopPage();
+    }    // D. USER HUB DASHBOARD
     if (document.getElementById('heatmap-grid')) {
         if (requireAuth()) {
             initDashboard();
@@ -116,7 +198,7 @@ function hydrateHomePage() {
                     
                     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
                         <span class="text-mono" style="font-size:0.65rem;">BY @${p.seller}</span>
-                        <span style="font-weight:bold;color:var(--primary);font-size:0.95rem;">$${p.price.toFixed(2)}</span>
+                        <span style="font-weight:bold;color:var(--primary);font-size:0.95rem;">₹${p.price.toFixed(2)}</span>
                     </div>
                     
                     <h3 style="font-size:1.15rem;margin-bottom:8px;line-height:1.3;max-height:2.6em;overflow:hidden;">${p.title}</h3>

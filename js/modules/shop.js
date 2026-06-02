@@ -6,7 +6,7 @@
    ==========================================================================
 */
 
-import { getProjects, addToCart, addToWishlist, getCart, getWishlist } from './db.js';
+import { getProjects, addToCart, removeFromCart, addToWishlist, getCart, getWishlist } from './db.js';
 import { showToast } from '../core/global.js';
 import { openGlobalPreviewDrawer } from './portfolio.js';
 
@@ -14,7 +14,7 @@ export function initShopPage() {
     const projectsGrid = document.getElementById('shop-projects-grid');
     const searchInput = document.getElementById('shop-search-field');
     const sortSelect = document.getElementById('shop-sort-select');
-    const categoryChecks = document.querySelectorAll('.category-filter-check');
+    const categoryBtns = document.querySelectorAll('.category-filter-btn');
     const priceSlider = document.getElementById('shop-price-slider');
     const priceDisplay = document.getElementById('shop-price-limit');
     
@@ -35,11 +35,11 @@ export function initShopPage() {
         maxPrice: priceSlider ? parseFloat(priceSlider.value) : 100
     };
     
-    // Categories checked values
+    // Categories active values
     const updateCategoriesState = () => {
-        state.categories = Array.from(categoryChecks)
-            .filter(c => c.checked)
-            .map(c => c.value.toLowerCase());
+        state.categories = Array.from(categoryBtns)
+            .filter(btn => btn.classList.contains('active') && btn.dataset.category !== 'all')
+            .map(btn => btn.dataset.category.toLowerCase());
     };
     updateCategoriesState();
     
@@ -78,14 +78,18 @@ export function initShopPage() {
         renderShopProjects(filtered);
     };
     
+    // Expose for global cart logic
+    window.filterAndRenderProjects = filterAndRenderProjects;
+    
     // Render list outputs
     const renderShopProjects = (items) => {
+
         if (items.length === 0) {
             projectsGrid.innerHTML = `
                 <div class="premium-empty-state glass" style="grid-column: 1/-1;">
-                    <div style="font-size:2.5rem;">⚙</div>
-                    <h3>No assets match your search</h3>
-                    <p style="color:var(--text-muted)">Try adjusting your price range limit or toggle different categories.</p>
+                    <div style="font-size:2.5rem;color:var(--text-muted);">⚙</div>
+                    <h3 style="color:var(--text-primary);">No assets match your search</h3>
+                    <p style="color:var(--text-muted)">Try adjusting your filters or categories.</p>
                 </div>
             `;
             return;
@@ -94,36 +98,39 @@ export function initShopPage() {
         projectsGrid.innerHTML = items.map(p => {
             const inCart = getCart().includes(p.id);
             const inWish = getWishlist().includes(p.id);
+            const isEditorial = p.tags.includes('Editorial');
             
             return `
-                <div class="glass-card spotlight-card shop-product-card" data-id="${p.id}" style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">
-                    <div>
-                        <div style="position:relative;border-radius:12px;overflow:hidden;margin-bottom:16px;">
-                            <img src="${p.image}" alt="${p.title}" style="width:100%;height:180px;object-fit:cover;">
-                            <span style="position:absolute;bottom:12px;right:12px;font-weight:bold;font-size:1.05rem;background:rgba(10,10,12,0.85);backdrop-filter:blur(8px);padding:4px 10px;border-radius:6px;border:1px solid var(--border-color);color:var(--primary);">$${p.price.toFixed(2)}</span>
+                <div class="project-card shop-product-card" data-id="${p.id}">
+                    <div class="project-card-img-wrapper">
+                        <img src="${p.image}" alt="${p.title}" loading="lazy">
+                        <div class="project-card-overlay">
+                            ${isEditorial ? `<a href="${p.liveDemo || '#'}" target="_blank" class="btn btn-primary clickable">Live Portfolio</a>` : `<button class="btn btn-primary preview-trigger-btn clickable">View Details</button>`}
                         </div>
-                        
-                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-                            <span class="text-mono" style="font-size:0.65rem;">BY @${p.seller}</span>
-                            <div style="display:flex;gap:4px;">
-                                <button class="btn btn-secondary wishlist-action-btn clickable" style="width:28px;height:28px;padding:0;font-size:0.7rem;border-radius:50%;color:${inWish ? 'var(--danger)' : ''};border-color:${inWish ? 'var(--danger)' : ''};" title="Simulate Wishlist">♥</button>
-                            </div>
-                        </div>
-                        
-                        <h3 style="font-size:1.05rem;margin-bottom:8px;line-height:1.3;max-height:2.6em;overflow:hidden;">${p.title}</h3>
-                        <p style="font-size:0.8rem;line-height:1.5;color:var(--text-secondary);max-height:3em;overflow:hidden;margin-bottom:16px;">${p.description}</p>
                     </div>
-                    
-                    <div>
-                        <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px;">
-                            ${p.tags.slice(0, 3).map(t => `<span class="badge badge-outline" style="font-size:0.6rem;">${t}</span>`).join('')}
+                    <div class="project-card-content">
+                        <div class="project-card-header">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span class="badge badge-primary" style="font-size:0.7rem;">${p.tags[0] || p.status}</span>
+                                <button class="btn btn-secondary wishlist-action-btn clickable" style="width:28px;height:28px;padding:0;font-size:0.7rem;border-radius:50%;color:${inWish ? 'var(--danger)' : ''};border-color:${inWish ? 'var(--danger)' : ''};" title="Add to Wishlist">♥</button>
+                            </div>
+                            <h3 class="project-card-title">${p.title}</h3>
+                            <span class="project-card-seller">by @${p.seller}</span>
                         </div>
-                        
-                        <div style="display:flex;gap:8px;padding-top:16px;border-top:1px solid var(--border-color);">
-                            <button class="btn btn-secondary preview-trigger-btn clickable" style="flex:1;padding:8px 12px;font-size:0.75rem;">Preview</button>
-                            <button class="btn btn-primary cart-action-btn clickable" style="flex:1;padding:8px 12px;font-size:0.75rem;background:${inCart ? 'rgba(0,230,118,0.15)' : ''};color:${inCart ? 'var(--success)' : ''};border-color:${inCart ? 'var(--success)' : ''};">
-                                ${inCart ? 'Added ✓' : 'Add to Cart'}
-                            </button>
+                        <p class="project-card-desc">${p.description}</p>
+                        <div class="project-card-tags">
+                            ${p.tags.slice(0, 3).map(t => `<span class="badge badge-outline" style="font-size:0.65rem;">${t}</span>`).join('')}
+                        </div>
+                        <div class="project-card-footer">
+                            ${isEditorial ? `
+                                <span style="font-weight:600; color:var(--text-secondary);">Live Portfolio</span>
+                                <a href="${p.liveDemo || '#'}" target="_blank" class="btn btn-glow clickable">Visit</a>
+                            ` : `
+                                <span class="project-card-price">₹${p.price.toFixed(2)}</span>
+                                <button class="btn btn-glow cart-action-btn clickable" style="background:${inCart ? 'rgba(16, 185, 129, 0.15)' : ''};color:${inCart ? '#10b981' : ''};border-color:${inCart ? '#10b981' : ''};">
+                                    ${inCart ? 'Added ✓' : 'Add to Cart'}
+                                </button>
+                            `}
                         </div>
                     </div>
                 </div>
@@ -153,10 +160,11 @@ export function initShopPage() {
                 const isAdded = addToCart(id);
                 if (isAdded) {
                     btn.textContent = 'Added ✓';
-                    btn.style.background = 'rgba(0, 230, 118, 0.15)';
-                    btn.style.color = 'var(--success)';
-                    btn.style.borderColor = 'var(--success)';
+                    btn.style.background = 'rgba(16, 185, 129, 0.15)';
+                    btn.style.color = '#10b981';
+                    btn.style.borderColor = '#10b981';
                     showToast('Project added to shopping cart!', 'success');
+                    if (window.updateCartDrawer) window.updateCartDrawer();
                 } else {
                     showToast('Project is already in shopping cart.', 'info');
                 }
@@ -196,8 +204,13 @@ export function initShopPage() {
         });
     }
     
-    categoryChecks.forEach(c => {
-        c.addEventListener('change', () => {
+    categoryBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active from all
+            categoryBtns.forEach(b => b.classList.remove('active'));
+            // Add active to clicked
+            btn.classList.add('active');
+            
             updateCategoriesState();
             filterAndRenderProjects();
         });
@@ -207,11 +220,12 @@ export function initShopPage() {
         priceSlider.addEventListener('input', (e) => {
             const limit = parseFloat(e.target.value);
             state.maxPrice = limit;
-            if (priceDisplay) priceDisplay.textContent = `$${limit.toFixed(2)}`;
+            if (priceDisplay) priceDisplay.textContent = `₹${limit.toFixed(2)}`;
             filterAndRenderProjects();
         });
     }
     
     // Initial Hydration
+    if (window.updateCartDrawer) window.updateCartDrawer();
     filterAndRenderProjects();
 }

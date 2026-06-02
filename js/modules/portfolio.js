@@ -5,7 +5,7 @@
    ==========================================================================
 */
 
-import { getProjects, getCreators, likeProject, bookmarkProject } from './db.js';
+import { getProjects, getCreators, likeProject, bookmarkProject, addToCart } from './db.js';
 import { showToast } from '../core/global.js';
 
 export function initPortfolioPage() {
@@ -63,7 +63,7 @@ export function initPortfolioPage() {
                         
                         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
                             <span class="text-mono" style="font-size:0.65rem;">BY @${p.seller}</span>
-                            <span style="font-weight:bold;color:var(--primary);font-size:0.95rem;">$${p.price.toFixed(2)}</span>
+                            <span style="font-weight:bold;color:var(--primary);font-size:0.95rem;">₹${p.price.toFixed(2)}</span>
                         </div>
                         
                         <h3 style="font-size:1.1rem;margin-bottom:8px;line-height:1.3;max-height:2.6em;overflow:hidden;">${p.title}</h3>
@@ -164,7 +164,7 @@ export function openGlobalPreviewDrawer(id) {
     document.getElementById('drawer-title').textContent = p.title;
     document.getElementById('drawer-img').src = p.image;
     document.getElementById('drawer-badge').textContent = p.status;
-    document.getElementById('drawer-price').textContent = `$${p.price.toFixed(2)}`;
+    document.getElementById('drawer-price').textContent = `₹${p.price.toFixed(2)}`;
     document.getElementById('drawer-desc').textContent = p.description;
 
     const tagsContainer = document.getElementById('drawer-tags');
@@ -175,8 +175,13 @@ export function openGlobalPreviewDrawer(id) {
     const wishBtn = document.getElementById('drawer-wishlist-btn');
 
     buyBtn.onclick = () => {
-        showToast(`Simulated checkout for ${p.title}! Directing to transaction...`, 'success');
-        drawer.classList.remove('show');
+        const isAdded = addToCart(p.id);
+        if (isAdded) {
+            showToast(`${p.title} added to shopping cart!`, 'success');
+            if (window.updateCartDrawer) window.updateCartDrawer();
+        } else {
+            showToast(`${p.title} is already in the cart.`, 'info');
+        }
     };
 
     wishBtn.onclick = () => {

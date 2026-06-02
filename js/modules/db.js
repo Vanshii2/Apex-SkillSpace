@@ -122,8 +122,56 @@ const MOCK_PROJECTS = [
         image: 'https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?auto=format&fit=crop&w=800&q=80',
         liveDemo: '#',
         github: '#'
+    },
+    {
+        id: 'proj_6',
+        title: 'Aura Motion UI Kit',
+        description: 'A comprehensive UI kit with built-in framer-motion like animations for modern apps. Includes 50+ pre-built components. Perfect for high-end SaaS.',
+        seller: 'hyper_arch',
+        price: 49.00,
+        tags: ['UI Kit', 'React', 'Motion', 'Design'],
+        status: 'Active',
+        likes: 120,
+        bookmarks: 45,
+        views: 890,
+        image: 'https://images.unsplash.com/photo-1618761714954-0b8cd0026356?auto=format&fit=crop&w=800&q=80',
+        liveDemo: '#',
+        github: '#'
+    },
+    {
+        id: 'proj_7',
+        title: 'EduTracker Dashboard',
+        description: 'Complete student and course management dashboard. Premium dark-mode interface built with CSS grid and fluid typography.',
+        seller: 'linear_flow',
+        price: 29.00,
+        tags: ['Dashboard', 'College', 'Management', 'UI'],
+        status: 'Trending',
+        likes: 340,
+        bookmarks: 110,
+        views: 1560,
+        image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80',
+        liveDemo: '#',
+        github: '#'
+    },
+    {
+        id: 'proj_8',
+        title: 'Neuralix AI SaaS UI',
+        description: 'Full-stack AI image generation app frontend template with Stripe integration layouts, authentication views, and prompt inputs.',
+        seller: 'nothing_core',
+        price: 149.00,
+        tags: ['AI Projects', 'SaaS', 'Editorial', 'Web Development'],
+        status: 'Featured',
+        likes: 550,
+        bookmarks: 200,
+        views: 3200,
+        image: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=800&q=80',
+        liveDemo: '#',
+        github: '#'
     }
 ];
+
+// Force reset so new mock projects load in localStorage
+localStorage.removeItem('fpm_initialized');
 
 const MOCK_NOTIFICATIONS = [
     { id: 'notif_1', text: 'Welcome to your futuristic dashboard. Get started by exploring the Shop.', time: 'Just now', unread: true },
