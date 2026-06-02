@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login // Apex SkillSpace</title>
+
+    <!-- Google Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;1,300&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/core.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+
+<body>
+   
+
+    <!-- Background Collage (Canva Inspired) -->
+    <div class="auth-collage-bg">
+        <div class="auth-collage-col">
+            <img src="assets/11.webp" alt="Portfolio Image 1">
+            <img src="assets/14.webp" alt="Portfolio Image 4">
+            <img src="assets/16.webp" alt="Portfolio Image 6">
+        </div>
+        <div class="auth-collage-col">
+            <img src="assets/12.webp" alt="Portfolio Image 2">
+            <img src="assets/16.webp" alt="Portfolio Image 5">
+            <img src="assets/13.webp" alt="Portfolio Image 3">
+        </div>
+        <div class="auth-collage-col">
+            <img src="assets/11.webp" alt="Portfolio Image 3">
+            <img src="assets/14.webp" alt="Portfolio Image 6">
+            <img src="assets/16.webp" alt="Portfolio Image 1">
+        </div>
+        <div class="auth-collage-col">
+            <img src="assets/11.webp" alt="Portfolio Image 4">
+            <img src="assets/14.webp" alt="Portfolio Image 1">
+            <img src="assets/17.webp" alt="Portfolio Image 5">
+        </div>
+        <div class="auth-collage-col">
+            <img src="assets/19.webp" alt="Portfolio Image 5">
+            <img src="assets/17.webp" alt="Portfolio Image 2">
+            <img src="assets/18.webp" alt="Portfolio Image 4">
+        </div>
+    </div>
+
+    <!-- Dark Overlay -->
+    <div class="auth-overlay"></div>
+
+    <!-- Auth Container -->
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <a href="index.html" class="auth-logo">
+                    <img src="logo.png" alt="Apex Logo" onerror="this.src='https://placehold.co/40x40/00ffaa/000?text=A'">
+                    <span class="auth-logo-text">Apex</span>
+                </a>
+                <h1 class="auth-title">Welcome</h1>
+                <p class="auth-subtitle">Sign in to continue building your portfolio.</p>
+            </div>
+
+            <!-- Inline Error Container -->
+            <div id="auth-error" class="auth-error-msg"></div>
+
+            <form id="login-form">
+                <div class="auth-form-group">
+                    <label class="auth-label" for="login-email">Email Address</label>
+                    <input type="email" id="login-email" class="auth-input" placeholder="you@example.com" required>
+                </div>
+
+                <div class="auth-form-group">
+                    <label class="auth-label" for="login-pass">
+                        Password
+                        <a href="#" class="auth-link" style="font-size: 0.85rem;">Forgot Password</a>
+                    </label>
+                    <input type="password" id="login-pass" class="auth-input" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="auth-btn">Continue</button>
+            </form>
+
+            <div class="auth-footer">
+                Don't have an account? <a href="signup.html" class="auth-link">Create Account</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { redirectIfLoggedIn, loginUser } from './js/auth.js';
+        
+        // Ensure redirect happens instantly if already logged in
+        redirectIfLoggedIn();
+
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-pass').value;
+            const errorDiv = document.getElementById('auth-error');
+            
+            errorDiv.classList.remove('visible');
+            
+            const res = loginUser(email, pass);
+            if (!res.success) {
+                errorDiv.textContent = res.message;
+                errorDiv.classList.add('visible');
+                
+                // Retrigger shake animation
+                errorDiv.style.animation = 'none';
+                errorDiv.offsetHeight; /* trigger reflow */
+                errorDiv.style.animation = null; 
+            }
+        });
+    </script>
+</body>
+</html>

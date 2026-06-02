@@ -1,0 +1,654 @@
+/*
+   APEX SKILLSPACE - PORTFOLIO BUILDER STYLES
+   Premium SaaS Portfolio Builder CSS
+*/
+
+/* Portfolio Builder Container */
+.portfolio-builder-container {
+    display: grid;
+    grid-template-columns: 320px 1fr 300px;
+    gap: 24px;
+    padding: 32px;
+    height: calc(100vh - 140px);
+    overflow: hidden;
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+    position: relative;
+}
+
+/* Background Particles */
+.particles-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 255, 170, 0.2);
+}
+
+/* Left Sidebar - Portfolio Editor */
+.editor-sidebar {
+    background: rgba(20, 20, 20, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    overflow-y: auto;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.editor-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.editor-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.editor-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.editor-sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.editor-section {
+    margin-bottom: 32px;
+}
+
+.editor-section:last-child {
+    margin-bottom: 0;
+}
+
+.editor-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.editor-section-title::before {
+    content: '';
+    width: 3px;
+    height: 12px;
+    background: #00ffaa;
+    border-radius: 2px;
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(0, 255, 170, 0.4);
+    box-shadow: 0 0 12px rgba(0, 255, 170, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Skill Badge Input */
+.skill-input-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.skill-input-group .form-input {
+    flex: 1;
+}
+
+.btn-add-skill {
+    padding: 10px 16px;
+    background: rgba(0, 255, 170, 0.1);
+    border: 1px solid rgba(0, 255, 170, 0.3);
+    border-radius: 8px;
+    color: #00ffaa;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-add-skill:hover {
+    background: rgba(0, 255, 170, 0.2);
+    box-shadow: 0 0 12px rgba(0, 255, 170, 0.2);
+}
+
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skill-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(0, 255, 170, 0.1);
+    border: 1px solid rgba(0, 255, 170, 0.3);
+    border-radius: 20px;
+    color: #00ffaa;
+    font-size: 12px;
+    animation: slideIn 0.3s ease;
+}
+
+.skill-badge-remove {
+    cursor: pointer;
+    font-weight: bold;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.skill-badge-remove:hover {
+    opacity: 1;
+}
+
+/* Photo Upload */
+.photo-upload-area {
+    width: 100%;
+    aspect-ratio: 1;
+    border: 2px dashed rgba(0, 255, 170, 0.3);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: rgba(0, 255, 170, 0.05);
+    transition: all 0.3s ease;
+    margin-bottom: 12px;
+}
+
+.photo-upload-area:hover {
+    border-color: rgba(0, 255, 170, 0.6);
+    background: rgba(0, 255, 170, 0.1);
+}
+
+.photo-upload-area.has-image {
+    border: none;
+    background: none;
+}
+
+.photo-upload-placeholder {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 12px;
+}
+
+.photo-upload-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+#profilePhotoInput {
+    display: none;
+}
+
+/* Center Section - Live Preview */
+.preview-section {
+    background: rgba(20, 20, 20, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow-y: auto;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.preview-section::-webkit-scrollbar {
+    width: 8px;
+}
+
+.preview-section::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.preview-section::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+.preview-section::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Portfolio Preview Content */
+.portfolio-preview {
+    padding: 40px 32px;
+    background: linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%);
+    min-height: 100%;
+    color: #111;
+}
+
+.preview-hero {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.preview-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 24px;
+    border: 3px solid #111;
+}
+
+.preview-name {
+    font-size: 42px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 8px;
+    font-family: Arial, sans-serif;
+}
+
+.preview-role {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 16px;
+    font-family: Georgia, serif;
+}
+
+.preview-about {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+/* Preview Sections */
+.preview-section-container {
+    margin-bottom: 48px;
+}
+
+.preview-section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #111;
+    font-family: Arial, sans-serif;
+}
+
+/* Skills Preview */
+.preview-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.preview-skill {
+    padding: 8px 16px;
+    background: #111;
+    color: #fff;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: Arial, sans-serif;
+}
+
+/* Experience Preview */
+.preview-experience-item {
+    margin-bottom: 32px;
+    padding-left: 24px;
+    position: relative;
+}
+
+.preview-experience-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 8px;
+    height: 8px;
+    background: #111;
+    border-radius: 50%;
+}
+
+.preview-exp-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+    font-family: Arial, sans-serif;
+}
+
+.preview-exp-company {
+    font-size: 14px;
+    color: #666;
+    font-family: Arial, sans-serif;
+}
+
+.preview-exp-period {
+    font-size: 12px;
+    color: #999;
+    margin-top: 4px;
+    font-family: Arial, sans-serif;
+}
+
+/* Right Sidebar - Templates */
+.templates-sidebar {
+    background: rgba(20, 20, 20, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    overflow-y: auto;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.templates-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.templates-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.templates-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.templates-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.templates-title::before {
+    content: '';
+    width: 3px;
+    height: 14px;
+    background: #00ffaa;
+    border-radius: 2px;
+}
+
+.template-card {
+    margin-bottom: 16px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.template-card:hover {
+    border-color: rgba(0, 255, 170, 0.4);
+    box-shadow: 0 0 20px rgba(0, 255, 170, 0.15);
+}
+
+.template-thumbnail {
+    width: 100%;
+    height: 140px;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.template-info {
+    padding: 12px;
+}
+
+.template-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.template-btn {
+    width: 100%;
+    padding: 8px;
+    background: rgba(0, 255, 170, 0.1);
+    border: 1px solid rgba(0, 255, 170, 0.3);
+    border-radius: 6px;
+    color: #00ffaa;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.template-btn:hover {
+    background: rgba(0, 255, 170, 0.2);
+}
+
+.template-btn.active {
+    background: rgba(0, 255, 170, 0.3);
+    border-color: #00ffaa;
+}
+
+/* Dashboard Widgets */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.dashboard-widget {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+.widget-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #00ffaa;
+    margin-bottom: 8px;
+}
+
+.widget-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Activity Heatmap */
+.heatmap-container {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    backdrop-filter: blur(10px);
+}
+
+.heatmap-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.heatmap-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.heatmap-cell {
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.heatmap-cell:hover {
+    transform: scale(1.2);
+}
+
+.heatmap-cell.active {
+    background: rgba(0, 255, 170, 0.4);
+}
+
+/* Badges */
+.badges-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.badge {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.badge-icon {
+    font-size: 24px;
+}
+
+.badge-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.badge.locked {
+    opacity: 0.4;
+}
+
+/* Responsive */
+@media (max-width: 1400px) {
+    .portfolio-builder-container {
+        grid-template-columns: 280px 1fr 260px;
+        gap: 16px;
+        padding: 24px;
+        height: calc(100vh - 130px);
+    }
+}
+
+@media (max-width: 1200px) {
+    .portfolio-builder-container {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding: 0;
+        height: auto;
+    }
+
+    .editor-sidebar,
+    .preview-section,
+    .templates-sidebar {
+        border-radius: 0;
+        height: auto;
+    }
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Utility Classes */
+.mt-4 {
+    margin-top: 16px;
+}
+
+.mb-4 {
+    margin-bottom: 16px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-muted {
+    color: rgba(255, 255, 255, 0.5);
+}

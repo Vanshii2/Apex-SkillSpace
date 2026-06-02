@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex // Premium Portfolio Builder</title>
+    
+    <!-- SEO Optimization -->
+    <meta name="description" content="Build, customize, and publish premium professional portfolios. Enterprise-grade portfolio builder with live preview and template system.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22%2300ffaa%22/></svg>">
+    
+    <!-- CSS Dependencies - System Fonts Only -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/core.css">
+    <link rel="stylesheet" href="css/portfolio-builder.css">
+    <link rel="stylesheet" href="css/pages/home.css">
+</head>
+<body>
+    <!-- Sticky Platform Navbar -->
+    <nav class="navbar" id="app-nav">
+        <div class="navbar-container">
+            <a href="index.html" class="logo" id="nav-logo">
+                <img src="logo.png" alt="Apex Logo" class="nav-logo-img">
+                <span class="nav-logo-text">Apex SkillSpace</span>
+            </a>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="portfolio.html" class="nav-link active">Design</a></li>
+                <li><a href="marketplace.html" class="nav-link">Marketplace</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Particles Background -->
+    <div class="particles-bg" id="particles-bg"></div>
+
+    <!-- Portfolio Builder Container -->
+    <div class="portfolio-builder-container">
+        
+        <!-- LEFT SIDEBAR: EDITOR -->
+        <aside class="editor-sidebar">
+            
+            <!-- Profile Section -->
+            <div class="editor-section">
+                <h3 class="editor-section-title">Profile</h3>
+                
+                <div class="photo-upload-area" id="photoUploadArea">
+                    <div class="photo-upload-placeholder">Click or drag photo</div>
+                </div>
+                <input type="file" id="profilePhotoInput" accept="image/*">
+                
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" id="fullName" placeholder="Your Name">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Professional Role</label>
+                    <input type="text" class="form-input" id="role" placeholder="Your Role">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">About</label>
+                    <textarea class="form-textarea" id="about" placeholder="Tell your professional story..."></textarea>
+                </div>
+            </div>
+
+            <!-- Skills Section -->
+            <div class="editor-section">
+                <h3 class="editor-section-title">Skills</h3>
+                
+                <div class="skill-input-group">
+                    <input type="text" class="form-input" id="skillInput" placeholder="Add a skill...">
+                    <button class="btn-add-skill" id="addSkillBtn">Add</button>
+                </div>
+                
+                <div class="skills-list" id="skillsList"></div>
+            </div>
+
+            <!-- Experience Section -->
+            <div class="editor-section">
+                <h3 class="editor-section-title">Experience</h3>
+                
+                <button class="btn-add-skill" id="addExpBtn" style="width: 100%; margin-bottom: 12px;">+ Add Experience</button>
+                
+                <div id="experienceList"></div>
+            </div>
+
+            <!-- Social Links -->
+            <div class="editor-section">
+                <h3 class="editor-section-title">Social Links</h3>
+                
+                <div class="form-group">
+                    <label class="form-label">GitHub</label>
+                    <input type="text" class="form-input" placeholder="username">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">LinkedIn</label>
+                    <input type="text" class="form-input" placeholder="username">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Twitter</label>
+                    <input type="text" class="form-input" placeholder="@username">
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- CENTER: LIVE PREVIEW -->
+        <section class="preview-section">
+            <div class="portfolio-preview">
+                
+                <!-- Hero Section -->
+                <div class="preview-hero">
+                    <div class="preview-photo-wrapper">
+                        <img src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 120%22%3E%3Crect width=%22120%22 height=%22120%22 fill=%22%23e0e0e0%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2216%22 fill=%22%23999%22%3EPhoto%3C/text%3E%3C/svg%3E" alt="Profile" class="preview-photo" id="previewPhoto">
+                    </div>
+                    <h1 class="preview-name">Your Name</h1>
+                    <p class="preview-role">Your Professional Role</p>
+                    <p class="preview-about">Add your professional summary here...</p>
+                </div>
+
+                <!-- About Section -->
+                <div class="preview-section-container" data-section="about">
+                    <!-- About content auto-fills from hero -->
+                </div>
+
+                <!-- Skills Section -->
+                <div class="preview-section-container" data-section="skills">
+                    <h2 class="preview-section-title">Skills</h2>
+                    <div class="preview-skills"></div>
+                </div>
+
+                <!-- Experience Section -->
+                <div class="preview-section-container" data-section="experience">
+                    <h2 class="preview-section-title">Experience</h2>
+                    <div id="experiencePreview"></div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- RIGHT SIDEBAR: TEMPLATES -->
+        <aside class="templates-sidebar">
+            
+            <div class="templates-title">Templates</div>
+            
+            <div id="templatesGallery"></div>
+
+            <!-- Dashboard Widgets -->
+            <div style="margin-top: 32px;">
+                <h3 class="editor-section-title">Stats</h3>
+                <div class="dashboard-grid"></div>
+            </div>
+
+            <!-- Activity Heatmap -->
+            <div style="margin-top: 24px;">
+                <h3 class="editor-section-title">Activity</h3>
+                <div class="heatmap-container">
+                    <div id="heatmap-widget"></div>
+                </div>
+            </div>
+
+        </aside>
+
+    </div>
+
+    <!-- Scripts -->
+    <script type="module">
+        import { initPortfolioBuilder } from './js/portfolio-builder.js';
+        import { createActivityHeatmap } from './js/heatmap.js';
+        
+        // Initialize the portfolio builder
+        initPortfolioBuilder().then(() => {
+            console.log('Portfolio Builder initialized');
+            createActivityHeatmap('heatmap-widget');
+        });
+    </script>
+</body>
+</html>
+                

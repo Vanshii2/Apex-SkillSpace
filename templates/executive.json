@@ -1,0 +1,21 @@
+{
+  "id": "executive",
+  "name": "Executive Portfolio",
+  "description": "Premium executive and leadership portfolio",
+  "font": "Georgia",
+  "colors": {
+    "background": "#fafafa",
+    "text": "#1a1a1a",
+    "accent": "#404040"
+  },
+  "sections": {
+    "photo": true,
+    "about": true,
+    "skills": true,
+    "experience": true,
+    "projects": false,
+    "contact": true
+  },
+  "cardStyle": "bordered",
+  "layout": "centered"
+}

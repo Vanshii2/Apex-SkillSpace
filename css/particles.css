@@ -1,0 +1,29 @@
+/*
+   ==========================================================================
+   ANTIGRAVITY PARTICLES
+   ==========================================================================
+*/
+
+#particle-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0; /* Keep it strictly behind hero content */
+    pointer-events: none; /* Prevent interference with mouse events */
+}
+
+.particle {
+    position: absolute;
+    border-radius: 4px; /* small rounded rectangles */
+    will-change: transform;
+    opacity: 0.8;
+    background-color: #ffd700; /* Golden color for dark mode default */
+}
+
+/* Revert to multi-color array in light mode */
+[data-theme="light"] .particle {
+    background-color: var(--light-color);
+}

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus // Digital Asset Marketplace</title>
+    
+    <!-- SEO Optimization -->
+    <meta name="description" content="Shop premium templates, motion design systems, interactive sliders, WebGL code files, and customizable UI blocks.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22%2300f2fe%22/></svg>">
+    
+    <!-- Google Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;1,300&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/core.css">
+    <link rel="stylesheet" href="css/utilities.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/pages/home.css">
+    <link rel="stylesheet" href="css/pages/sell.css">
+    <link rel="stylesheet" href="css/pages/shop.css">
+    <link rel="stylesheet" href="css/pages/dashboard.css">
+    <link rel="stylesheet" href="css/pages/profile.css">
+</head>
+<body>
+
+    <!-- Scroll Tracker -->
+    <div class="scroll-progress-container" id="scroll-tracker">
+        <div class="scroll-progress-bar"></div>
+    </div>
+
+    <!-- Dual Node Cursor -->
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-dot"></div>
+
+    <!-- Page Curtain -->
+    <div class="page-transition-overlay active" id="page-curtain"></div>
+
+    <!-- Sticky Navbar -->
+    <nav class="navbar" id="app-nav">
+        <div class="navbar-container">
+            <a href="index.html" class="logo" id="nav-logo">
+                <img src="logo.png" alt="Apex Logo" class="nav-logo-img">
+                <span class="nav-logo-text">Apex SkillSpace</span>
+            </a>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="portfolio.html" class="nav-link">Design</a></li>
+                <li><a href="marketplace.html" class="nav-link active">Marketplace</a></li>
+                <li><a href="sell.html" class="nav-link">Sell Project</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="nav-btn" id="nav-search" title="Search Menu (Cmd+K)">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+                
+                <button class="nav-btn" id="nav-bell" title="Notifications">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                </button>
+                
+                <button class="nav-btn theme-toggle-btn" title="Toggle System Theme">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                    </svg>
+                </button>
+                
+                <a href="dashboard.html" class="clickable" title="Creator Dashboard">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" alt="Avatar" class="nav-avatar" id="nav-profile-pic">
+                </a>
+            </div>
+
+            <!-- Dynamic Notification Dropdown Box -->
+            <div class="notification-dropdown" id="notification-dropdown">
+                <div class="notification-header">
+                    <h4 style="margin:0;font-size:0.9rem;">Notifications</h4>
+                    <span class="badge badge-outline" style="font-size:0.65rem;">System Logs</span>
+                </div>
+                <ul class="notification-list">
+                    <!-- Hydrated via JS -->
+                </ul>
+                <div class="notification-footer">
+                    <a href="dashboard.html" style="color:var(--primary);font-weight:500;">Go to Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="app-content">
+        <!-- Main Marketplace Framework -->
+        <main style="padding-top: calc(var(--header-height) + 40px); min-height: 100vh;">
+        <div class="container" style="padding-top:24px;">
+            <ul class="breadcrumbs">
+                <li class="breadcrumb-item"><a href="index.html">Nexus</a></li>
+                <li class="breadcrumb-item active">Marketplace</li>
+            </ul>
+            
+            <div class="shop-layout">
+                <!-- Sidebar Filters Dashboard -->
+                <aside class="shop-filters-sidebar glass">
+                    <h3 style="font-size:1.15rem;font-family:var(--font-display);">Filter Panel</h3>
+                    
+                    <!-- Categories -->
+                    <div class="filter-group">
+                        <span class="filter-title">Category classes</span>
+                        <ul class="filter-options">
+                            <li>
+                                <label class="filter-checkbox-label clickable">
+                                    <input type="checkbox" class="filter-checkbox category-filter-check" value="WebGL">
+                                    WebGL / Space
+                                </label>
+                            </li>
+                            <li>
+                                <label class="filter-checkbox-label clickable">
+                                    <input type="checkbox" class="filter-checkbox category-filter-check" value="Minimalist">
+                                    Minimalist UI
+                                </label>
+                            </li>
+                            <li>
+                                <label class="filter-checkbox-label clickable">
+                                    <input type="checkbox" class="filter-checkbox category-filter-check" value="Hover FX">
+                                    Motion Hover
+                                </label>
+                            </li>
+                            <li>
+                                <label class="filter-checkbox-label clickable">
+                                    <input type="checkbox" class="filter-checkbox category-filter-check" value="Editorial">
+                                    Editorial Spacings
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Stripe Price Slider -->
+                    <div class="filter-group">
+                        <span class="filter-title">Budget constraint</span>
+                        <div class="price-slider-container">
+                            <input type="range" class="price-slider clickable" id="shop-price-slider" min="10" max="150" step="5" value="100">
+                            <div class="price-range-inputs">
+                                <span>Max Price Limit:</span>
+                                <span id="shop-price-limit" style="font-weight:bold;color:var(--primary);">$100.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-secondary clickable" style="width:100%;font-size:0.8rem;padding:8px;" onclick="window.location.reload();">Reset Filters</button>
+                </aside>
+                
+                <!-- Main Listing Column -->
+                <section>
+                    <!-- Toolbar with search bar and sorting -->
+                    <div class="shop-toolbar">
+                        <div class="search-input-box">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <input type="text" id="shop-search-field" placeholder="Search templates, authors, files...">
+                        </div>
+                        
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <span style="font-size:0.8rem;color:var(--text-muted);white-space:nowrap;">Sort by:</span>
+                            <select class="sort-select clickable" id="shop-sort-select">
+                                <option value="trending">Highest Demand (Popular)</option>
+                                <option value="price-asc">Price: Low to High</option>
+                                <option value="price-desc">Price: High to Low</option>
+                                <option value="newest">Newly Seeded</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Dynamic Projects Grid -->
+                    <div class="grid grid-2" id="shop-projects-grid">
+                        <!-- Hydrated dynamically from shop.js -->
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    </div>
+
+    <!-- Floating Project Details Preview Modal Drawer -->
+    <div class="preview-drawer" id="preview-drawer">
+        <div class="notification-header" style="border-bottom:1px solid var(--border-color);padding:20px 24px;">
+            <h3 id="drawer-title" style="margin:0;font-size:1.15rem;">Project Preview</h3>
+            <button class="nav-btn clickable" id="drawer-close" style="width:32px;height:32px;">✕</button>
+        </div>
+        <div style="flex-grow:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:20px;">
+            <img src="" alt="Thumbnail" id="drawer-img" style="width:100%;height:220px;object-fit:cover;border-radius:12px;">
+            
+            <div>
+                <span class="badge badge-primary" id="drawer-badge">Web Experience</span>
+                <span style="float:right;font-weight:bold;color:var(--primary);font-size:1.2rem;" id="drawer-price">$49.00</span>
+            </div>
+            
+            <p id="drawer-desc" style="font-size:0.9rem;line-height:1.6;color:var(--text-secondary);"></p>
+            
+            <div style="display:flex;flex-direction:column;gap:8px;">
+                <h4 style="font-size:0.8rem;text-transform:uppercase;color:var(--text-muted);letter-spacing:0.05em;">Tech Specs</h4>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;" id="drawer-tags">
+                    <!-- Dynamic -->
+                </div>
+            </div>
+        </div>
+        <div style="padding:20px 24px;border-top:1px solid var(--border-color);display:flex;gap:12px;">
+            <button class="btn btn-glow clickable" style="flex-grow:1;" id="drawer-buy-btn">Purchase Asset</button>
+            <button class="btn btn-secondary clickable" style="width:48px;height:48px;padding:0;" id="drawer-wishlist-btn">♥</button>
+        </div>
+    </div>
+
+    <!-- Command Palette Overlay -->
+    <div class="cmd-overlay" id="cmd-palette">
+        <div class="cmd-box">
+            <div class="cmd-input-container">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" class="cmd-input" id="cmd-input" placeholder="Type a search query or navigation command...">
+            </div>
+            <ul class="cmd-results" id="cmd-results">
+                <!-- Hydrated dynamically -->
+            </ul>
+            <div class="cmd-footer">
+                <span>↑↓ navigate</span>
+                <span>⏎ select</span>
+                <span>esc close</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Dock -->
+    <div class="floating-dock-container">
+        <div class="floating-dock">
+            <a href="index.html" class="dock-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span class="dock-tooltip">Home</span>
+            </a>
+            <a href="portfolio.html" class="dock-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <span class="dock-tooltip">Portfolios</span>
+            </a>
+            <a href="shop.html" class="dock-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span class="dock-tooltip">Marketplace</span>
+            </a>
+            <a href="sell.html" class="dock-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>
+                </svg>
+                <span class="dock-tooltip">Sell Asset</span>
+            </a>
+            <a href="dashboard.html" class="dock-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line>
+                </svg>
+                <span class="dock-tooltip">Dashboard</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <img src="logo.png" alt="Apex Logo" class="nav-logo-img">
+                        <span class="nav-logo-text">Apex SkillSpace</span>
+                    </a>
+                    <p class="footer-desc">Trading aesthetic visual codes, layouts, and immersive elements designed for elite designers.</p>
+                </div>
+                <div>
+                    <h4 class="footer-title">Platform</h4>
+                    <ul class="footer-links">
+                        <li><a href="portfolio.html" class="footer-link">Creators</a></li>
+                        <li><a href="shop.html" class="footer-link">Shop Assets</a></li>
+                        <li><a href="sell.html" class="footer-link">Publishing Desk</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="dashboard.html" class="footer-link">Dashboard Hub</a></li>
+                        <li><a href="404.html" class="footer-link">System Docs</a></li>
+                        <li><a href="404.html" class="footer-link">Style Guide</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Enterprise</h4>
+                    <ul class="footer-links">
+                        <li><a href="404.html" class="footer-link">API Keys</a></li>
+                        <li><a href="404.html" class="footer-link">Bespoke Spaces</a></li>
+                        <li><a href="404.html" class="footer-link">0% Commissions</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <span>© 2026 NEXUS. Designed by the Google DeepMind team. Client database synced.</span>
+                <span>Workspace: fpm-local://localstorage</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Coordinator Module -->
+    <script type="module" src="js/index.js"></script>
+</body>
+</html>

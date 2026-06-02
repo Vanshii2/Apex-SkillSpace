@@ -1,0 +1,100 @@
+/* 
+   ==========================================================================
+   FUTURISTIC PORTFOLIO MARKETPLACE - DESIGN SYSTEM & VARIABLES
+   Inspirations: Apple, Stripe, Linear, Vercel, Framer, Nothing Tech
+   ========================================================================== 
+*/
+
+:root {
+    /* --- Modern Typography Scale (Google Fonts Loaded in HTML) --- */
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-display: 'Sora', var(--font-sans);
+    --font-mono: 'Space Grotesk', monospace;
+    --font-serif: 'Merriweather', Georgia, serif;
+
+    /* --- Default Dark Theme Tokens (Sleek, High-contrast, Cinematic) --- */
+    --bg-base: #030303;
+    --bg-surface: #0a0a0c;
+    --bg-card: rgba(14, 14, 18, 0.45);
+    --bg-card-hover: rgba(20, 20, 26, 0.7);
+
+    --border-color: rgba(255, 255, 255, 0.06);
+    --border-color-hover: rgba(255, 255, 255, 0.12);
+
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1a6;
+    --text-muted: #6e6e73;
+
+    --primary: #ffffff;
+    --primary-rgb: 255, 255, 255;
+    --accent: #eaeaea;
+    --accent-rgb: 234, 234, 234;
+    --warning: #f5a623;
+    --success: #171717; /* Monochromatic */
+    --danger: #e3342f;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
+    --glow-primary: none;
+    --glow-accent: none;
+    --glow-card-hover: none;
+
+    /* Glassmorphism */
+    --glass-blur: blur(24px);
+    --glass-bg: rgba(14, 14, 18, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.08);
+
+    /* Layout & Structure */
+    --header-height: 72px;
+    --dock-height: 64px;
+    --sidebar-width: 260px;
+    --max-width: 1440px;
+
+    /* Timings & Transitions */
+    --ease-standard: cubic-bezier(0.25, 0.8, 0.25, 1);
+    --transition-fast: 0.15s var(--ease-standard);
+    --transition-normal: 0.3s var(--ease-standard);
+    --transition-slow: 0.6s var(--ease-standard);
+
+    /* Hover Glow Offset variables (driven dynamically by JS spotlight) */
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+}
+
+/* --- Light Theme Overwrite (Apple-like Pure Minimalist Aesthetic) --- */
+[data-theme="light"] {
+    --bg-base: #fafafa;
+    --bg-surface: #ffffff;
+    --bg-card: rgba(255, 255, 255, 0.7);
+    --bg-card-hover: rgba(245, 245, 247, 0.9);
+
+    --border-color: rgba(0, 0, 0, 0.06);
+    --border-color-hover: rgba(0, 0, 0, 0.12);
+
+    --text-primary: #000000;
+    --text-secondary: #6e6e73;
+    --text-muted: #a1a1a6;
+
+    --primary: #000000;
+    --primary-rgb: 0, 0, 0;
+    --accent: #1d1d1f;
+    --accent-rgb: 29, 29, 31;
+    --warning: #f5a623;
+    --success: #f5f5f7;
+    --danger: #d92d20;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.08);
+    --glow-primary: none;
+    --glow-accent: none;
+    --glow-card-hover: none;
+
+    /* Glassmorphism */
+    --glass-blur: blur(24px);
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.08);
+}

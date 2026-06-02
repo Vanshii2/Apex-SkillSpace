@@ -1,0 +1,21 @@
+{
+  "id": "developer",
+  "name": "Developer Portfolio",
+  "description": "Tech-focused portfolio for developers",
+  "font": "Courier New",
+  "colors": {
+    "background": "#0a0e27",
+    "text": "#ffffff",
+    "accent": "#00ffaa"
+  },
+  "sections": {
+    "photo": true,
+    "about": true,
+    "skills": true,
+    "experience": true,
+    "projects": true,
+    "contact": true
+  },
+  "cardStyle": "glassmorphism",
+  "layout": "grid"
+}

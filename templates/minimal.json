@@ -1,0 +1,21 @@
+{
+  "id": "minimal",
+  "name": "Minimal Professional",
+  "description": "Clean and minimal design for professionals",
+  "font": "Arial",
+  "colors": {
+    "background": "#ffffff",
+    "text": "#111111",
+    "accent": "#000000"
+  },
+  "sections": {
+    "photo": true,
+    "about": true,
+    "skills": true,
+    "experience": true,
+    "projects": true,
+    "contact": true
+  },
+  "cardStyle": "flat",
+  "layout": "centered"
+}

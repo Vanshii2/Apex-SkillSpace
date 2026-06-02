@@ -1,0 +1,181 @@
+/*
+   ==========================================================================
+   FUTURISTIC PORTFOLIO MARKETPLACE - SELL PRODUCT STYLES
+   ==========================================================================
+*/
+
+.sell-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 48px;
+    align-items: start;
+}
+
+@media (max-width: 1024px) {
+    .sell-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Upload Panel Form */
+.sell-form-card {
+    padding: 32px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 640px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-label {
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+}
+
+.form-input, .form-textarea, .form-select {
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    outline: none;
+    transition: all var(--transition-fast);
+}
+
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.1);
+}
+
+[data-theme="light"] .form-input, [data-theme="light"] .form-textarea, [data-theme="light"] .form-select {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+/* Drag and Drop visual matrix */
+.upload-dropzone {
+    border: 1.5px dashed var(--border-color);
+    border-radius: 14px;
+    padding: 32px 16px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.01);
+    transition: all var(--transition-fast);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.upload-dropzone.dragover {
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.03);
+    box-shadow: var(--glow-primary);
+}
+
+.upload-dropzone-icon {
+    font-size: 2rem;
+    color: var(--text-muted);
+    transition: color var(--transition-fast);
+}
+
+.upload-dropzone.dragover .upload-dropzone-icon {
+    color: var(--primary);
+}
+
+/* Dynamic Tag Adder Aggregator */
+.tag-aggregator-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    min-height: 48px;
+}
+
+.tag-adder-input {
+    border: none;
+    background: transparent;
+    outline: none;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    flex-grow: 1;
+    min-width: 100px;
+}
+
+.tag-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 99px;
+    background: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary);
+    border: 1px solid rgba(var(--primary-rgb), 0.2);
+    font-size: 0.75rem;
+    font-family: var(--font-display);
+}
+
+.tag-pill-remove {
+    font-weight: bold;
+    cursor: none;
+}
+
+/* Side Live Preview Box Sticky */
+.preview-sticky-box {
+    position: sticky;
+    top: calc(var(--header-height) + 20px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.preview-label-indicator {
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pulse-bullet {
+    width: 6px;
+    height: 6px;
+    background: var(--success);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--success);
+    animation: pulse-active 1.5s infinite;
+}
+
+@keyframes pulse-active {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+}

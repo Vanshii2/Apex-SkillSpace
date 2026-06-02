@@ -1,0 +1,21 @@
+{
+  "id": "business",
+  "name": "Modern Business",
+  "description": "Professional business portfolio layout",
+  "font": "Verdana",
+  "colors": {
+    "background": "#f5f5f5",
+    "text": "#222222",
+    "accent": "#1a1a1a"
+  },
+  "sections": {
+    "photo": true,
+    "about": true,
+    "skills": true,
+    "experience": true,
+    "projects": true,
+    "contact": true
+  },
+  "cardStyle": "shadow",
+  "layout": "left-aligned"
+}

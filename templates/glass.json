@@ -1,0 +1,21 @@
+{
+  "id": "glass",
+  "name": "Glassmorphism",
+  "description": "Modern glassmorphism design template",
+  "font": "Trebuchet MS",
+  "colors": {
+    "background": "#1a1a2e",
+    "text": "#ffffff",
+    "accent": "#00d4ff"
+  },
+  "sections": {
+    "photo": true,
+    "about": true,
+    "skills": true,
+    "experience": true,
+    "projects": true,
+    "contact": true
+  },
+  "cardStyle": "glassmorphism",
+  "layout": "centered"
+}
