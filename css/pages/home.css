@@ -636,12 +636,11 @@
     margin: 0;
     font-family: var(--font-display);
     line-height: 1.2;
+    color: #ffffff;
+
+
 }
 
-.marquee-arrow {
-    font-size: 1.4rem;
-    transition: transform 0.3s ease;
-}
 
 .marquee-card:hover .marquee-arrow {
     transform: translateX(6px);

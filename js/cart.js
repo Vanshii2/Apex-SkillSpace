@@ -110,7 +110,7 @@ class CartManager {
         }).join('');
 
         if (this.cartTotalEl) {
-            this.cartTotalEl.textContent = \`$\${total.toFixed(2)}\`;
+            this.cartTotalEl.textContent = `$\${total.toFixed(2)}`;
         }
     }
 }
