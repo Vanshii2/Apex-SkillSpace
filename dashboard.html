@@ -24,6 +24,13 @@
     <link rel="stylesheet" href="css/pages/shop.css">
     <link rel="stylesheet" href="css/pages/dashboard.css">
     <link rel="stylesheet" href="css/pages/profile.css">
+    
+    <!-- Authentication Gate -->
+    <script>
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
 </head>
 <body>
 
@@ -81,8 +88,8 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="sidebar-link clickable">
-                            <span style="font-size:1.1rem;">✦</span> Portfolio
+                        <a href="profile.html" class="sidebar-link clickable">
+                            <span style="font-size:1.1rem;">✦</span> Profile
                         </a>
                     </li>
                     <li>

@@ -12,6 +12,13 @@
     <link rel="stylesheet" href="css/utilities.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/pages/checkout.css">
+    
+    <!-- Authentication Gate -->
+    <script>
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
 </head>
 <body>
 

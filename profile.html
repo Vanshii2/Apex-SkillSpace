@@ -14,6 +14,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;1,300&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <!-- CSS Dependencies -->
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/core.css">
@@ -24,6 +27,13 @@
     <link rel="stylesheet" href="css/pages/shop.css">
     <link rel="stylesheet" href="css/pages/dashboard.css">
     <link rel="stylesheet" href="css/pages/profile.css">
+    
+    <!-- Authentication Gate -->
+    <script>
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
 </head>
 <body>
 
@@ -127,6 +137,28 @@
         <div class="container" style="display:grid;grid-template-columns: 2fr 1fr;gap:40px;margin-bottom:80px;align-items:start;">
             <!-- Left panel: uploaded projects list -->
             <section style="display:flex;flex-direction:column;gap:32px;">
+                <!-- Creator Dashboard Stats & Heatmap -->
+                <div class="glass" style="padding:32px; border-radius:24px;">
+                    <h2 style="font-size:1.4rem; font-family:var(--font-display); margin-bottom:24px; display:flex; align-items:center; gap:8px;">
+                        <i data-lucide="bar-chart-3" style="color:#00ffaa; width:20px; height:20px;"></i> Creator Dashboard
+                    </h2>
+                    
+                    <!-- Stats Widgets -->
+                    <div class="dashboard-grid" id="profile-dashboard-grid" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-bottom:28px;">
+                        <!-- Stats filled via JS -->
+                    </div>
+                    
+                    <!-- Contribution Heatmap -->
+                    <div>
+                        <h3 style="font-size:0.95rem; font-family:var(--font-mono); color:var(--text-muted); text-transform:uppercase; margin-bottom:14px; display:flex; align-items:center; gap:6px;">
+                            <i data-lucide="calendar" style="color:#00ffaa; width:14px; height:14px;"></i> Activity Contributions
+                        </h3>
+                        <div class="heatmap-container" style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:16px; overflow-x:auto;">
+                            <div id="heatmap-widget"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="glass" style="padding:32px;border-radius:24px;">
                     <h2 style="font-size:1.4rem;font-family:var(--font-display);margin-bottom:24px;">Published Portfolio Assets</h2>
                     <div class="grid grid-2" id="prof-uploaded-projects-grid">

@@ -17,22 +17,27 @@ export function initPortfolioPage() {
     // Render all verified creators
     const creators = getCreators();
     creatorsSection.innerHTML = creators.map(creator => `
-        <div class="creator-showcase-card glass spotlight-card">
-            <img src="${creator.banner}" alt="banner" class="creator-banner-img">
-            <div class="creator-details">
-                <img src="${creator.avatar}" alt="avatar" class="creator-avatar-img">
-                <h3 style="font-size:1.1rem;margin-bottom:4px;">${creator.name}</h3>
-                <span class="text-mono" style="font-size:0.7rem;margin-bottom:12px;">@${creator.username}</span>
-                <p style="font-size:0.8rem;line-height:1.5;color:var(--text-secondary);max-height:60px;overflow:hidden;">${creator.bio}</p>
-                
-                <div class="creator-skills-row">
-                    ${creator.skills.slice(0, 3).map(skill => `<span class="badge badge-outline" style="font-size:0.6rem;">${skill}</span>`).join('')}
+        <div class="creator-showcase-card glass spotlight-card" style="display:flex; flex-direction:column; justify-content:space-between; height:100%;">
+            <div style="width:100%;">
+                <img src="${creator.banner}" alt="banner" class="creator-banner-img">
+                <div class="creator-details">
+                    <img src="${creator.avatar}" alt="avatar" class="creator-avatar-img">
+                    <h3 style="font-size:1.1rem;margin-bottom:4px;">${creator.name}</h3>
+                    <span class="text-mono" style="font-size:0.7rem;margin-bottom:12px;">@${creator.username}</span>
+                    <p style="font-size:0.8rem;line-height:1.5;color:var(--text-secondary);max-height:60px;overflow:hidden;">${creator.bio}</p>
+                    
+                    <div class="creator-skills-row">
+                        ${creator.skills.slice(0, 3).map(skill => `<span class="badge badge-outline" style="font-size:0.6rem;">${skill}</span>`).join('')}
+                    </div>
                 </div>
-                
-                <div style="display:flex;justify-content:space-around;width:100%;margin-top:auto;padding-top:16px;border-top:1px solid var(--border-color);font-size:0.8rem;">
+            </div>
+            
+            <div style="padding:0 24px 24px 24px; display:flex; flex-direction:column; gap:16px;">
+                <div style="display:flex;justify-content:space-around;width:100%;padding-top:16px;border-top:1px solid var(--border-color);font-size:0.8rem;">
                     <div><span style="font-weight:bold;color:var(--text-primary);">${creator.stats.projects}</span> <span style="color:var(--text-muted);">Projects</span></div>
                     <div><span style="font-weight:bold;color:var(--text-primary);">${creator.stats.likes}</span> <span style="color:var(--text-muted);">Likes</span></div>
                 </div>
+                <a href="view-portfolio.html?user=${creator.username}" class="btn btn-primary clickable" style="width:100%; text-align:center; padding:8px 0; font-size:0.75rem; display:block; text-decoration:none;">View Portfolio</a>
             </div>
         </div>
     `).join('');
@@ -184,10 +189,12 @@ export function openGlobalPreviewDrawer(id) {
         }
     };
 
-    wishBtn.onclick = () => {
-        showToast(`Saved ${p.title} to your profile wishlist!`, 'success');
-        drawer.classList.remove('show');
-    };
+    if (wishBtn) {
+        wishBtn.onclick = () => {
+            showToast(`Saved ${p.title} to your profile wishlist!`, 'success');
+            drawer.classList.remove('show');
+        };
+    }
 
     drawer.classList.add('show');
 }

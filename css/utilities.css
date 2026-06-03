@@ -171,7 +171,7 @@
 
 .btn-glow {
     background: linear-gradient(90deg, var(--primary), var(--accent));
-    color: #ffffff;
+    color: var(--bg-base);
     border: none;
     box-shadow: var(--glow-primary);
 }

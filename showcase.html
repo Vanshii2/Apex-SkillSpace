@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolios Showcase // Apex SkillSpace</title>
+    
+    <!-- Google Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/core.css">
+    <link rel="stylesheet" href="css/utilities.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/pages/home.css">
+    <link rel="stylesheet" href="css/pages/shop.css">
+    
+    <!-- Authentication Gate -->
+    <script>
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+<body>
+
+    <!-- Scroll tracking bar -->
+    <div class="scroll-progress-container" id="scroll-tracker">
+        <div class="scroll-progress-bar"></div>
+    </div>
+
+    <!-- Dual Node Cursor -->
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-dot"></div>
+
+    <!-- Transition curtain -->
+    <div class="page-transition-overlay active" id="page-curtain"></div>
+
+    <!-- Sticky Navbar -->
+    <nav class="navbar" id="app-nav">
+        <div class="navbar-container">
+            <a href="index.html" class="logo" id="nav-logo">
+                <img src="logo.png" alt="Apex Logo" class="nav-logo-img">
+                <span class="nav-logo-text">Apex SkillSpace</span>
+            </a>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="showcase.html" class="nav-link active">Portfolios</a></li>
+                <li><a href="portfolio.html" class="nav-link">Builder</a></li>
+                <li><a href="marketplace.html" class="nav-link">Marketplace</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="nav-btn theme-toggle-btn" title="Toggle System Theme">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                    </svg>
+                </button>
+                
+                <a href="dashboard.html" class="clickable" title="Creator Dashboard">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" alt="Avatar" class="nav-avatar" id="nav-profile-pic">
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="app-content">
+        <main style="padding-top: calc(var(--header-height) + 40px); min-height: 100vh; padding-bottom: 80px;">
+            <div class="container">
+                <ul class="breadcrumbs">
+                    <li class="breadcrumb-item"><a href="index.html">Apex</a></li>
+                    <li class="breadcrumb-item active">Portfolios</li>
+                </ul>
+
+                <!-- Hero Section for Showcase -->
+                <section style="margin-bottom: 56px;">
+                    <span class="badge badge-outline text-mono" style="margin-bottom:16px;">CREATORS SHOWCASE</span>
+                    <h1 style="font-size: 3.2rem; letter-spacing: -0.03em; margin-bottom: 12px; line-height: 1.1;">Verified Creator <span class="gradient-text text-glow">Portfolios</span></h1>
+                    <p style="color: var(--text-secondary); max-width: 620px; font-size: 1.1rem; line-height: 1.6;">
+                        Explore custom developer portfolios built using our premium design system templates. Load a creator's portfolio to inspect their setup or start designing your own.
+                    </p>
+                    <div style="margin-top: 24px; display: flex; gap: 16px;">
+                        <a href="portfolio.html" class="btn btn-glow clickable">Create Your Portfolio</a>
+                        <a href="marketplace.html" class="btn btn-secondary clickable">Browse Assets</a>
+                    </div>
+                </section>
+
+                <!-- Creators List Section -->
+                <section style="margin-bottom: 64px;">
+                    <h2 style="font-size: 1.8rem; font-family: var(--font-display); margin-bottom: 32px; letter-spacing: -0.01em;">Featured Creative Directors</h2>
+                    <div class="grid grid-3" id="portfolio-creators-list">
+                        <!-- Loaded dynamically via js/modules/portfolio.js -->
+                    </div>
+                </section>
+
+                <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 60px 0;">
+
+                <!-- Projects Showcase Grid -->
+                <section>
+                    <h2 style="font-size: 1.8rem; font-family: var(--font-display); margin-bottom: 12px; letter-spacing: -0.01em;">Active Showcases & Assets</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 32px;">Click View Details to inspect project mockups and source code libraries.</p>
+                    <div class="grid grid-3" id="portfolio-projects-grid">
+                        <!-- Loaded dynamically via js/modules/portfolio.js -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Floating Project Details Preview Modal Drawer -->
+    <div class="preview-drawer" id="preview-drawer">
+        <div class="notification-header" style="border-bottom:1px solid var(--border-color);padding:20px 24px; display:flex; justify-content:space-between; align-items:center;">
+            <h3 id="drawer-title" style="margin:0;font-size:1.15rem;">Project Preview</h3>
+            <button class="nav-btn clickable" id="drawer-close" style="width:32px;height:32px; display:flex; align-items:center; justify-content:center;">✕</button>
+        </div>
+        <div style="flex-grow:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:20px;">
+            <img src="" alt="Thumbnail" id="drawer-img" style="width:100%;height:220px;object-fit:cover;border-radius:12px;">
+            
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="badge badge-primary" id="drawer-badge">Web Experience</span>
+                <span style="font-weight:bold;color:var(--primary);font-size:1.2rem;" id="drawer-price">₹49.00</span>
+            </div>
+            
+            <p id="drawer-desc" style="font-size:0.9rem;line-height:1.6;color:var(--text-secondary);"></p>
+            
+            <div style="display:flex;flex-direction:column;gap:8px;">
+                <h4 style="font-size:0.8rem;text-transform:uppercase;color:var(--text-muted);letter-spacing:0.05em;">Tech Specs</h4>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;" id="drawer-tags">
+                    <!-- Dynamic -->
+                </div>
+            </div>
+        </div>
+        <div style="padding:20px 24px;border-top:1px solid var(--border-color);display:flex;gap:12px;">
+            <button class="btn btn-glow clickable" style="flex-grow:1;" id="drawer-buy-btn">Add to Cart</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <span class="nav-logo-text">Apex SkillSpace</span>
+                    </a>
+                    <p class="footer-desc">Premium project marketplace for developers and creators.</p>
+                </div>
+                <div>
+                    <h4 class="footer-title">Platform</h4>
+                    <ul class="footer-links">
+                        <li><a href="showcase.html" class="footer-link">Creators</a></li>
+                        <li><a href="marketplace.html" class="footer-link">Marketplace</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Apex SkillSpace. Designed with Vanilla HTML/CSS/JS.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Coordinator Module -->
+    <script type="module" src="js/index.js"></script>
+</body>
+</html>

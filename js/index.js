@@ -49,7 +49,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 6. Global Cart Logic
     initGlobalCart();
+
+    // 7. Update navbar auth buttons based on session state
+    updateNavbarAuthButtons();
 });
+
+function updateNavbarAuthButtons() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const navActions = document.querySelector('.nav-actions');
+    if (!navActions) return;
+
+    const loginLink = navActions.querySelector('a[href="login.html"]');
+    const signupLink = navActions.querySelector('a[href="signup.html"]');
+
+    if (isLoggedIn) {
+        if (loginLink) {
+            loginLink.textContent = 'Dashboard';
+            loginLink.href = 'dashboard.html';
+        }
+        if (signupLink) {
+            signupLink.textContent = 'Logout';
+            signupLink.href = '#';
+            signupLink.className = 'btn btn-secondary clickable';
+            signupLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                logoutUser();
+            });
+        }
+
+        // Add Profile link to navbar menu dynamically
+        const navMenu = document.querySelector('.nav-menu');
+        if (navMenu && !navMenu.querySelector('a[href="profile.html"]')) {
+            const li = document.createElement('li');
+            const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+            const isActive = currentPath === 'profile.html';
+            li.innerHTML = `<a href="profile.html" class="nav-link ${isActive ? 'active' : ''}">Profile</a>`;
+            navMenu.appendChild(li);
+        }
+    }
+}
 
 function initGlobalCart() {
     window.addToCart = addToCart;

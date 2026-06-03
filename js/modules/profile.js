@@ -8,6 +8,7 @@
 import { getCurrentUser, updateCurrentUser, getProjects, addNotification, logActivity } from './db.js';
 import { showToast } from '../core/global.js';
 import { openGlobalPreviewDrawer } from './portfolio.js';
+import { createActivityHeatmap } from '../heatmap.js';
 
 export function initProfilePage() {
     const user = getCurrentUser();
@@ -23,6 +24,40 @@ export function initProfilePage() {
     document.getElementById('prof-followers-count').textContent = user.followers;
     document.getElementById('prof-following-count').textContent = user.following;
     document.getElementById('prof-likes-count').textContent = user.stats.likes;
+    
+    // Render creator dashboard stats
+    const statsContainer = document.getElementById('profile-dashboard-grid');
+    if (statsContainer) {
+        const savedPortfolio = localStorage.getItem('apex-portfolio');
+        let portfolioData = { projects: [], skills: [], experience: [] };
+        if (savedPortfolio) {
+            try {
+                portfolioData = JSON.parse(savedPortfolio);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        const stats = {
+            'Views': Math.floor(Math.random() * 500) + 120,
+            'Projects': portfolioData.projects ? portfolioData.projects.length : 0,
+            'Skills Listed': portfolioData.skills ? portfolioData.skills.length : 0,
+            'Experience': portfolioData.experience ? portfolioData.experience.length : 0
+        };
+        statsContainer.innerHTML = Object.entries(stats).map(([label, value]) => `
+            <div class="dashboard-widget" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:14px; text-align:center; backdrop-filter:blur(10px);">
+                <div class="widget-value" style="font-size:20px; font-weight:700; color:#00ffaa; margin-bottom:4px;">${value}</div>
+                <div class="widget-label" style="font-size:10px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.5px;">${label}</div>
+            </div>
+        `).join('');
+    }
+
+    // Initialize activity heatmap
+    createActivityHeatmap('heatmap-widget');
+
+    // Make sure Lucide icons are updated
+    if (window.lucide) {
+        window.lucide.createIcons();
+    }
     
     // Bio
     const bioText = document.getElementById('prof-bio-text');
@@ -109,13 +144,13 @@ function renderCreatorOwnedProjects(username) {
     if (!grid) return;
     
     const projects = getProjects();
-    const owned = projects.filter(p => p.seller === username || p.seller === 'nexus_user');
+    const owned = projects.filter(p => p.seller === username || p.seller === 'apex_user');
     
     if (owned.length === 0) {
         grid.innerHTML = `
             <div style="grid-column:1/-1;text-align:center;padding:48px 0;border:1px dashed var(--border-color);border-radius:12px;">
                 <p style="color:var(--text-muted);">You have not published any projects yet.</p>
-                <a href="sell.html" class="btn btn-secondary clickable" style="margin-top:16px;font-size:0.8rem;padding:8px 16px;">List Project Showcase</a>
+                <a href="portfolio.html" class="btn btn-secondary clickable" style="margin-top:16px;font-size:0.8rem;padding:8px 16px;">Open Portfolio Builder</a>
             </div>
         `;
         return;

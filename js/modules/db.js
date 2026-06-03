@@ -6,6 +6,7 @@
 */
 
 const DB_KEY_PREFIX = 'fpm_';
+const DB_SEED_VERSION = 'apex-skillspace-demo-v2';
 
 // --- MOCK INITIAL DATA ---
 const MOCK_CREATORS = [
@@ -15,8 +16,25 @@ const MOCK_CREATORS = [
         name: 'Aron Thorne',
         avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
         banner: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+        role: 'Creative Frontend Engineer',
         bio: 'Cinematic 3D web experiences and motion architecture. Developing interactive micro-spaces for forward-thinking brands like Lusion and Nike.',
         skills: ['WebGL', 'Three.js', 'Creative Direction', 'GSAP', 'CSS Grid'],
+        experience: [
+            { title: 'Creative Developer', company: 'Aether Studio', startDate: '2024', endDate: 'Present' },
+            { title: 'Frontend Motion Engineer', company: 'Pixel Foundry', startDate: '2022', endDate: '2024' }
+        ],
+        projects: [
+            {
+                id: 'hyper_arch_case',
+                title: 'Aether Portfolio Experience',
+                description: 'A cinematic WebGL portfolio concept with interactive sections, motion-led project storytelling, and recruiter-ready case studies.',
+                tags: ['WebGL', 'Three.js', 'GSAP'],
+                status: 'Featured',
+                image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'
+            }
+        ],
+        socialLinks: { github: 'hyper-arch', linkedin: 'aron-thorne', twitter: 'hyper_arch' },
+        selectedTemplate: 'glass',
         followers: 1240,
         following: 184,
         stats: { projects: 8, likes: 3410, sales: 142 }
@@ -27,8 +45,25 @@ const MOCK_CREATORS = [
         name: 'Sarah K.',
         avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
         banner: 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=800&q=80',
+        role: 'Design Systems Engineer',
         bio: 'Design systems engineer crafting minimalist UI structures and modular frontend architectures. Obsessed with micro-interactions and typographic grids.',
         skills: ['Sass', 'CSS Variables', 'Vanilla JS', 'SVG Anim', 'Figma'],
+        experience: [
+            { title: 'Design Systems Engineer', company: 'Linear Labs', startDate: '2023', endDate: 'Present' },
+            { title: 'UI Developer', company: 'Gridline Co.', startDate: '2021', endDate: '2023' }
+        ],
+        projects: [
+            {
+                id: 'linear_flow_case',
+                title: 'MonoGrid Portfolio System',
+                description: 'A clean portfolio layout for students and junior developers, focused on readable projects, skill badges, and simple contact links.',
+                tags: ['CSS Variables', 'Vanilla JS', 'Figma'],
+                status: 'Demo Project',
+                image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80'
+            }
+        ],
+        socialLinks: { github: 'linear-flow', linkedin: 'sarah-k-design', twitter: 'linear_flow' },
+        selectedTemplate: 'minimal',
         followers: 920,
         following: 245,
         stats: { projects: 5, likes: 2180, sales: 89 }
@@ -39,8 +74,25 @@ const MOCK_CREATORS = [
         name: 'Marcus V.',
         avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
         banner: 'https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?auto=format&fit=crop&w=800&q=80',
+        role: 'Hardware UI Specialist',
         bio: 'Developing visual design components resembling raw physical product hardware. Minimalist, transparent aesthetics, high contrast dot-matrix setups.',
         skills: ['Custom Elements', 'SVG Filters', 'CSS Houdini', 'Accessibility'],
+        experience: [
+            { title: 'Interface Engineer', company: 'Nothing Core Lab', startDate: '2022', endDate: 'Present' },
+            { title: 'Accessibility Developer', company: 'Open Interface', startDate: '2020', endDate: '2022' }
+        ],
+        projects: [
+            {
+                id: 'nothing_core_case',
+                title: 'Accessible Hardware-Inspired Portfolio',
+                description: 'A portfolio demo with stark contrast, clear typography, accessible sections, and product-style project cards.',
+                tags: ['Accessibility', 'SVG Filters', 'Custom Elements'],
+                status: 'Case Study',
+                image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80'
+            }
+        ],
+        socialLinks: { github: 'nothing-core', linkedin: 'marcus-v-interface', twitter: 'nothing_core' },
+        selectedTemplate: 'developer',
         followers: 1850,
         following: 92,
         stats: { projects: 12, likes: 5890, sales: 312 }
@@ -170,9 +222,6 @@ const MOCK_PROJECTS = [
     }
 ];
 
-// Force reset so new mock projects load in localStorage
-localStorage.removeItem('fpm_initialized');
-
 const MOCK_NOTIFICATIONS = [
     { id: 'notif_1', text: 'Welcome to your futuristic dashboard. Get started by exploring the Shop.', time: 'Just now', unread: true },
     { id: 'notif_2', text: 'Your project Chronos has been added to Marcus\'s wishlist.', time: '2 hours ago', unread: true },
@@ -181,7 +230,7 @@ const MOCK_NOTIFICATIONS = [
 
 // --- SEED ENGINE ---
 export function initDB() {
-    if (!localStorage.getItem(DB_KEY_PREFIX + 'initialized')) {
+    if (!localStorage.getItem(DB_KEY_PREFIX + 'initialized') || localStorage.getItem(DB_KEY_PREFIX + 'seed_version') !== DB_SEED_VERSION) {
         localStorage.setItem(DB_KEY_PREFIX + 'creators', JSON.stringify(MOCK_CREATORS));
         localStorage.setItem(DB_KEY_PREFIX + 'projects', JSON.stringify(MOCK_PROJECTS));
         localStorage.setItem(DB_KEY_PREFIX + 'notifications', JSON.stringify(MOCK_NOTIFICATIONS));
@@ -193,7 +242,7 @@ export function initDB() {
         
         // Seed active user session
         const activeUser = {
-            username: 'nexus_user',
+            username: 'apex_user',
             name: 'Nova Stark',
             avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
             banner: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
@@ -226,6 +275,7 @@ export function initDB() {
         localStorage.setItem(DB_KEY_PREFIX + 'activity_log', JSON.stringify(activityLog));
         
         localStorage.setItem(DB_KEY_PREFIX + 'initialized', 'true');
+        localStorage.setItem(DB_KEY_PREFIX + 'seed_version', DB_SEED_VERSION);
         console.log('Futuristic Data Engine Initialized successfully.');
     }
 }

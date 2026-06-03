@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viewer // Custom Live Portfolio</title>
+    
+    <!-- Google Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;1,300&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/core.css">
+    <link rel="stylesheet" href="css/utilities.css">
+    <link rel="stylesheet" href="css/layout.css">
+    
+    <style id="dynamic-template-styles">
+        /* Dynamic styles will be inserted here */
+    </style>
+    
+    <!-- Authentication Gate -->
+    <script>
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+<body>
+
+    <!-- Exit Portfolio Button (Sticky Floating) -->
+    <a href="showcase.html" class="btn btn-secondary clickable" style="position: fixed; top: 24px; left: 24px; z-index: 1000; padding: 10px 18px; font-size: 0.85rem; font-family: var(--font-mono); text-decoration: none; border-radius: 99px; box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 8px;">
+        <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i> Exit Portfolio
+    </a>
+
+    <!-- Main Dynamic Container -->
+    <div id="portfolio-root" class="layout-centered">
+        
+        <!-- Header Section -->
+        <header class="portfolio-header" id="sec-photo">
+            <div class="portfolio-avatar-container">
+                <img src="" alt="Profile Photo" id="portfolio-avatar" style="display:none;">
+            </div>
+            <h1 id="portfolio-name">Name</h1>
+            <p id="portfolio-role">Role</p>
+            <p id="portfolio-tagline" style="margin-top: 10px; font-size: 1.15rem; opacity: 0.85; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.5;"></p>
+            <div id="portfolio-location" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; margin-top: 12px; margin-bottom: 8px; opacity: 0.75; font-family: var(--font-mono); padding: 4px 10px; border-radius: 99px;">
+                <i data-lucide="map-pin" style="width: 12px; height: 12px;"></i>
+                <span id="portfolio-location-text">Location</span>
+            </div>
+            <div id="portfolio-quickconnect" style="display: flex; justify-content: center; gap: 16px; font-size: 0.85rem; margin-top: 14px; opacity: 0.8;">
+                <!-- Connect row -->
+            </div>
+        </header>
+
+        <!-- About / Summary -->
+        <section class="portfolio-section" id="sec-about" data-section="about">
+            <h2 class="section-title">About Me</h2>
+            <p id="portfolio-about">Professional narrative summary...</p>
+        </section>
+
+        <!-- Skills Matrix -->
+        <section class="portfolio-section" id="sec-skills" data-section="skills">
+            <h2 class="section-title">Skills & Capabilities</h2>
+            <div class="skills-grid" id="portfolio-skills">
+                <!-- Badges loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- Experience Timeline -->
+        <section class="portfolio-section" id="sec-experience" data-section="experience">
+            <h2 class="section-title">Professional Experience</h2>
+            <div class="experience-timeline" id="portfolio-experience">
+                <!-- Items loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- Education Timeline -->
+        <section class="portfolio-section" id="sec-education" data-section="education">
+            <h2 class="section-title">Education History</h2>
+            <div class="experience-timeline" id="portfolio-education">
+                <!-- Items loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- Project Showcases -->
+        <section class="portfolio-section" id="sec-projects" data-section="projects">
+            <h2 class="section-title">Featured Works & Assets</h2>
+            <div class="projects-display-grid" id="portfolio-projects">
+                <!-- Project cards loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- Certifications -->
+        <section class="portfolio-section" id="sec-certifications" data-section="certifications">
+            <h2 class="section-title">Certifications & Awards</h2>
+            <div class="experience-timeline" id="portfolio-certifications">
+                <!-- Items loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="portfolio-section" id="sec-testimonials" data-section="testimonials">
+            <h2 class="section-title">Testimonials</h2>
+            <div class="experience-timeline" id="portfolio-testimonials">
+                <!-- Items loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- Contact Form Section -->
+        <section class="portfolio-section" id="sec-contact" data-section="contact">
+            <h2 class="section-title">Get in Touch</h2>
+            <form id="contact-form" style="display:flex; flex-direction:column; gap:14px; margin-top:8px;">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                    <input type="text" id="contact-name" placeholder="Your Name" required style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); color:inherit; padding:10px 14px; border-radius:8px; font-size:0.9rem; outline:none;">
+                    <input type="email" id="contact-email" placeholder="Your Email" required style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); color:inherit; padding:10px 14px; border-radius:8px; font-size:0.9rem; outline:none;">
+                </div>
+                <input type="text" id="contact-subject" placeholder="Subject" required style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); color:inherit; padding:10px 14px; border-radius:8px; font-size:0.9rem; outline:none;">
+                <textarea id="contact-message" placeholder="Write your message here..." required style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); color:inherit; padding:10px 14px; border-radius:8px; height:120px; font-size:0.9rem; resize:vertical; outline:none;"></textarea>
+                <button type="submit" id="btn-submit-message" class="btn btn-glow" style="align-self:flex-start; padding:10px 24px; border-radius:8px; cursor:pointer;">Send Message</button>
+            </form>
+            <div id="contact-success" style="display:none; color:#00ffaa; font-size:0.9rem; margin-top:12px; font-family:var(--font-mono); align-items:center; gap:6px;">
+                <i data-lucide="check-circle" style="width:16px; height:16px;"></i> Message sent successfully!
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Script to load, fetch, and style dynamic portfolios -->
+    <script type="module">
+        import { initDB, getCreators, getProjects } from './js/modules/db.js';
+        
+        // Make sure DB is loaded in LocalStorage
+        initDB();
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const username = urlParams.get('user') || 'current';
+            
+            let data = null;
+
+            if (username === 'current') {
+                const saved = localStorage.getItem('apex-portfolio');
+                if (saved) {
+                    data = JSON.parse(saved);
+                } else {
+                    // Fallback to active session
+                    const activeSession = JSON.parse(localStorage.getItem('fpm_user_session') || 'null');
+                    if (activeSession) {
+                        data = {
+                            name: activeSession.name,
+                            role: 'Creator & UI Designer',
+                            tagline: 'Designing premium interfaces and future-proof digital spaces.',
+                            location: 'San Francisco, CA',
+                            about: activeSession.bio,
+                            photo: activeSession.avatar,
+                            skills: activeSession.skills,
+                            experience: [],
+                            education: [],
+                            projects: [],
+                            certifications: [],
+                            testimonials: [],
+                            socialLinks: { github: activeSession.username },
+                            selectedTemplate: 'glass'
+                        };
+                    }
+                }
+            } else {
+                const creators = getCreators();
+                const creator = creators.find(c => c.username === username);
+                if (creator) {
+                    data = {
+                        name: creator.name,
+                        role: creator.role || 'Creative Developer',
+                        tagline: 'Designing premium interfaces and future-proof digital spaces.',
+                        location: creator.username === 'hyper_arch' ? 'London, UK' : (creator.username === 'linear_flow' ? 'Berlin, DE' : 'San Francisco, CA'),
+                        about: creator.bio,
+                        photo: creator.avatar,
+                        skills: creator.skills,
+                        experience: creator.experience || [],
+                        education: [
+                            { school: 'Apex Design Academy', degree: 'Advanced UI Design Certification', startDate: '2022', endDate: '2023' },
+                            { school: 'University of Digital Arts', degree: 'B.S. Interaction Science', startDate: '2018', endDate: '2022' }
+                        ],
+                        projects: creator.projects || [],
+                        certifications: [
+                            { title: 'Certified Webflow Developer', issuer: 'Webflow Academy', date: '2024-05', link: '#' },
+                            { title: 'Human-Computer Interaction Expert', issuer: 'Interaction Design Foundation', date: '2023-11', link: '#' }
+                        ],
+                        testimonials: [
+                            { name: 'Elena Rostova', role: 'Design Lead at Stripe', quote: `${creator.name} is a brilliant UI engineer. Their eye for detail and animations brought our project to life.` },
+                            { name: 'Devon Keir', role: 'CTO at Vercel Labs', quote: `Incredibly clean HTML & Javascript structure. Delivery was flawless and ahead of schedule.` }
+                        ],
+                        socialLinks: creator.socialLinks || {},
+                        selectedTemplate: creator.selectedTemplate || 'minimal',
+                        username: creator.username
+                    };
+                }
+            }
+
+            if (!data) {
+                document.getElementById('portfolio-root').innerHTML = `
+                    <div style="text-align: center; padding: 120px 24px;">
+                        <h2 style="font-size:2rem; margin-bottom: 16px;">Portfolio Not Found</h2>
+                        <p style="color:var(--text-secondary);">The portfolio data could not be retrieved from local storage or creator seeds.</p>
+                        <a href="showcase.html" class="btn btn-primary clickable" style="margin-top:24px; display:inline-block; text-decoration:none;">Go back to Showcase</a>
+                    </div>
+                `;
+                if (window.lucide) window.lucide.createIcons();
+                return;
+            }
+
+            // Load Template Config
+            let template = null;
+            let isCustom = data.selectedTemplate === 'custom' || data.customTheme;
+            
+            if (data.selectedTemplate !== 'custom') {
+                try {
+                    const response = await fetch(`templates/${data.selectedTemplate || 'minimal'}.json`);
+                    template = await response.json();
+                } catch (err) {
+                    console.error('Failed to load template file, using default minimal styling', err);
+                    template = {
+                        font: 'Inter',
+                        colors: { background: '#ffffff', text: '#111111', accent: '#0066cc' },
+                        sections: { photo: true, about: true, skills: true, experience: true, projects: true, contact: true },
+                        cardStyle: 'flat',
+                        layout: 'centered'
+                    };
+                }
+            } else {
+                const ct = data.customTheme || {};
+                template = {
+                    font: ct.font || 'Inter',
+                    colors: {
+                        background: ct.backgroundType === 'solid' ? ct.backgroundSolid : ct.backgroundGradientStart,
+                        text: ct.text || '#ffffff',
+                        accent: ct.accent || '#00ffaa'
+                    },
+                    sections: data.sectionVisibility || { photo: true, about: true, skills: true, experience: true, education: true, projects: true, certifications: true, testimonials: true, contact: true },
+                    cardStyle: ct.cardStyle || 'glassmorphism',
+                    layout: 'centered'
+                };
+            }
+
+            // Inject styles dynamically based on template config
+            injectTemplateStyles(template, isCustom, data.customTheme);
+
+            // Populate text elements
+            document.title = `${data.name} // Professional Portfolio`;
+            document.getElementById('portfolio-name').textContent = data.name;
+            document.getElementById('portfolio-role').textContent = data.role;
+            
+            const taglineEl = document.getElementById('portfolio-tagline');
+            if (data.tagline) {
+                taglineEl.textContent = data.tagline;
+                taglineEl.style.display = 'block';
+            } else {
+                taglineEl.style.display = 'none';
+            }
+
+            const locEl = document.getElementById('portfolio-location');
+            const locTextEl = document.getElementById('portfolio-location-text');
+            if (data.location && locTextEl) {
+                locTextEl.textContent = data.location;
+                locEl.style.display = 'inline-flex';
+            } else {
+                locEl.style.display = 'none';
+            }
+
+            const aboutEl = document.getElementById('portfolio-about');
+            if (aboutEl) aboutEl.textContent = data.about;
+
+            // Connect Quick Connect Row
+            const quickConnectEl = document.getElementById('portfolio-quickconnect');
+            if (quickConnectEl) {
+                let connHtml = '';
+                const links = data.socialLinks || {};
+                if (data.email) connHtml += `<a href="mailto:${data.email}" class="social-anchor">Email</a>`;
+                if (data.phone) connHtml += `${connHtml ? '<span style="opacity:0.3;">|</span>' : ''} <span class="social-anchor" style="cursor:default;">${data.phone}</span>`;
+                if (data.websiteUrl) connHtml += `${connHtml ? '<span style="opacity:0.3;">|</span>' : ''} <a href="${data.websiteUrl}" class="social-anchor" target="_blank">Website</a>`;
+                if (links.github) connHtml += `${connHtml ? '<span style="opacity:0.3;">|</span>' : ''} <a href="${normaliseSocialUrl('github', links.github)}" class="social-anchor" target="_blank">GitHub</a>`;
+                if (links.linkedin) connHtml += `${connHtml ? '<span style="opacity:0.3;">|</span>' : ''} <a href="${normaliseSocialUrl('linkedin', links.linkedin)}" class="social-anchor" target="_blank">LinkedIn</a>`;
+                if (links.twitter) connHtml += `${connHtml ? '<span style="opacity:0.3;">|</span>' : ''} <a href="${normaliseSocialUrl('twitter', links.twitter)}" class="social-anchor" target="_blank">Twitter</a>`;
+                quickConnectEl.innerHTML = connHtml;
+            }
+
+            // Avatar Photo
+            const avatarImg = document.getElementById('portfolio-avatar');
+            if (data.photo) {
+                avatarImg.src = data.photo;
+                avatarImg.style.display = 'block';
+            } else {
+                avatarImg.style.display = 'none';
+            }
+
+            // Skills badges
+            const skillsBox = document.getElementById('portfolio-skills');
+            if (data.skills && data.skills.length > 0) {
+                skillsBox.innerHTML = data.skills.map(s => `<span class="port-skill-badge">${s}</span>`).join('');
+            } else {
+                document.getElementById('sec-skills').style.display = 'none';
+            }
+
+            // Experience Timeline
+            const expTimeline = document.getElementById('portfolio-experience');
+            if (data.experience && data.experience.length > 0) {
+                expTimeline.innerHTML = data.experience.map(e => `
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <h4 class="timeline-title">${e.title}</h4>
+                            <span class="timeline-company">${e.company}</span>
+                        </div>
+                        <div class="timeline-date">${e.startDate} – ${e.endDate}</div>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('sec-experience').style.display = 'none';
+            }
+
+            // Education Timeline
+            const eduTimeline = document.getElementById('portfolio-education');
+            if (data.education && data.education.length > 0) {
+                eduTimeline.innerHTML = data.education.map(ed => `
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <h4 class="timeline-title">${ed.degree}</h4>
+                            <span class="timeline-company">${ed.school}</span>
+                        </div>
+                        <div class="timeline-date">${ed.startDate} – ${ed.endDate}</div>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('sec-education').style.display = 'none';
+            }
+
+            // Projects author matching
+            const projectsGrid = document.getElementById('portfolio-projects');
+            const allProjects = getProjects();
+            const savedProjects = Array.isArray(data.projects) ? data.projects : [];
+            const matchingProjects = savedProjects.length
+                ? savedProjects
+                : allProjects.filter(p => p.seller === data.username || p.seller === username || (username === 'current' && p.seller === 'apex_user'));
+            
+            if (matchingProjects.length > 0) {
+                projectsGrid.innerHTML = matchingProjects.map(p => `
+                    <div class="port-project-card">
+                        <img src="${p.image || 'assets/right2.jpg'}" alt="${p.title}" class="port-proj-img">
+                        <div class="port-proj-content">
+                            <span class="port-proj-status">${p.status || 'Demo Project'}</span>
+                            <h3 class="port-proj-title">${p.title}</h3>
+                            <p class="port-proj-desc">${p.description}</p>
+                            ${p.link ? `<a href="${p.link}" target="_blank" style="font-size:0.75rem; color:inherit; text-decoration:underline; display:inline-block; margin-top:8px; margin-bottom:8px;">View Link &rarr;</a>` : ''}
+                            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;">
+                                ${(p.tags || []).slice(0, 3).map(t => `<span class="port-skill-badge" style="font-size:0.65rem; padding: 3px 8px;">${t}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('sec-projects').style.display = 'none';
+            }
+
+            // Certifications
+            const certsTimeline = document.getElementById('portfolio-certifications');
+            if (data.certifications && data.certifications.length > 0) {
+                certsTimeline.innerHTML = data.certifications.map(c => `
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <h4 class="timeline-title">${c.title}</h4>
+                            <span class="timeline-company">${c.issuer}</span>
+                        </div>
+                        <div class="timeline-date">${c.date}</div>
+                        ${c.link ? `<a href="${c.link}" target="_blank" style="font-size:0.75rem; color:inherit; text-decoration:underline; display:inline-block; margin-top:6px;">Verify Credentials &rarr;</a>` : ''}
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('sec-certifications').style.display = 'none';
+            }
+
+            // Testimonials
+            const testimonialsTimeline = document.getElementById('portfolio-testimonials');
+            if (data.testimonials && data.testimonials.length > 0) {
+                testimonialsTimeline.innerHTML = data.testimonials.map(t => `
+                    <div class="timeline-card" style="border-left:2px solid rgba(0,0,0,0.1); background:rgba(0,0,0,0.01);">
+                        <p style="font-style:italic; font-size:0.95rem; line-height:1.6; margin:0 0 12px 0;">"${t.quote}"</p>
+                        <div style="font-weight:600; font-size:0.9rem;">${t.name}</div>
+                        <div style="font-size:0.8rem; opacity:0.7; margin-top:2px;">${t.role}</div>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('sec-testimonials').style.display = 'none';
+            }
+
+            // Handle Section Visibilities
+            const visibility = isCustom ? (data.sectionVisibility || {}) : (template.sections || {});
+            for (const [sec, visible] of Object.entries(visibility)) {
+                const element = document.getElementById(`sec-${sec}`);
+                if (element) {
+                    element.style.display = visible ? 'flex' : 'none';
+                }
+            }
+
+            // Contact form submit handling
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    // Mock submission success response
+                    const successMsg = document.getElementById('contact-success');
+                    if (successMsg) {
+                        successMsg.style.display = 'flex';
+                        contactForm.reset();
+                        setTimeout(() => {
+                            successMsg.style.display = 'none';
+                        }, 5000);
+                    }
+                });
+            }
+
+            // Initialize Lucide Icons
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+        });
+
+        function normaliseSocialUrl(platform, value) {
+            if (/^https?:\/\//i.test(value)) return value;
+            const handle = value.replace(/^@/, '');
+            const bases = {
+                github: 'https://github.com/',
+                linkedin: 'https://linkedin.com/in/',
+                twitter: 'https://twitter.com/'
+            };
+            return `${bases[platform]}${handle}`;
+        }
+
+        // Helper to calculate relative luminance of a hex color
+        function isColorLight(hex) {
+            if (!hex) return false;
+            let cleanHex = hex.trim().replace('#', '');
+            if (cleanHex.length === 3) {
+                cleanHex = cleanHex.split('').map(c => c + c).join('');
+            }
+            if (cleanHex.length !== 6) return false;
+            
+            const r = parseInt(cleanHex.substring(0, 2), 16);
+            const g = parseInt(cleanHex.substring(2, 4), 16);
+            const b = parseInt(cleanHex.substring(4, 6), 16);
+            
+            // Relative luminance formula: 0.2126 * R + 0.7152 * G + 0.0722 * B
+            const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+            return luminance > 140;
+        }
+
+        // Function to inject styles dynamically based on template config
+        function injectTemplateStyles(t, isCustom = false, customTheme = null) {
+            const styleTag = document.getElementById('dynamic-template-styles');
+            
+            // Choose template settings
+            const font = (isCustom && customTheme) ? customTheme.font : t.font;
+            const accent = (isCustom && customTheme) ? customTheme.accent : t.colors.accent;
+            const text = (isCustom && customTheme) ? customTheme.text : t.colors.text;
+            const cardStyle = (isCustom && customTheme) ? customTheme.cardStyle : t.cardStyle;
+            
+            // Resolve background
+            let backgroundStyle = '';
+            if (isCustom && customTheme) {
+                if (customTheme.backgroundType === 'gradient') {
+                    backgroundStyle = `linear-gradient(135deg, ${customTheme.backgroundGradientStart} 0%, ${customTheme.backgroundGradientEnd} 100%)`;
+                } else {
+                    backgroundStyle = customTheme.backgroundSolid;
+                }
+            } else {
+                backgroundStyle = `radial-gradient(circle at top right, ${t.colors.accent}22, transparent 34rem), ${t.colors.background}`;
+            }
+
+            const isGlass = cardStyle === 'glassmorphism';
+            const isGlow = cardStyle === 'glow';
+            
+            const bgSolid = (isCustom && customTheme) ? customTheme.backgroundSolid : t.colors.background;
+            const bgGradStart = (isCustom && customTheme) ? customTheme.backgroundGradientStart : t.colors.background;
+            const bgType = (isCustom && customTheme) ? customTheme.backgroundType : 'solid';
+            const currentBg = bgType === 'solid' ? bgSolid : bgGradStart;
+            const isLight = isColorLight(currentBg);
+            
+            const blur = (isCustom && customTheme) ? customTheme.blurIntensity : '15px';
+            const borderOp = (isCustom && customTheme) ? customTheme.borderOpacity : '0.08';
+            
+            let cardBg = '';
+            let cardBorder = '';
+            let cardShadow = '';
+            
+            if (isGlass) {
+                cardBg = isLight ? `rgba(0,0,0,0.025)` : `rgba(255,255,255,0.045)`;
+                cardBorder = `1px solid ${isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255, 255, 255, ' + borderOp + ')'}`;
+                cardShadow = 'none';
+            } else if (isGlow) {
+                cardBg = isLight ? '#ffffff' : '#0f1220';
+                cardBorder = `1px solid ${accent}44`;
+                cardShadow = `0 10px 30px ${accent}12, 0 0 20px ${accent}04`;
+            } else if (cardStyle === 'shadow') {
+                cardBg = isLight ? '#ffffff' : '#111322';
+                cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1e293b';
+                cardShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05)';
+            } else {
+                // Flat
+                cardBg = isLight ? '#f9fafb' : '#0e101f';
+                cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1a1d35';
+                cardShadow = 'none';
+            }
+            
+            styleTag.innerHTML = `
+                body {
+                    font-family: "${font}", var(--font-sans);
+                    background: ${backgroundStyle};
+                    color: ${text};
+                    margin: 0;
+                    padding: 88px 24px 64px;
+                    min-height: 100vh;
+                    transition: background 0.3s ease, color 0.3s ease;
+                }
+
+                #portfolio-root {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 36px;
+                }
+
+                /* Header/Hero Styles */
+                .portfolio-header {
+                    text-align: center;
+                    margin-bottom: 12px;
+                    padding: 36px 20px 18px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                .portfolio-avatar-container {
+                    width: 120px;
+                    height: 120px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    margin: 0 auto 20px auto;
+                    border: 3px solid ${accent};
+                    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+                }
+
+                .portfolio-avatar-container img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+                #portfolio-name {
+                    font-size: 3rem;
+                    font-weight: 700;
+                    margin: 0 0 8px 0;
+                    letter-spacing: -0.02em;
+                }
+
+                #portfolio-role {
+                    font-size: 1.15rem;
+                    color: ${accent};
+                    font-family: var(--font-mono);
+                    text-transform: uppercase;
+                    letter-spacing: 0.1em;
+                    margin: 0;
+                }
+
+                #portfolio-location {
+                    color: ${accent}dd;
+                    border: 1px solid ${accent}25;
+                    background: ${accent}0a;
+                }
+
+                /* Section Styles */
+                .portfolio-section {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                    padding: 32px;
+                    border-radius: 18px;
+                    background: ${cardBg};
+                    border: ${cardBorder};
+                    box-shadow: ${cardShadow};
+                    backdrop-filter: blur(${blur});
+                    -webkit-backdrop-filter: blur(${blur});
+                }
+
+                .section-title {
+                    font-size: 1.35rem;
+                    font-weight: 600;
+                    margin: 0;
+                    letter-spacing: -0.01em;
+                    color: ${text};
+                    border-bottom: 2px dashed ${accent}25;
+                    padding-bottom: 10px;
+                }
+
+                #portfolio-about {
+                    font-size: 1.05rem;
+                    line-height: 1.7;
+                    color: ${text}dd;
+                    margin: 0;
+                }
+
+                /* Skills styles */
+                .skills-grid {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                }
+
+                .port-skill-badge {
+                    padding: 5px 12px;
+                    border-radius: 99px;
+                    font-size: 0.8rem;
+                    font-weight: 500;
+                    background: ${isGlass ? 'rgba(255,255,255,0.05)' : accent + '10'};
+                    color: ${isLight ? '#111111' : '#ffffff'};
+                    border: 1px solid ${isGlass ? 'rgba(255,255,255,0.08)' : accent + '20'};
+                    font-family: var(--font-mono);
+                }
+
+                /* Experience styles */
+                .experience-timeline {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 16px;
+                }
+
+                .timeline-card {
+                    padding: 20px;
+                    border-radius: 12px;
+                    background: ${isGlass ? 'rgba(255,255,255,0.025)' : (isLight ? '#f3f4f6' : '#070912')};
+                    border: 1px solid ${isGlass ? 'rgba(255,255,255,0.04)' : (isLight ? '#e5e7eb' : '#1e293b')};
+                    border-left: 3px solid ${accent};
+                }
+
+                .timeline-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: baseline;
+                    flex-wrap: wrap;
+                    gap: 8px;
+                    margin-bottom: 4px;
+                }
+
+                .timeline-title {
+                    font-size: 1.05rem;
+                    font-weight: 600;
+                    margin: 0;
+                }
+
+                .timeline-company {
+                    font-size: 0.95rem;
+                    color: ${accent};
+                    font-weight: 500;
+                }
+
+                .timeline-date {
+                    font-size: 0.8rem;
+                    color: ${text}77;
+                    font-family: var(--font-mono);
+                }
+
+                /* Project displays */
+                .projects-display-grid {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 20px;
+                }
+
+                @media (max-width: 640px) {
+                    .projects-display-grid {
+                        grid-template-columns: 1fr;
+                    }
+                }
+
+                .port-project-card {
+                    overflow: hidden;
+                    border-radius: 16px;
+                    background: ${isGlass ? 'rgba(255,255,255,0.025)' : (isLight ? '#f9fafb' : '#070912')};
+                    border: 1px solid ${isGlass ? 'rgba(255,255,255,0.04)' : (isLight ? '#e5e7eb' : '#1e293b')};
+                    transition: transform 0.2s ease, box-shadow 0.2s ease;
+                }
+
+                .port-project-card:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+                }
+
+                .port-proj-img {
+                    width: 100%;
+                    height: 160px;
+                    object-fit: cover;
+                }
+
+                .port-proj-content {
+                    padding: 20px;
+                }
+
+                .port-proj-status {
+                    font-size: 0.65rem;
+                    font-family: var(--font-mono);
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    color: ${accent};
+                    display: inline-block;
+                    margin-bottom: 6px;
+                    font-weight: 600;
+                }
+
+                .port-proj-title {
+                    font-size: 1.05rem;
+                    margin: 0 0 6px 0;
+                    line-height: 1.3;
+                }
+
+                .port-proj-desc {
+                    font-size: 0.85rem;
+                    line-height: 1.5;
+                    color: ${text}aa;
+                    margin: 0;
+                }
+
+                /* Social Anchors */
+                .social-anchor {
+                    font-weight: 500;
+                    color: ${text}99;
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+
+                .social-anchor:hover {
+                    color: ${accent};
+                }
+
+                @media (max-width: 720px) {
+                    body {
+                        padding: 76px 16px 40px;
+                    }
+
+                    #portfolio-name {
+                        font-size: 2.15rem;
+                    }
+
+                    #portfolio-role {
+                        font-size: 0.95rem;
+                    }
+
+                    .portfolio-section {
+                        padding: 24px;
+                    }
+
+                    .social-links-row {
+                        flex-wrap: wrap;
+                    }
+                }
+            `;
+        }
+    </script>
+</body>
+</html>

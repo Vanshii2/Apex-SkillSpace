@@ -201,11 +201,11 @@ export function initSellPage() {
             status: state.status,
             tags: state.tags,
             image: state.image,
-            seller: 'nexus_user' // Active session user
+            seller: 'apex_user' // Active session user
         };
         
         saveProject(payload);
-        showToast('Premium project asset published to Nexus successfully!', 'success');
+        showToast('Premium project asset published to Apex successfully!', 'success');
         
         // Direct back to shop to view listed project shortly
         setTimeout(() => {
@@ -213,10 +213,10 @@ export function initSellPage() {
             if (overlay) {
                 overlay.classList.add('active');
                 setTimeout(() => {
-                    window.location.href = 'shop.html';
+                    window.location.href = 'marketplace.html';
                 }, 300);
             } else {
-                window.location.href = 'shop.html';
+                window.location.href = 'marketplace.html';
             }
         }, 1500);
     });

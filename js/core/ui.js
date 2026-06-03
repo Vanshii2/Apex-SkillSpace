@@ -183,7 +183,7 @@ export function initCommandPalette() {
                 <span>Go to Home Page</span>
                 <span class="cmd-shortcut">⏎</span>
             </li>
-            <li class="cmd-item" data-action="nav" data-href="shop.html">
+            <li class="cmd-item" data-action="nav" data-href="marketplace.html">
                 <span>Go to Shop Marketplace</span>
                 <span class="cmd-shortcut">⏎</span>
             </li>
@@ -237,7 +237,7 @@ export function initCommandPalette() {
         resultsList.innerHTML = `
             <div class="cmd-group-title">Matching Digital Products (${matches.length})</div>
             ${matches.map(m => `
-                <li class="cmd-item" data-action="nav" data-href="shop.html?search=${encodeURIComponent(m.title)}">
+                <li class="cmd-item" data-action="nav" data-href="marketplace.html?search=${encodeURIComponent(m.title)}">
                     <div style="display:flex;flex-direction:column;gap:4px;">
                         <span style="color:var(--text-primary);font-weight:500;">${m.title}</span>
                         <span style="font-size:0.75rem;color:var(--text-muted);">by @${m.seller} • $${m.price.toFixed(2)}</span>
