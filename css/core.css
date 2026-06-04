@@ -224,3 +224,5 @@ img {
 a, button, select, input, textarea, [role="button"], .clickable, .btn, .dock-item, .sidebar-link, .nav-btn, .theme-toggle-btn {
     cursor: pointer !important;
 }
+
+

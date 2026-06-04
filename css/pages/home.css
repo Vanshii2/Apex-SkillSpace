@@ -4,32 +4,64 @@
    ==========================================================================
 */
 
-.navbar-container{
-    max-width:1400px;
-    margin:auto;
+.navbar-container {
+    max-width: 1400px;
+    margin: auto;
+    display: flex;              /* flex instead of grid */
+    align-items: center;
+    height: 78px;
+    gap: 40px;                  /* space between logo and links */
+}
 
-    display:grid;
-    grid-template-columns:1fr auto 1fr;
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 8px;                   /* reduced from 32px — matches Creato's tight spacing */
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex: 1;
+}
 
-    align-items:center;
-    height:78px;
+.nav-actions {
+    margin-left: auto;          /* pins to far right */
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 .logo{
     justify-self:start;
 }
-
-.nav-menu{
-   display:flex;
-    align-items:center;
-
-    gap: 12px; /* 12-20 px max */
-    margin:0;
-    padding:0;
-    list-style:none;
+.nav-link {
+    font-size: 0.9rem;
+    font-weight: 400;
+    font-family: var(--font-display);   /* adds Bricolage Grotesque */
+    color: rgba(255, 255, 255, 0.75);
+    transition: color 0.2s ease;
+    padding: 6px 12px;                  /* adds slight padding so active pill has room */
+    border-radius: 99px;
 }
 
-.nav-actions{
-    justify-self:end;
+.nav-link:hover {
+    color: #ffffff;
+}
+
+.nav-link.active {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.1);   /* subtle pill highlight like Creato's "Home" */
+}
+
+[data-theme="light"] .nav-link {
+    color: rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="light"] .nav-link:hover {
+    color: #000000;
+}
+
+[data-theme="light"] .nav-link.active {
+    color: #000000;
+    background: rgba(0, 0, 0, 0.07);
 }
 
 /* --- Hero Glow Mesh Background --- */
@@ -101,7 +133,7 @@
 .antigravity-hero {
     display: inline-block;
     font-size: 44px !important;
-    font-weight: 800 !important;
+    font-weight: 500 !important;
     /* Medium elegant weight, not bold */
     line-height: 1.35;
     letter-spacing: -0.02em;
@@ -356,7 +388,7 @@
 
 .stat-number {
     font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 800;
+    font-weight: 500;
     font-family: var(--font-display);
     background: linear-gradient(135deg, var(--text-primary) 30%, var(--primary) 100%);
     -webkit-background-clip: text;
