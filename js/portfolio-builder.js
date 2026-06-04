@@ -56,32 +56,32 @@ const portfolioState = {
 // Initialize the Portfolio Builder
 export async function initPortfolioBuilder() {
     console.log('Initializing Portfolio Builder...');
-    
+
     // Initialize Database
     initDB();
-    
+
     // Load portfolio data from localStorage
     loadPortfolioData();
-    
+
     // Initialize particles
     initParticles();
-    
+
     // Load templates
     await loadTemplates();
-    
+
     // Setup tabs
     setupEditorTabs();
-    
+
     // Setup event listeners
     setupEditorListeners();
     setupTemplateGallery();
-    
+
     // Initial preview render
     updatePreview();
-    
+
     // Update stats dashboard
     updateDashboard();
-    
+
     console.log('Portfolio Builder Ready');
 }
 
@@ -92,7 +92,7 @@ function setupEditorTabs() {
         tab.addEventListener('click', () => {
             tabs.forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
+
             tab.classList.add('active');
             const tabId = tab.getAttribute('data-tab');
             const activePane = document.getElementById(tabId);
@@ -108,7 +108,7 @@ function loadPortfolioData() {
     const saved = localStorage.getItem('apex-portfolio');
     if (saved) {
         const parsed = JSON.parse(saved);
-        
+
         // Handle migration fields gracefully
         if (!parsed.customTheme) {
             parsed.customTheme = { ...portfolioState.customTheme };
@@ -124,10 +124,10 @@ function loadPortfolioData() {
         if (!parsed.email) parsed.email = '';
         if (!parsed.phone) parsed.phone = '';
         if (!parsed.websiteUrl) parsed.websiteUrl = '';
-        
+
         Object.assign(portfolioState, parsed);
     }
-    
+
     // Populate form fields with saved data
     populateEditorForm();
 }
@@ -147,11 +147,11 @@ function populateEditorForm() {
     const email = document.getElementById('email');
     const phone = document.getElementById('phone');
     const websiteUrl = document.getElementById('websiteUrl');
-    
+
     const github = document.getElementById('githubLink');
     const linkedin = document.getElementById('linkedinLink');
     const twitter = document.getElementById('twitterLink');
-    
+
     if (fullName) fullName.value = portfolioState.name || '';
     if (role) role.value = portfolioState.role || '';
     if (tagline) tagline.value = portfolioState.tagline || '';
@@ -160,11 +160,11 @@ function populateEditorForm() {
     if (email) email.value = portfolioState.email || '';
     if (phone) phone.value = portfolioState.phone || '';
     if (websiteUrl) websiteUrl.value = portfolioState.websiteUrl || '';
-    
+
     if (github) github.value = portfolioState.socialLinks.github || '';
     if (linkedin) linkedin.value = portfolioState.socialLinks.linkedin || '';
     if (twitter) twitter.value = portfolioState.socialLinks.twitter || '';
-    
+
     // Theme inputs populate
     const themeBgType = document.getElementById('themeBgType');
     const themeBgSolid = document.getElementById('themeBgSolid');
@@ -181,7 +181,7 @@ function populateEditorForm() {
     const themeCardStyle = document.getElementById('themeCardStyle');
     const themeBlur = document.getElementById('themeBlur');
     const themeBorderOpacity = document.getElementById('themeBorderOpacity');
-    
+
     const ct = portfolioState.customTheme;
     if (themeBgType) {
         themeBgType.value = ct.backgroundType;
@@ -231,7 +231,7 @@ function populateEditorForm() {
             photoArea.classList.remove('has-image');
         }
     }
-    
+
     // Render lists
     renderSkills();
     renderExperience();
@@ -264,7 +264,7 @@ function toggleCardInputs(style) {
 function bindColorSync(pickerId, textId, stateKey) {
     const picker = document.getElementById(pickerId);
     const text = document.getElementById(textId);
-    
+
     if (picker && text) {
         picker.addEventListener('input', (e) => {
             const val = e.target.value;
@@ -287,12 +287,18 @@ function bindColorSync(pickerId, textId, stateKey) {
 
 // Setup editor event listeners
 function setupEditorListeners() {
-    // Publish & View Live Button
+    // Publish & View Live Button — cinematic loading state
     const btnPublish = document.getElementById('btnPublishPortfolio');
     if (btnPublish) {
         btnPublish.addEventListener('click', () => {
             savePortfolioData();
-            window.location.href = 'view-portfolio.html?user=current';
+            btnPublish.innerHTML = '<i data-lucide="loader" style="width:14px;height:14px;animation:spin 1s linear infinite"></i> Publishing...';
+            btnPublish.disabled = true;
+            btnPublish.style.opacity = '0.7';
+            if (window.lucide) window.lucide.createIcons();
+            setTimeout(() => {
+                window.location.href = 'view-portfolio.html?user=current';
+            }, 900);
         });
     }
 
@@ -307,7 +313,7 @@ function setupEditorListeners() {
             });
         }
     };
-    
+
     bindInputToState('fullName', 'name');
     bindInputToState('role', 'role');
     bindInputToState('tagline', 'tagline');
@@ -321,43 +327,43 @@ function setupEditorListeners() {
     bindSocialInput('githubLink', 'github');
     bindSocialInput('linkedinLink', 'linkedin');
     bindSocialInput('twitterLink', 'twitter');
-    
+
     // Photo upload
     const photoInput = document.getElementById('profilePhotoInput');
     const photoUploadArea = document.getElementById('photoUploadArea');
-    
+
     if (photoUploadArea) {
         photoUploadArea.addEventListener('click', () => {
             photoInput?.click();
         });
-        
+
         photoUploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
             photoUploadArea.style.borderColor = 'rgba(0, 255, 170, 0.8)';
         });
-        
+
         photoUploadArea.addEventListener('dragleave', () => {
             photoUploadArea.style.borderColor = 'rgba(0, 255, 170, 0.25)';
         });
-        
+
         photoUploadArea.addEventListener('drop', (e) => {
             e.preventDefault();
             const file = e.dataTransfer.files[0];
             if (file) handlePhotoUpload(file);
         });
     }
-    
+
     if (photoInput) {
         photoInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) handlePhotoUpload(file);
         });
     }
-    
+
     // Skill input
     const addSkillBtn = document.getElementById('addSkillBtn');
     const skillInput = document.getElementById('skillInput');
-    
+
     if (addSkillBtn && skillInput) {
         addSkillBtn.addEventListener('click', () => {
             const skill = skillInput.value.trim();
@@ -370,46 +376,46 @@ function setupEditorListeners() {
                 updateDashboard();
             }
         });
-        
+
         skillInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 addSkillBtn.click();
             }
         });
     }
-    
+
     // Experience triggers
     const addExpBtn = document.getElementById('addExpBtn');
     if (addExpBtn) addExpBtn.addEventListener('click', openExperienceModal);
-    
+
     const btnSaveExp = document.getElementById('btnSaveExperience');
     if (btnSaveExp) btnSaveExp.addEventListener('click', saveExperience);
 
     // Education triggers
     const addEduBtn = document.getElementById('addEduBtn');
     if (addEduBtn) addEduBtn.addEventListener('click', openEducationModal);
-    
+
     const btnSaveEdu = document.getElementById('btnSaveEducation');
     if (btnSaveEdu) btnSaveEdu.addEventListener('click', saveEducation);
 
     // Project triggers
     const addProjectBtn = document.getElementById('addProjectBtn');
     if (addProjectBtn) addProjectBtn.addEventListener('click', openProjectModal);
-    
+
     const btnSaveProj = document.getElementById('btnSaveProject');
     if (btnSaveProj) btnSaveProj.addEventListener('click', saveProjectItem);
 
     // Certification triggers
     const addCertBtn = document.getElementById('addCertBtn');
     if (addCertBtn) addCertBtn.addEventListener('click', openCertificationModal);
-    
+
     const btnSaveCert = document.getElementById('btnSaveCertification');
     if (btnSaveCert) btnSaveCert.addEventListener('click', saveCertification);
 
     // Testimonial triggers
     const addTestimonialBtn = document.getElementById('addTestimonialBtn');
     if (addTestimonialBtn) addTestimonialBtn.addEventListener('click', openTestimonialModal);
-    
+
     const btnSaveTest = document.getElementById('btnSaveTestimonial');
     if (btnSaveTest) btnSaveTest.addEventListener('click', saveTestimonial);
 
@@ -511,13 +517,13 @@ function handlePhotoUpload(file) {
     reader.onload = (e) => {
         portfolioState.photo = e.target.result;
         savePortfolioData();
-        
+
         const photoArea = document.getElementById('photoUploadArea');
         if (photoArea) {
             photoArea.innerHTML = `<img src="${e.target.result}" class="photo-upload-preview">`;
             photoArea.classList.add('has-image');
         }
-        
+
         updatePreview();
     };
     reader.readAsDataURL(file);
@@ -527,7 +533,7 @@ function handlePhotoUpload(file) {
 function renderSkills() {
     const skillsList = document.getElementById('skillsList');
     if (!skillsList) return;
-    
+
     skillsList.innerHTML = portfolioState.skills.map(skill => `
         <div class="skill-badge">
             ${skill}
@@ -552,7 +558,7 @@ export function removeSkill(skill) {
 function renderExperience() {
     const expList = document.getElementById('experienceList');
     if (!expList) return;
-    
+
     expList.innerHTML = portfolioState.experience.map((exp, idx) => `
         <div class="exp-item">
             <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
@@ -580,7 +586,7 @@ export function removeExperience(idx) {
 function renderEducation() {
     const eduList = document.getElementById('educationList');
     if (!eduList) return;
-    
+
     eduList.innerHTML = portfolioState.education.map((edu, idx) => `
         <div class="exp-item">
             <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
@@ -853,11 +859,11 @@ function isColorLight(hex) {
         cleanHex = cleanHex.split('').map(c => c + c).join('');
     }
     if (cleanHex.length !== 6) return false;
-    
+
     const r = parseInt(cleanHex.substring(0, 2), 16);
     const g = parseInt(cleanHex.substring(2, 4), 16);
     const b = parseInt(cleanHex.substring(4, 6), 16);
-    
+
     // Relative luminance formula: 0.2126 * R + 0.7152 * G + 0.0722 * B
     const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
     return luminance > 140;
@@ -871,7 +877,7 @@ function injectPreviewStyles(t, isCustom = false) {
         styleTag.id = 'preview-dynamic-styles';
         document.head.appendChild(styleTag);
     }
-    
+
     const activeTheme = document.documentElement.getAttribute('data-theme') || 'dark';
     const isSystemDark = activeTheme === 'dark';
 
@@ -880,7 +886,7 @@ function injectPreviewStyles(t, isCustom = false) {
     let accent = isCustom ? portfolioState.customTheme.accent : t.colors.accent;
     let text = isCustom ? portfolioState.customTheme.text : t.colors.text;
     const cardStyle = isCustom ? portfolioState.customTheme.cardStyle : t.cardStyle;
-    
+
     // Auto adapt text and accent color visibility based on system dark/light theme
     if (isSystemDark) {
         text = '#ffffff';
@@ -901,17 +907,17 @@ function injectPreviewStyles(t, isCustom = false) {
     } else {
         bgStyle = 'rgba(255, 255, 255, 0.45)'; // transparent and light
     }
-    
+
     const isGlass = cardStyle === 'glassmorphism' || isSystemDark;
     const isGlow = cardStyle === 'glow' && !isSystemDark;
-    
+
     const blur = isCustom ? portfolioState.customTheme.blurIntensity : '20px';
     const borderOp = isCustom ? portfolioState.customTheme.borderOpacity : '0.08';
-    
+
     let cardBg = '';
     let cardBorder = '';
     let cardShadow = '';
-    
+
     if (isSystemDark) {
         cardBg = 'rgba(255, 255, 255, 0.035)';
         cardBorder = '1px solid rgba(255, 255, 255, 0.08)';
@@ -935,7 +941,7 @@ function injectPreviewStyles(t, isCustom = false) {
             cardShadow = 'none';
         }
     }
-    
+
     styleTag.innerHTML = `
         .portfolio-preview {
             font-family: "${font}", var(--font-sans) !important;
@@ -1053,12 +1059,12 @@ function injectPreviewStyles(t, isCustom = false) {
 function updatePreview() {
     const preview = document.querySelector('.portfolio-preview');
     if (!preview) return;
-    
+
     // Inject dynamic styling scoped to the preview container
     const isCustom = portfolioState.selectedTemplate === 'custom' || portfolioState.customTheme.backgroundSolid !== '';
     const template = getTemplate(portfolioState.selectedTemplate);
     injectPreviewStyles(template || { font: 'Inter', colors: { background: '#ffffff', text: '#111111', accent: '#000000' }, cardStyle: 'flat' }, isCustom);
-    
+
     // Apply template structural layout class
     if (template && template.layout) {
         preview.className = `portfolio-preview layout-${template.layout}`;
@@ -1071,7 +1077,7 @@ function updatePreview() {
     Object.keys(vis).forEach(section => {
         const container = preview.querySelector(`[data-section="${section}"]`);
         const photoSection = document.getElementById('previewPhotoSection');
-        
+
         if (section === 'photo') {
             if (photoSection) {
                 photoSection.style.display = vis.photo ? 'block' : 'none';
@@ -1087,12 +1093,20 @@ function updatePreview() {
     const previewTagline = preview.querySelector('.preview-tagline');
     const previewLocation = preview.querySelector('.preview-location-text');
     const previewPhoto = preview.querySelector('.preview-photo');
-    
+
     if (previewName) previewName.textContent = portfolioState.name;
     if (previewRole) previewRole.textContent = portfolioState.role;
     if (previewTagline) previewTagline.textContent = portfolioState.tagline;
     if (previewLocation) previewLocation.textContent = portfolioState.location;
-    
+
+    // Sync the browser URL bar in the frame header
+    const urlBar = document.getElementById('browserUrlText');
+    if (urlBar && portfolioState.name && portfolioState.name !== 'Your Name') {
+        const slug = portfolioState.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+        urlBar.textContent = `apex.app/u/${slug}`;
+    }
+
+
     if (previewPhoto) {
         if (portfolioState.photo) {
             previewPhoto.src = portfolioState.photo;
@@ -1101,19 +1115,19 @@ function updatePreview() {
             previewPhoto.style.display = 'none';
         }
     }
-    
+
     // Update quick connect socials row
     updatePreviewConnectRow();
-    
+
     // Update skills
     updatePreviewSkills();
-    
+
     // Update experience
     updatePreviewExperience();
 
     // Update education
     updatePreviewEducation();
-    
+
     // Update projects
     updatePreviewProjects();
 
@@ -1130,7 +1144,7 @@ function updatePreviewConnectRow() {
 
     let html = '';
     const links = portfolioState.socialLinks || {};
-    
+
     if (portfolioState.email) {
         html += `<a href="mailto:${portfolioState.email}" class="social-anchor" target="_blank">Email</a>`;
     }
@@ -1149,7 +1163,7 @@ function updatePreviewConnectRow() {
     if (links.twitter) {
         html += `<span style="opacity:0.3;">|</span> <a href="https://twitter.com/${links.twitter}" class="social-anchor" target="_blank">Twitter</a>`;
     }
-    
+
     container.innerHTML = html;
 }
 
@@ -1157,12 +1171,12 @@ function updatePreviewConnectRow() {
 function updatePreviewSkills() {
     const skillsContainer = document.querySelector('[data-section="skills"] .preview-skills');
     if (!skillsContainer) return;
-    
+
     if (!portfolioState.skills.length) {
         skillsContainer.innerHTML = `<p style="font-size:0.85rem; opacity:0.65; margin:0;">Add skills in the editor sidebar.</p>`;
         return;
     }
-    
+
     skillsContainer.innerHTML = portfolioState.skills.map(skill => `
         <div class="preview-skill">${skill}</div>
     `).join('');
@@ -1172,7 +1186,7 @@ function updatePreviewSkills() {
 function updatePreviewExperience() {
     const expContainer = document.getElementById('experiencePreview');
     if (!expContainer) return;
-    
+
     if (!portfolioState.experience.length) {
         expContainer.innerHTML = `
             <p style="font-size: 0.85rem; opacity: 0.65; margin: 0;">
@@ -1181,7 +1195,7 @@ function updatePreviewExperience() {
         `;
         return;
     }
-    
+
     expContainer.innerHTML = portfolioState.experience.map(exp => `
         <div class="preview-experience-item">
             <div class="preview-exp-title" style="font-weight:600; font-size:1rem;">${exp.title}</div>
@@ -1293,9 +1307,9 @@ function updatePreviewTestimonials() {
 async function setupTemplateGallery() {
     const templatesContainer = document.getElementById('templatesGallery');
     if (!templatesContainer) return;
-    
+
     const allTemplates = getAllTemplates();
-    
+
     // Add custom template card at the end
     const customCardHtml = `
         <div class="template-card ${portfolioState.selectedTemplate === 'custom' ? 'selected' : ''}" onclick="window.portfolioBuilder.selectTemplate('custom')">
@@ -1307,7 +1321,7 @@ async function setupTemplateGallery() {
             </div>
         </div>
     `;
-    
+
     templatesContainer.innerHTML = allTemplates.map(template => {
         // Build color indicators representing template palette
         const paletteHtml = `
@@ -1331,14 +1345,14 @@ async function setupTemplateGallery() {
             </div>
         `;
     }).join('') + customCardHtml;
-    
+
     if (window.lucide) window.lucide.createIcons();
 }
 
 // Select template
 export function selectTemplate(templateId) {
     portfolioState.selectedTemplate = templateId;
-    
+
     if (templateId !== 'custom') {
         const t = getTemplate(templateId);
         if (t) {
@@ -1351,7 +1365,7 @@ export function selectTemplate(templateId) {
             portfolioState.customTheme.accent = t.colors.accent;
             portfolioState.customTheme.font = t.font;
             portfolioState.customTheme.cardStyle = t.cardStyle || 'flat';
-            
+
             // Sync controls visibilities to template preset default
             const vis = t.sections || {};
             Object.keys(portfolioState.sectionVisibility).forEach(k => {
@@ -1359,7 +1373,7 @@ export function selectTemplate(templateId) {
             });
         }
     }
-    
+
     savePortfolioData();
     populateEditorForm();
     setupTemplateGallery();
@@ -1370,14 +1384,14 @@ export function selectTemplate(templateId) {
 export function updateDashboard() {
     const statsContainer = document.querySelector('.dashboard-grid');
     if (!statsContainer) return;
-    
+
     const stats = {
         'Views': Math.floor(Math.random() * 500) + 120,
         'Projects': portfolioState.projects.length,
         'Skills Listed': portfolioState.skills.length,
         'Experience': portfolioState.experience.length
     };
-    
+
     statsContainer.innerHTML = Object.entries(stats).map(([label, value]) => `
         <div class="dashboard-widget">
             <div class="widget-value">${value}</div>
@@ -1398,7 +1412,7 @@ export function loadPreset(username) {
     portfolioState.photo = creator.avatar;
     portfolioState.skills = [...creator.skills];
     portfolioState.experience = creator.experience ? JSON.parse(JSON.stringify(creator.experience)) : [];
-    
+
     // Seed new arrays with nice mock details
     portfolioState.education = [
         { school: 'Apex Design Academy', degree: 'Advanced UI Design Certification', startDate: '2022', endDate: '2023' },
@@ -1462,7 +1476,7 @@ export const portfolioBuilder = {
     updateDashboard,
     loadPreset,
     updatePreview,
-    
+
     openExperienceModal,
     closeExperienceModal,
     saveExperience,
@@ -1470,7 +1484,7 @@ export const portfolioBuilder = {
     openEducationModal,
     closeEducationModal,
     saveEducation,
-    
+
     openProjectModal,
     closeProjectModal,
     saveProjectItem,

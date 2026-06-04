@@ -23,8 +23,13 @@
 }
 
 @keyframes auth-drift {
-    0% { transform: rotate(-4deg) scale(1.1) translate(0, 0); }
-    100% { transform: rotate(-4deg) scale(1.1) translate(-2%, -2%); }
+    0% {
+        transform: rotate(-4deg) scale(1.1) translate(0, 0);
+    }
+
+    100% {
+        transform: rotate(-4deg) scale(1.1) translate(-2%, -2%);
+    }
 }
 
 .auth-collage-col {
@@ -35,14 +40,15 @@
 }
 
 .auth-collage-col:nth-child(even) {
-    margin-top: -60px; /* Offset columns for masonry feel */
+    margin-top: -60px;
+    /* Offset columns for masonry feel */
 }
 
 .auth-collage-col img {
     width: 100%;
     border-radius: 16px;
     object-fit: cover;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     /* Varying heights handled by source image aspect ratios, but we can enforce some */
 }
 
@@ -84,25 +90,23 @@
     animation: auth-card-entrance 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     opacity: 0;
     transform: translateY(20px);
-      background:
-    linear-gradient(
-        135deg,
-        #ffffff 0%,
-        #fffdf8 35%,
-        #f8f0d8 100%
-    );
+    background:
+        linear-gradient(135deg,
+            #ffffff 0%,
+            #fffdf8 35%,
+            #f8f0d8 100%);
 
-    border-radius:24px;
+    border-radius: 24px;
 
-    border:1px solid rgba(0,0,0,0.08);
+    border: 1px solid rgba(0, 0, 0, 0.08);
 
     box-shadow:
 
-    0 30px 60px rgba(0,0,0,0.15),
+        0 30px 60px rgba(0, 0, 0, 0.15),
 
-    inset 0 1px 0 rgba(255,255,255,0.9),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
 
-    inset 0 -40px 60px rgba(0,0,0,0.03);
+        inset 0 -40px 60px rgba(0, 0, 0, 0.03);
 }
 
 @keyframes auth-card-entrance {
@@ -208,16 +212,14 @@
     cursor: pointer;
     margin-top: 12px;
     transition: all 0.2s ease;
-     background:
-    linear-gradient(
-        180deg,
-        #111111,
-        #000000
-    );
+    background:
+        linear-gradient(180deg,
+            #111111,
+            #000000);
 
     box-shadow:
 
-    0 10px 20px rgba(0,0,0,0.25);
+        0 10px 20px rgba(0, 0, 0, 0.25);
 }
 
 .auth-btn:hover {
@@ -262,9 +264,19 @@
 }
 
 @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-4px); }
-    75% { transform: translateX(4px); }
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-4px);
+    }
+
+    75% {
+        transform: translateX(4px);
+    }
 }
 
 /* --- Responsive --- */
@@ -272,12 +284,14 @@
     .auth-card {
         padding: 32px 24px;
     }
-    
+
     .auth-collage-bg {
-        transform: rotate(0) scale(1.1); /* Simplify for mobile */
+        transform: rotate(0) scale(1.1);
+        /* Simplify for mobile */
     }
-    
+
     .auth-collage-col:nth-child(n+4) {
-        display: none; /* Reduce load on mobile */
+        display: none;
+        /* Reduce load on mobile */
     }
 }

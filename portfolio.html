@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
     <style id="fouc-preload">
         * {
@@ -8,29 +9,36 @@
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apex // Premium Portfolio Builder</title>
-    
-    <!-- SEO Optimization -->
-    <meta name="description" content="Build, customize, and publish premium professional portfolios. Enterprise-grade portfolio builder with live preview and template system.">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22%2300ffaa%22/></svg>">
-    
+    <title>Apex // Portfolio Builder</title>
+    <meta name="description"
+        content="Build, customize, and publish a premium professional portfolio with Apex SkillSpace's live portfolio editor.">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22%2300ffaa%22/></svg>">
+
     <!-- Google Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;1,300&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;1,300&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap"
+        rel="stylesheet">
+
+
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    
+
     <!-- CSS Dependencies -->
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/core.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/portfolio-builder.css">
-    
+    <link rel="stylesheet" href="css/pages/home.css">
+
     <!-- Immediate Theme Helper & Authentication Gate -->
     <script>
-        (function() {
+        (function () {
             const savedTheme = localStorage.getItem('fpm_theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
             if (localStorage.getItem('isLoggedIn') !== 'true') {
@@ -39,27 +47,28 @@
         })();
     </script>
 </head>
+
 <body>
-    <!-- Sticky Platform Navbar -->
-    <nav class="navbar scrolled" id="app-nav">
+    <!-- Sticky Navbar -->
+    <nav class="navbar" id="app-nav">
         <div class="navbar-container">
             <a href="index.html" class="logo" id="nav-logo">
-                <img src="logo.png" alt="Apex Logo" class="nav-logo-img">
-                <span class="nav-logo-text">Apex SkillSpace</span>
+                <img src="logo_black1.png" alt="Apex Logo" style="height: 70px; " class="nav-logo-img light-logo">
+                <img src="logo_white1.png" alt="Apex Logo" style="height: 70px; " class="nav-logo-img dark-logo">
             </a>
-            
+
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="index.html" class="nav-link active">Home</a></li>
                 <li><a href="showcase.html" class="nav-link">Portfolios</a></li>
-                <li><a href="portfolio.html" class="nav-link active">Builder</a></li>
+                <li><a href="portfolio.html" class="nav-link">Builder</a></li>
                 <li><a href="marketplace.html" class="nav-link">Marketplace</a></li>
-                <li><a href="profile.html" class="nav-link">Profile</a></li>
+                <a href="profile.html" class="nav-link">Profile</a>
             </ul>
 
             <div class="nav-actions">
                 <!-- Theme Toggle Button -->
                 <button class="nav-btn theme-toggle-btn" title="Toggle System Theme">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    <svg width="18" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
                         <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -68,7 +77,8 @@
                 </button>
 
                 <a href="login.html" class="nav-link" style="margin-left: 12px; font-weight: 500;">Login</a>
-                <a href="signup.html" class="btn btn-hero-solid clickable" style="padding: 10px 20px; font-size: 0.9rem; margin-left: 12px;">Get Started</a>
+                <a href="signup.html" class="btn btn-hero-solid clickable"
+                    style="padding: 10px 20px; font-size: 0.9rem;">Get Started</a>
             </div>
         </div>
     </nav>
@@ -78,436 +88,588 @@
 
     <!-- Portfolio Builder Container -->
     <div class="portfolio-builder-container">
-        
-        <!-- LEFT SIDEBAR: EDITOR -->
+
+        <!-- ═══════════════════════════════════════════
+             LEFT SIDEBAR: EDITOR
+        ════════════════════════════════════════════ -->
         <aside class="editor-sidebar">
-            
-            <!-- Editor Tabs Nav -->
-            <div class="editor-tabs-nav">
-                <button class="tab-btn active" data-tab="tab-profile" title="Profile">
-                    <i data-lucide="user"></i>
-                    <span>Profile</span>
-                </button>
-                <button class="tab-btn" data-tab="tab-timeline" title="Timeline">
-                    <i data-lucide="calendar"></i>
-                    <span>Timeline</span>
-                </button>
-                <button class="tab-btn" data-tab="tab-works" title="Works">
-                    <i data-lucide="briefcase"></i>
-                    <span>Works</span>
-                </button>
-                <button class="tab-btn" data-tab="tab-design" title="Design">
-                    <i data-lucide="palette"></i>
-                    <span>Design</span>
-                </button>
-            </div>
 
-            <!-- TAB: PROFILE -->
-            <div class="tab-content active" id="tab-profile">
-                <!-- Preset Loader Section -->
-                <div class="editor-section">
-                    <h3 class="editor-section-title"><i data-lucide="sparkles" class="section-icon"></i> Load Preset</h3>
-                    <div class="preset-cards-grid">
-                        <div class="preset-card clickable" onclick="window.portfolioBuilder.loadPreset('hyper_arch')">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80" alt="Aron" class="preset-avatar">
-                            <div class="preset-card-info">
-                                <div class="preset-name">Aron Thorne</div>
-                                <div class="preset-title">WebGL & Glass</div>
-                            </div>
-                        </div>
-                        <div class="preset-card clickable" onclick="window.portfolioBuilder.loadPreset('linear_flow')">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80" alt="Sarah" class="preset-avatar">
-                            <div class="preset-card-info">
-                                <div class="preset-name">Sarah K.</div>
-                                <div class="preset-title">Minimalist Grid</div>
-                            </div>
-                        </div>
-                        <div class="preset-card clickable" onclick="window.portfolioBuilder.loadPreset('nothing_core')">
-                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=80&q=80" alt="Marcus" class="preset-avatar">
-                            <div class="preset-card-info">
-                                <div class="preset-name">Marcus V.</div>
-                                <div class="preset-title">Hardware Tech</div>
-                            </div>
-                        </div>
-                    </div>
-                    <select id="presetSelect" style="display:none;">
-                        <option value="">-- Choose a Preset --</option>
-                        <option value="hyper_arch">Aron Thorne</option>
-                        <option value="linear_flow">Sarah K.</option>
-                        <option value="nothing_core">Marcus V.</option>
-                    </select>
-                </div>
-                
-                <!-- Profile Section -->
-                <div class="editor-section">
-                    <h3 class="editor-section-title"><i data-lucide="user" class="section-icon"></i> Profile Details</h3>
-                    
-                    <div class="photo-upload-area" id="photoUploadArea">
-                        <div class="photo-upload-placeholder">
-                            <i data-lucide="camera" style="width: 24px; height: 24px; color: rgba(0, 255, 170, 0.7); margin-bottom: 8px;"></i>
-                            <div>Click or drag avatar</div>
-                        </div>
-                    </div>
-                    <input type="file" id="profilePhotoInput" accept="image/*">
-                    
-                    <div class="form-group">
-                        <label class="form-label">Full Name</label>
-                        <input type="text" class="form-input" id="fullName" placeholder="Your Name">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Professional Role</label>
-                        <input type="text" class="form-input" id="role" placeholder="e.g. Senior Product Designer">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Headline / Tagline</label>
-                        <input type="text" class="form-input" id="tagline" placeholder="e.g. Designing premium web systems">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Location</label>
-                        <input type="text" class="form-input" id="location" placeholder="e.g. New York, NY">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">About narrative</label>
-                        <textarea class="form-textarea" id="about" placeholder="Tell your professional story..."></textarea>
-                    </div>
-                </div>
-
-                <!-- Contact details -->
-                <div class="editor-section">
-                    <h3 class="editor-section-title"><i data-lucide="mail" class="section-icon"></i> Contact Info</h3>
-                    <div class="form-group">
-                        <label class="form-label">Email Address</label>
-                        <input type="email" class="form-input" id="email" placeholder="you@domain.com">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Phone Number</label>
-                        <input type="text" class="form-input" id="phone" placeholder="+1 (555) 000-0000">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Website URL</label>
-                        <input type="text" class="form-input" id="websiteUrl" placeholder="https://yourwebsite.com">
-                    </div>
-                </div>
-
-                <!-- Social Links -->
-                <div class="editor-section">
-                    <h3 class="editor-section-title"><i data-lucide="share-2" class="section-icon"></i> Social Handles</h3>
-                    <div class="form-group">
-                        <label class="form-label">GitHub</label>
-                        <input type="text" class="form-input" id="githubLink" placeholder="username">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">LinkedIn</label>
-                        <input type="text" class="form-input" id="linkedinLink" placeholder="username">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Twitter</label>
-                        <input type="text" class="form-input" id="twitterLink" placeholder="username">
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB: TIMELINE (EXP & EDU) -->
-            <div class="tab-content" id="tab-timeline">
-                <!-- Skills Section -->
-                <div class="editor-section">
-                    <h3 class="editor-section-title"><i data-lucide="cpu" class="section-icon"></i> Skills Matrix</h3>
-                    <div class="skill-input-group">
-                        <input type="text" class="form-input" id="skillInput" placeholder="Add a skill...">
-                        <button class="btn-add-skill" id="addSkillBtn">Add</button>
-                    </div>
-                    <div class="skills-list" id="skillsList"></div>
-                </div>
-
-                <!-- Experience Section -->
-                <div class="editor-section">
-                    <h3 class="editor-section-title"><i data-lucide="briefcase" class="section-icon"></i> Experience</h3>
-                    <button class="btn-add-skill" id="addExpBtn" style="width: 100%; margin-bottom: 12px;">+ Add Experience</button>
-                    <div id="experienceList"></div>
-                </div>
-
-                <!-- Education Section -->
-                <div class="editor-section">
-                    <h3 class="editor-section-title"><i data-lucide="graduation-cap" class="section-icon"></i> Education</h3>
-                    <button class="btn-add-skill" id="addEduBtn" style="width: 100%; margin-bottom: 12px;">+ Add Education</button>
-                    <div id="educationList"></div>
-                </div>
-            </div>
-
-            <!-- TAB: WORKS (PROJECTS, CERTS, TESTIMONIALS) -->
-            <div class="tab-content" id="tab-works">
-                <!-- Projects Section -->
-                <div class="editor-section">
-                    <h3 class="editor-section-title"><i data-lucide="folder-git-2" class="section-icon"></i> Projects</h3>
-                    <button class="btn-add-skill" id="addProjectBtn" style="width: 100%; margin-bottom: 12px;">+ Add Project</button>
-                    <div id="projectsList"></div>
-                </div>
-
-                <!-- Certifications Section -->
-                <div class="editor-section">
-                    <h3 class="editor-section-title"><i data-lucide="award" class="section-icon"></i> Certifications</h3>
-                    <button class="btn-add-skill" id="addCertBtn" style="width: 100%; margin-bottom: 12px;">+ Add Certification</button>
-                    <div id="certificationsList"></div>
-                </div>
-
-                <!-- Testimonials Section -->
-                <div class="editor-section">
-                    <h3 class="editor-section-title"><i data-lucide="quote" class="section-icon"></i> Testimonials</h3>
-                    <button class="btn-add-skill" id="addTestimonialBtn" style="width: 100%; margin-bottom: 12px;">+ Add Testimonial</button>
-                    <div id="testimonialsList"></div>
-                </div>
-            </div>
-
-            <!-- TAB: DESIGN & CUSTOMIZATION -->
-            <div class="tab-content" id="tab-design">
-                <!-- Template Selection -->
-                <div class="editor-section">
-                    <h3 class="editor-section-title"><i data-lucide="layout" class="section-icon"></i> Base Template</h3>
-                    <div id="templatesGallery"></div>
-                </div>
-
-                <!-- Background Customizer -->
-                <div class="editor-section">
-                    <h3 class="editor-section-title"><i data-lucide="image" class="section-icon"></i> Background Style</h3>
-                    <div class="form-group">
-                        <label class="form-label">BG Mode</label>
-                        <select class="form-select" id="themeBgType">
-                            <option value="solid">Solid Color</option>
-                            <option value="gradient">Linear Gradient</option>
-                        </select>
-                    </div>
-                    <div class="form-group" id="solidBgGroup">
-                        <label class="form-label">Background Color</label>
-                        <div style="display:flex; gap:10px; align-items:center;">
-                            <input type="color" class="form-input" id="themeBgSolid" style="width:50px; height:38px; padding:2px;" value="#0f1220">
-                            <input type="text" class="form-input" id="themeBgSolidHex" style="flex:1;" value="#0f1220">
-                        </div>
-                    </div>
-                    <div id="gradientBgGroup" style="display:none;">
-                        <div class="form-group">
-                            <label class="form-label">Gradient Start</label>
-                            <div style="display:flex; gap:10px; align-items:center;">
-                                <input type="color" class="form-input" id="themeBgGradStart" style="width:50px; height:38px; padding:2px;" value="#0f1220">
-                                <input type="text" class="form-input" id="themeBgGradStartHex" style="flex:1;" value="#0f1220">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Gradient End</label>
-                            <div style="display:flex; gap:10px; align-items:center;">
-                                <input type="color" class="form-input" id="themeBgGradEnd" style="width:50px; height:38px; padding:2px;" value="#060814">
-                                <input type="text" class="form-input" id="themeBgGradEndHex" style="flex:1;" value="#060814">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Theme Colors -->
-                <div class="editor-section">
-                    <h3 class="editor-section-title"><i data-lucide="droplet" class="section-icon"></i> Color Scheme</h3>
-                    <div class="form-group">
-                        <label class="form-label">Accent Color</label>
-                        <div style="display:flex; gap:10px; align-items:center;">
-                            <input type="color" class="form-input" id="themeAccent" style="width:50px; height:38px; padding:2px;" value="#00ffaa">
-                            <input type="text" class="form-input" id="themeAccentHex" style="flex:1;" value="#00ffaa">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Text Color</label>
-                        <div style="display:flex; gap:10px; align-items:center;">
-                            <input type="color" class="form-input" id="themeText" style="width:50px; height:38px; padding:2px;" value="#ffffff">
-                            <input type="text" class="form-input" id="themeTextHex" style="flex:1;" value="#ffffff">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Font selector -->
-                <div class="editor-section">
-                    <h3 class="editor-section-title"><i data-lucide="type" class="section-icon"></i> Typography</h3>
-                    <div class="form-group">
-                        <label class="form-label">Primary Font</label>
-                        <select class="form-select" id="themeFont">
-                            <option value="Inter">Inter (Sleek Clean)</option>
-                            <option value="Space Grotesk">Space Grotesk (Tech Modern)</option>
-                            <option value="Sora">Sora (Premium Rounded)</option>
-                            <option value="Merriweather">Merriweather (Classic Serif)</option>
-                            <option value="Playfair Display">Playfair Display (Elegant Serif)</option>
-                            <option value="Fira Code">Fira Code (Developer Code)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Card Settings -->
-                <div class="editor-section">
-                    <h3 class="editor-section-title"><i data-lucide="box" class="section-icon"></i> Card Aesthetics</h3>
-                    <div class="form-group">
-                        <label class="form-label">Card Style</label>
-                        <select class="form-select" id="themeCardStyle">
-                            <option value="flat">Minimal Flat</option>
-                            <option value="glassmorphism">Slick Glassmorphism</option>
-                            <option value="shadow">Classic Soft Shadow</option>
-                            <option value="glow">Neon Aura Glow</option>
-                        </select>
-                    </div>
-                    <div id="glassmorphismControls">
-                        <div class="form-group">
-                            <div style="display:flex; justify-content:space-between;">
-                                <label class="form-label">Glass Blur</label>
-                                <span class="form-label" id="blurVal">15px</span>
-                            </div>
-                            <input type="range" class="form-range" id="themeBlur" min="0" max="40" value="15" style="width:100%;">
-                        </div>
-                        <div class="form-group">
-                            <div style="display:flex; justify-content:space-between;">
-                                <label class="form-label">Border Opacity</label>
-                                <span class="form-label" id="borderVal">0.08</span>
-                            </div>
-                            <input type="range" class="form-range" id="themeBorderOpacity" min="0" max="100" value="8" style="width:100%;">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Section Visibility -->
-                <div class="editor-section">
-                    <h3 class="editor-section-title"><i data-lucide="eye" class="section-icon"></i> Section Visibility</h3>
-                    <div class="checkbox-group" style="display:grid; grid-template-columns:1fr; gap:8px;">
-                        <label class="checkbox-label" style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-secondary); cursor:pointer;">
-                            <input type="checkbox" id="visible-photo" checked> Profile Avatar
-                        </label>
-                        <label class="checkbox-label" style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-secondary); cursor:pointer;">
-                            <input type="checkbox" id="visible-about" checked> About narrative
-                        </label>
-                        <label class="checkbox-label" style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-secondary); cursor:pointer;">
-                            <input type="checkbox" id="visible-skills" checked> Skills Matrix
-                        </label>
-                        <label class="checkbox-label" style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-secondary); cursor:pointer;">
-                            <input type="checkbox" id="visible-experience" checked> Work Experience
-                        </label>
-                        <label class="checkbox-label" style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-secondary); cursor:pointer;">
-                            <input type="checkbox" id="visible-education" checked> Education timeline
-                        </label>
-                        <label class="checkbox-label" style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-secondary); cursor:pointer;">
-                            <input type="checkbox" id="visible-projects" checked> Portfolio Projects
-                        </label>
-                        <label class="checkbox-label" style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-secondary); cursor:pointer;">
-                            <input type="checkbox" id="visible-certifications" checked> Certifications
-                        </label>
-                        <label class="checkbox-label" style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-secondary); cursor:pointer;">
-                            <input type="checkbox" id="visible-testimonials" checked> Testimonials
-                        </label>
-                        <label class="checkbox-label" style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-secondary); cursor:pointer;">
-                            <input type="checkbox" id="visible-contact" checked> Connect Section
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Publish Button fixed/anchored at bottom of sidebar -->
-                <div style="margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border-color);">
-                    <button class="btn btn-glow clickable" id="btnPublishPortfolio" style="width: 100%; padding: 12px; font-size: 0.85rem; font-family: var(--font-mono); border-radius: 8px;">
-                        Publish & View Live
+            <!-- Sidebar Header -->
+            <div class="editor-sidebar-header">
+                <!-- Editor Tabs Nav -->
+                <div class="editor-tabs-nav">
+                    <button class="tab-btn active" data-tab="tab-profile" title="Profile">
+                        <i data-lucide="user"></i>
+                        <span>Profile</span>
+                    </button>
+                    <button class="tab-btn" data-tab="tab-timeline" title="Timeline">
+                        <i data-lucide="calendar"></i>
+                        <span>Timeline</span>
+                    </button>
+                    <button class="tab-btn" data-tab="tab-works" title="Works">
+                        <i data-lucide="briefcase"></i>
+                        <span>Works</span>
+                    </button>
+                    <button class="tab-btn" data-tab="tab-design" title="Design">
+                        <i data-lucide="palette"></i>
+                        <span>Design</span>
                     </button>
                 </div>
             </div>
 
-        </aside>
+            <!-- Scrollable Body -->
+            <div class="editor-sidebar-body">
 
-        <!-- CENTER: LIVE PREVIEW -->
-        <section class="preview-section">
-            <div class="portfolio-preview-wrapper">
-                <div class="portfolio-preview">
-                    
-                    <!-- Hero Section -->
-                    <div class="preview-hero" id="previewHero">
-                        <div class="preview-photo-wrapper" id="previewPhotoSection">
-                            <img src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 120%22%3E%3Crect width=%22120%22 height=%22120%22 fill=%22%23e0e0e0%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2216%22 fill=%22%23999%22%3EPhoto%3C/text%3E%3C/svg%3E" alt="Profile" class="preview-photo" id="previewPhoto">
+                <!-- ─── TAB: PROFILE ─── -->
+                <div class="tab-content active" id="tab-profile">
+
+                    <!-- Preset Loader -->
+                    <div class="editor-section">
+                        <h3 class="editor-section-title">
+                            <i data-lucide="sparkles" class="section-icon"></i> Load Preset
+                        </h3>
+                        <div class="preset-cards-grid">
+                            <div class="preset-card clickable"
+                                onclick="window.portfolioBuilder.loadPreset('hyper_arch')">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80"
+                                    alt="Aron" class="preset-avatar">
+                                <div class="preset-card-info">
+                                    <div class="preset-name">Aron Thorne</div>
+                                    <div class="preset-title">WebGL &amp; Glass</div>
+                                </div>
+                            </div>
+                            <div class="preset-card clickable"
+                                onclick="window.portfolioBuilder.loadPreset('linear_flow')">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80"
+                                    alt="Sarah" class="preset-avatar">
+                                <div class="preset-card-info">
+                                    <div class="preset-name">Sarah K.</div>
+                                    <div class="preset-title">Minimalist Grid</div>
+                                </div>
+                            </div>
+                            <div class="preset-card clickable"
+                                onclick="window.portfolioBuilder.loadPreset('nothing_core')">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=80&q=80"
+                                    alt="Marcus" class="preset-avatar">
+                                <div class="preset-card-info">
+                                    <div class="preset-name">Marcus V.</div>
+                                    <div class="preset-title">Hardware Tech</div>
+                                </div>
+                            </div>
                         </div>
-                        <h1 class="preview-name">Your Name</h1>
-                        <p class="preview-role">Your Professional Role</p>
-                        <p class="preview-tagline" style="font-size:1.1rem; opacity:0.8; margin-top:6px; margin-bottom:12px; text-align:center;">Crafting beautiful and functional digital experiences.</p>
-                        <div class="preview-location-badge" style="display:inline-flex; align-items:center; gap:6px; font-size:0.8rem; background:rgba(255,255,255,0.06); padding:4px 10px; border-radius:99px; opacity:0.75; font-family:var(--font-mono); margin-bottom:20px;">
-                            <i data-lucide="map-pin" style="width:12px; height:12px;"></i>
-                            <span class="preview-location-text">San Francisco, CA</span>
+                        <select id="presetSelect" style="display:none;">
+                            <option value="">-- Choose a Preset --</option>
+                            <option value="hyper_arch">Aron Thorne</option>
+                            <option value="linear_flow">Sarah K.</option>
+                            <option value="nothing_core">Marcus V.</option>
+                        </select>
+                    </div>
+
+                    <!-- Profile Section -->
+                    <div class="editor-section">
+                        <h3 class="editor-section-title">
+                            <i data-lucide="user" class="section-icon"></i> Profile Details
+                        </h3>
+                        <div class="photo-upload-area" id="photoUploadArea">
+                            <div class="photo-upload-placeholder">
+                                <i data-lucide="camera"
+                                    style="width: 22px; height: 22px; color: rgba(0, 255, 170, 0.6);"></i>
+                                <div>Click or drag avatar</div>
+                            </div>
                         </div>
-                        <div class="preview-quick-connect" style="display:flex; justify-content:center; gap:16px; font-size:0.85rem; opacity:0.8; margin-bottom:12px;">
-                            <!-- Icons load dynamically -->
+                        <input type="file" id="profilePhotoInput" accept="image/*">
+
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-input" id="fullName" placeholder="Your Name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Professional Role</label>
+                            <input type="text" class="form-input" id="role" placeholder="e.g. Senior Product Designer">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Headline / Tagline</label>
+                            <input type="text" class="form-input" id="tagline"
+                                placeholder="e.g. Designing premium web systems">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-input" id="location" placeholder="e.g. Mumbai, India">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">About Narrative</label>
+                            <textarea class="form-textarea" id="about"
+                                placeholder="Tell your professional story..."></textarea>
                         </div>
                     </div>
 
-                    <!-- About Section -->
+                    <!-- Contact details -->
+                    <div class="editor-section">
+                        <h3 class="editor-section-title">
+                            <i data-lucide="mail" class="section-icon"></i> Contact Info
+                        </h3>
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-input" id="email" placeholder="you@domain.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="text" class="form-input" id="phone" placeholder="+91 98765 43210">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Website URL</label>
+                            <input type="text" class="form-input" id="websiteUrl" placeholder="https://yourwebsite.com">
+                        </div>
+                    </div>
+
+                    <!-- Social Links -->
+                    <div class="editor-section">
+                        <h3 class="editor-section-title">
+                            <i data-lucide="share-2" class="section-icon"></i> Social Handles
+                        </h3>
+                        <div class="form-group">
+                            <label class="form-label">GitHub</label>
+                            <input type="text" class="form-input" id="githubLink" placeholder="username">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">LinkedIn</label>
+                            <input type="text" class="form-input" id="linkedinLink" placeholder="username">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Twitter</label>
+                            <input type="text" class="form-input" id="twitterLink" placeholder="username">
+                        </div>
+                    </div>
+
+                </div><!-- /tab-profile -->
+
+                <!-- ─── TAB: TIMELINE ─── -->
+                <div class="tab-content" id="tab-timeline">
+
+                    <!-- Skills -->
+                    <div class="editor-section">
+                        <h3 class="editor-section-title">
+                            <i data-lucide="cpu" class="section-icon"></i> Skills Matrix
+                        </h3>
+                        <div class="skill-input-group">
+                            <input type="text" class="form-input" id="skillInput" placeholder="Add a skill...">
+                            <button class="btn-add-skill" id="addSkillBtn">Add</button>
+                        </div>
+                        <div class="skills-list" id="skillsList"></div>
+                    </div>
+
+                    <!-- Experience -->
+                    <div class="editor-section">
+                        <h3 class="editor-section-title">
+                            <i data-lucide="briefcase" class="section-icon"></i> Experience
+                        </h3>
+                        <button class="btn-add-skill" id="addExpBtn"
+                            style="width: 100%; margin-bottom: 12px; text-align: center;">+ Add Experience</button>
+                        <div id="experienceList"></div>
+                    </div>
+
+                    <!-- Education -->
+                    <div class="editor-section">
+                        <h3 class="editor-section-title">
+                            <i data-lucide="graduation-cap" class="section-icon"></i> Education
+                        </h3>
+                        <button class="btn-add-skill" id="addEduBtn"
+                            style="width: 100%; margin-bottom: 12px; text-align: center;">+ Add Education</button>
+                        <div id="educationList"></div>
+                    </div>
+
+                </div><!-- /tab-timeline -->
+
+                <!-- ─── TAB: WORKS ─── -->
+                <div class="tab-content" id="tab-works">
+
+                    <!-- Projects -->
+                    <div class="editor-section">
+                        <h3 class="editor-section-title">
+                            <i data-lucide="folder-git-2" class="section-icon"></i> Projects
+                        </h3>
+                        <button class="btn-add-skill" id="addProjectBtn"
+                            style="width: 100%; margin-bottom: 12px; text-align: center;">+ Add Project</button>
+                        <div id="projectsList"></div>
+                    </div>
+
+                    <!-- Certifications -->
+                    <div class="editor-section">
+                        <h3 class="editor-section-title">
+                            <i data-lucide="award" class="section-icon"></i> Certifications
+                        </h3>
+                        <button class="btn-add-skill" id="addCertBtn"
+                            style="width: 100%; margin-bottom: 12px; text-align: center;">+ Add Certification</button>
+                        <div id="certificationsList"></div>
+                    </div>
+
+                    <!-- Testimonials -->
+                    <div class="editor-section">
+                        <h3 class="editor-section-title">
+                            <i data-lucide="quote" class="section-icon"></i> Testimonials
+                        </h3>
+                        <button class="btn-add-skill" id="addTestimonialBtn"
+                            style="width: 100%; margin-bottom: 12px; text-align: center;">+ Add Testimonial</button>
+                        <div id="testimonialsList"></div>
+                    </div>
+
+                </div><!-- /tab-works -->
+
+                <!-- ─── TAB: DESIGN ─── -->
+                <div class="tab-content" id="tab-design">
+
+                    <!-- Template Selection -->
+                    <div class="editor-section">
+                        <h3 class="editor-section-title">
+                            <i data-lucide="layout" class="section-icon"></i> Base Template
+                        </h3>
+                        <div id="templatesGallery"></div>
+                    </div>
+
+                    <!-- Background Customizer -->
+                    <div class="editor-section">
+                        <h3 class="editor-section-title">
+                            <i data-lucide="image" class="section-icon"></i> Background Style
+                        </h3>
+                        <div class="form-group">
+                            <label class="form-label">BG Mode</label>
+                            <select class="form-select" id="themeBgType">
+                                <option value="solid">Solid Color</option>
+                                <option value="gradient">Linear Gradient</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="solidBgGroup">
+                            <label class="form-label">Background Color</label>
+                            <div style="display:flex; gap:10px; align-items:center;">
+                                <input type="color" class="form-input" id="themeBgSolid"
+                                    style="width:46px; height:36px; padding:2px;" value="#0f1220">
+                                <input type="text" class="form-input" id="themeBgSolidHex" style="flex:1;"
+                                    value="#0f1220">
+                            </div>
+                        </div>
+                        <div id="gradientBgGroup" style="display:none;">
+                            <div class="form-group">
+                                <label class="form-label">Gradient Start</label>
+                                <div style="display:flex; gap:10px; align-items:center;">
+                                    <input type="color" class="form-input" id="themeBgGradStart"
+                                        style="width:46px; height:36px; padding:2px;" value="#0f1220">
+                                    <input type="text" class="form-input" id="themeBgGradStartHex" style="flex:1;"
+                                        value="#0f1220">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Gradient End</label>
+                                <div style="display:flex; gap:10px; align-items:center;">
+                                    <input type="color" class="form-input" id="themeBgGradEnd"
+                                        style="width:46px; height:36px; padding:2px;" value="#060814">
+                                    <input type="text" class="form-input" id="themeBgGradEndHex" style="flex:1;"
+                                        value="#060814">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Theme Colors -->
+                    <div class="editor-section">
+                        <h3 class="editor-section-title">
+                            <i data-lucide="droplet" class="section-icon"></i> Color Scheme
+                        </h3>
+                        <div class="form-group">
+                            <label class="form-label">Accent Color</label>
+                            <div style="display:flex; gap:10px; align-items:center;">
+                                <input type="color" class="form-input" id="themeAccent"
+                                    style="width:46px; height:36px; padding:2px;" value="#00ffaa">
+                                <input type="text" class="form-input" id="themeAccentHex" style="flex:1;"
+                                    value="#00ffaa">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Text Color</label>
+                            <div style="display:flex; gap:10px; align-items:center;">
+                                <input type="color" class="form-input" id="themeText"
+                                    style="width:46px; height:36px; padding:2px;" value="#ffffff">
+                                <input type="text" class="form-input" id="themeTextHex" style="flex:1;" value="#ffffff">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Font -->
+                    <div class="editor-section">
+                        <h3 class="editor-section-title">
+                            <i data-lucide="type" class="section-icon"></i> Typography
+                        </h3>
+                        <div class="form-group">
+                            <label class="form-label">Primary Font</label>
+                            <select class="form-select" id="themeFont">
+                                <option value="Inter">Inter (Sleek Clean)</option>
+                                <option value="Space Grotesk">Space Grotesk (Tech Modern)</option>
+                                <option value="Sora">Sora (Premium Rounded)</option>
+                                <option value="Merriweather">Merriweather (Classic Serif)</option>
+                                <option value="Playfair Display">Playfair Display (Elegant Serif)</option>
+                                <option value="Fira Code">Fira Code (Developer Code)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Card Style -->
+                    <div class="editor-section">
+                        <h3 class="editor-section-title">
+                            <i data-lucide="box" class="section-icon"></i> Card Aesthetics
+                        </h3>
+                        <div class="form-group">
+                            <label class="form-label">Card Style</label>
+                            <select class="form-select" id="themeCardStyle">
+                                <option value="flat">Minimal Flat</option>
+                                <option value="glassmorphism">Slick Glassmorphism</option>
+                                <option value="shadow">Classic Soft Shadow</option>
+                                <option value="glow">Neon Aura Glow</option>
+                            </select>
+                        </div>
+                        <div id="glassmorphismControls">
+                            <div class="form-group">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <label class="form-label" style="margin:0;">Glass Blur</label>
+                                    <span class="form-label" id="blurVal"
+                                        style="color:var(--primary); margin:0;">15px</span>
+                                </div>
+                                <input type="range" class="form-range" id="themeBlur" min="0" max="40" value="15"
+                                    style="width:100%; margin-top:8px;">
+                            </div>
+                            <div class="form-group">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <label class="form-label" style="margin:0;">Border Opacity</label>
+                                    <span class="form-label" id="borderVal"
+                                        style="color:var(--primary); margin:0;">0.08</span>
+                                </div>
+                                <input type="range" class="form-range" id="themeBorderOpacity" min="0" max="100"
+                                    value="8" style="width:100%; margin-top:8px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section Visibility (Premium Toggle Switches) -->
+                    <div class="editor-section">
+                        <h3 class="editor-section-title">
+                            <i data-lucide="eye" class="section-icon"></i> Section Visibility
+                        </h3>
+                        <div class="toggle-row">
+                            <span class="toggle-label">Profile Avatar</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="visible-photo" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-row">
+                            <span class="toggle-label">About Narrative</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="visible-about" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-row">
+                            <span class="toggle-label">Skills Matrix</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="visible-skills" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-row">
+                            <span class="toggle-label">Work Experience</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="visible-experience" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-row">
+                            <span class="toggle-label">Education</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="visible-education" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-row">
+                            <span class="toggle-label">Portfolio Projects</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="visible-projects" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-row">
+                            <span class="toggle-label">Certifications</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="visible-certifications" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-row">
+                            <span class="toggle-label">Testimonials</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="visible-testimonials" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-row">
+                            <span class="toggle-label">Connect Section</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="visible-contact" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div><!-- /tab-design -->
+
+            </div><!-- /editor-sidebar-body -->
+
+            <!-- Publish Footer -->
+            <div class="sidebar-publish-footer">
+                <button class="btn btn-glow clickable" id="btnPublishPortfolio"
+                    style="width: 100%; padding: 12px; font-size: 0.85rem; font-family: var(--font-mono); border-radius: 10px; display:flex; align-items:center; justify-content:center; gap:8px;">
+                    <i data-lucide="send" style="width:14px; height:14px;"></i>
+                    Publish &amp; View Live
+                </button>
+            </div>
+
+        </aside><!-- /editor-sidebar -->
+
+        <!-- ═══════════════════════════════════════════
+             CENTER: BROWSER FRAME + LIVE PREVIEW
+        ════════════════════════════════════════════ -->
+        <section class="preview-section">
+
+            <!-- Browser Chrome Bar -->
+            <div class="preview-browser-bar">
+                <div class="browser-dots">
+                    <div class="browser-dot red"></div>
+                    <div class="browser-dot amber"></div>
+                    <div class="browser-dot green"></div>
+                </div>
+                <div class="browser-url-bar">
+                    <i data-lucide="lock" class="browser-url-lock"></i>
+                    <span id="browserUrlText">apex.app/u/your-name</span>
+                </div>
+                <div class="preview-browser-actions">
+                    <button class="preview-device-btn active" title="Desktop" id="deviceDesktop">
+                        <i data-lucide="monitor"></i>
+                    </button>
+                    <button class="preview-device-btn" title="Mobile" id="deviceMobile">
+                        <i data-lucide="smartphone"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Canvas Area -->
+            <div class="portfolio-preview-wrapper" id="previewWrapper">
+                <div class="portfolio-preview">
+
+                    <!-- Hero Section -->
+                    <div class="preview-hero" id="previewHero">
+                        <div class="preview-photo-wrapper" id="previewPhotoSection">
+                            <img src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 120%22%3E%3Crect width=%22120%22 height=%22120%22 fill=%22%23e8e8ee%22/%3E%3Ctext x=%2250%25%22 y=%2252%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2214%22 fill=%22%23aaa%22%3EPhoto%3C/text%3E%3C/svg%3E"
+                                alt="Profile" class="preview-photo" id="previewPhoto">
+                        </div>
+                        <h1 class="preview-name">Your Name</h1>
+                        <p class="preview-role">Your Professional Role</p>
+                        <p class="preview-tagline"
+                            style="font-size:1rem; opacity:0.7; margin-top:8px; margin-bottom:12px; text-align:center; line-height:1.5;">
+                            Crafting beautiful and functional digital experiences.
+                        </p>
+                        <div class="preview-location-badge"
+                            style="display:inline-flex; align-items:center; gap:6px; font-size:0.75rem; background:rgba(0,0,0,0.05); padding:4px 12px; border-radius:99px; opacity:0.65; font-family:var(--font-mono); margin-bottom:20px;">
+                            <i data-lucide="map-pin" style="width:11px; height:11px;"></i>
+                            <span class="preview-location-text">San Francisco, CA</span>
+                        </div>
+                        <div class="preview-quick-connect"
+                            style="display:flex; justify-content:center; gap:16px; font-size:0.82rem; opacity:0.75; margin-bottom:8px; flex-wrap:wrap;">
+                            <!-- Social links load dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- About -->
                     <div class="preview-section-container" data-section="about">
                         <h2 class="preview-section-title">About Me</h2>
                         <p class="preview-about">Add your professional summary here...</p>
                     </div>
 
-                    <!-- Skills Section -->
+                    <!-- Skills -->
                     <div class="preview-section-container" data-section="skills">
-                        <h2 class="preview-section-title">Skills & Capabilities</h2>
+                        <h2 class="preview-section-title">Skills &amp; Capabilities</h2>
                         <div class="preview-skills"></div>
                     </div>
 
-                    <!-- Experience Section -->
+                    <!-- Experience -->
                     <div class="preview-section-container" data-section="experience">
                         <h2 class="preview-section-title">Experience</h2>
                         <div id="experiencePreview"></div>
                     </div>
 
-                    <!-- Education Section -->
+                    <!-- Education -->
                     <div class="preview-section-container" data-section="education">
                         <h2 class="preview-section-title">Education</h2>
                         <div id="educationPreview"></div>
                     </div>
 
-                    <!-- Projects Section -->
+                    <!-- Projects -->
                     <div class="preview-section-container" data-section="projects">
                         <h2 class="preview-section-title">Projects</h2>
                         <div id="projectsPreview"></div>
                     </div>
 
-                    <!-- Certifications Section -->
+                    <!-- Certifications -->
                     <div class="preview-section-container" data-section="certifications">
-                        <h2 class="preview-section-title">Certifications & Awards</h2>
-                        <div id="certificationsPreview" style="display:grid; grid-template-columns:1fr; gap:12px;"></div>
+                        <h2 class="preview-section-title">Certifications &amp; Awards</h2>
+                        <div id="certificationsPreview" style="display:grid; grid-template-columns:1fr; gap:12px;">
+                        </div>
                     </div>
 
-                    <!-- Testimonials Section -->
+                    <!-- Testimonials -->
                     <div class="preview-section-container" data-section="testimonials">
                         <h2 class="preview-section-title">Testimonials</h2>
                         <div id="testimonialsPreview" style="display:grid; grid-template-columns:1fr; gap:16px;"></div>
                     </div>
 
-                    <!-- Contact Form Section -->
+                    <!-- Contact -->
                     <div class="preview-section-container" data-section="contact">
                         <h2 class="preview-section-title">Get in Touch</h2>
-                        <div class="preview-contact-form" style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
+                        <div class="preview-contact-form"
+                            style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
                             <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                                <input type="text" placeholder="Name" class="form-input" style="cursor:default;" disabled>
-                                <input type="email" placeholder="Email" class="form-input" style="cursor:default;" disabled>
+                                <input type="text" placeholder="Name" class="form-input" style="cursor:default;"
+                                    disabled>
+                                <input type="email" placeholder="Email" class="form-input" style="cursor:default;"
+                                    disabled>
                             </div>
-                            <input type="text" placeholder="Subject" class="form-input" style="cursor:default;" disabled>
-                            <textarea placeholder="Write your message here..." class="form-textarea" style="height:100px; cursor:default;" disabled></textarea>
-                            <button class="btn btn-glow" style="align-self:flex-start; pointer-events:none; padding:10px 24px;">Send Message</button>
+                            <input type="text" placeholder="Subject" class="form-input" style="cursor:default;"
+                                disabled>
+                            <textarea placeholder="Write your message here..." class="form-textarea"
+                                style="height:90px; cursor:default;" disabled></textarea>
+                            <button class="btn btn-glow"
+                                style="align-self:flex-start; pointer-events:none; padding:10px 24px;">Send
+                                Message</button>
                         </div>
                     </div>
 
-                </div>
-            </div>
-        </section>
+                </div><!-- /portfolio-preview -->
+            </div><!-- /portfolio-preview-wrapper -->
 
+        </section><!-- /preview-section -->
 
+    </div><!-- /portfolio-builder-container -->
 
-    </div>
+    <!-- ═══════════════════════════════════════════
+         MODALS
+    ════════════════════════════════════════════ -->
 
     <!-- EXPERIENCE MODAL -->
     <div class="modal-overlay" id="experienceModal">
         <div class="modal-container">
             <div class="modal-header">
-                <h3 style="margin:0; font-family:var(--font-display); font-weight:700; font-size:1.2rem; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
-                    <i data-lucide="briefcase" style="color:#00ffaa; width:18px; height:18px;"></i> Add Experience
+                <h3
+                    style="margin:0; font-family:var(--font-display); font-weight:700; font-size:1.1rem; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+                    <i data-lucide="briefcase" style="color:#00ffaa; width:16px; height:16px;"></i> Add Experience
                 </h3>
-                <button type="button" class="clickable" onclick="window.portfolioBuilder.closeExperienceModal()" style="background:none; border:none; color:var(--text-secondary); cursor:pointer; font-size:1.5rem; line-height:1;">&times;</button>
+                <button type="button" class="clickable" onclick="window.portfolioBuilder.closeExperienceModal()"
+                    style="background:none; border:none; color:var(--text-secondary); cursor:pointer; font-size:1.4rem; line-height:1;">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -518,20 +680,23 @@
                     <label class="form-label">Company Name</label>
                     <input type="text" class="form-input" id="expCompany" placeholder="e.g. Stripe">
                 </div>
-                <div class="form-group" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                <div class="form-group" style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
                     <div>
                         <label class="form-label">Start Date</label>
                         <input type="text" class="form-input" id="expStartDate" placeholder="e.g. 2024-01">
                     </div>
                     <div>
                         <label class="form-label">End Date</label>
-                        <input type="text" class="form-input" id="expEndDate" placeholder="e.g. Present or 2025-06">
+                        <input type="text" class="form-input" id="expEndDate" placeholder="Present">
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary clickable" onclick="window.portfolioBuilder.closeExperienceModal()" style="padding:10px 20px; font-size:0.85rem; border-radius:8px;">Cancel</button>
-                <button type="button" class="btn btn-glow clickable" id="btnSaveExperience" style="padding:10px 20px; font-size:0.85rem; border-radius:8px;">Save Experience</button>
+                <button type="button" class="btn btn-secondary clickable"
+                    onclick="window.portfolioBuilder.closeExperienceModal()"
+                    style="padding:9px 18px; font-size:0.85rem; border-radius:8px;">Cancel</button>
+                <button type="button" class="btn btn-glow clickable" id="btnSaveExperience"
+                    style="padding:9px 18px; font-size:0.85rem; border-radius:8px;">Save Experience</button>
             </div>
         </div>
     </div>
@@ -540,34 +705,39 @@
     <div class="modal-overlay" id="educationModal">
         <div class="modal-container">
             <div class="modal-header">
-                <h3 style="margin:0; font-family:var(--font-display); font-weight:700; font-size:1.2rem; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
-                    <i data-lucide="graduation-cap" style="color:#00ffaa; width:18px; height:18px;"></i> Add Education
+                <h3
+                    style="margin:0; font-family:var(--font-display); font-weight:700; font-size:1.1rem; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+                    <i data-lucide="graduation-cap" style="color:#00ffaa; width:16px; height:16px;"></i> Add Education
                 </h3>
-                <button type="button" class="clickable" onclick="window.portfolioBuilder.closeEducationModal()" style="background:none; border:none; color:var(--text-secondary); cursor:pointer; font-size:1.5rem; line-height:1;">&times;</button>
+                <button type="button" class="clickable" onclick="window.portfolioBuilder.closeEducationModal()"
+                    style="background:none; border:none; color:var(--text-secondary); cursor:pointer; font-size:1.4rem; line-height:1;">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
                     <label class="form-label">School / University</label>
-                    <input type="text" class="form-input" id="eduSchool" placeholder="e.g. Stanford University">
+                    <input type="text" class="form-input" id="eduSchool" placeholder="e.g. IIT Bombay">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Degree / Field of Study</label>
-                    <input type="text" class="form-input" id="eduDegree" placeholder="e.g. B.S. Computer Science">
+                    <input type="text" class="form-input" id="eduDegree" placeholder="e.g. B.Tech Computer Science">
                 </div>
-                <div class="form-group" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                <div class="form-group" style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
                     <div>
-                        <label class="form-label">Start Date</label>
-                        <input type="text" class="form-input" id="eduStartDate" placeholder="e.g. 2020">
+                        <label class="form-label">Start Year</label>
+                        <input type="text" class="form-input" id="eduStartDate" placeholder="2020">
                     </div>
                     <div>
-                        <label class="form-label">End Date</label>
-                        <input type="text" class="form-input" id="eduEndDate" placeholder="e.g. 2024">
+                        <label class="form-label">End Year</label>
+                        <input type="text" class="form-input" id="eduEndDate" placeholder="2024">
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary clickable" onclick="window.portfolioBuilder.closeEducationModal()" style="padding:10px 20px; font-size:0.85rem; border-radius:8px;">Cancel</button>
-                <button type="button" class="btn btn-glow clickable" id="btnSaveEducation" style="padding:10px 20px; font-size:0.85rem; border-radius:8px;">Save Education</button>
+                <button type="button" class="btn btn-secondary clickable"
+                    onclick="window.portfolioBuilder.closeEducationModal()"
+                    style="padding:9px 18px; font-size:0.85rem; border-radius:8px;">Cancel</button>
+                <button type="button" class="btn btn-glow clickable" id="btnSaveEducation"
+                    style="padding:9px 18px; font-size:0.85rem; border-radius:8px;">Save Education</button>
             </div>
         </div>
     </div>
@@ -576,10 +746,12 @@
     <div class="modal-overlay" id="projectModal">
         <div class="modal-container">
             <div class="modal-header">
-                <h3 style="margin:0; font-family:var(--font-display); font-weight:700; font-size:1.2rem; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
-                    <i data-lucide="folder-git-2" style="color:#00ffaa; width:18px; height:18px;"></i> Add Project
+                <h3
+                    style="margin:0; font-family:var(--font-display); font-weight:700; font-size:1.1rem; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+                    <i data-lucide="folder-git-2" style="color:#00ffaa; width:16px; height:16px;"></i> Add Project
                 </h3>
-                <button type="button" class="clickable" onclick="window.portfolioBuilder.closeProjectModal()" style="background:none; border:none; color:var(--text-secondary); cursor:pointer; font-size:1.5rem; line-height:1;">&times;</button>
+                <button type="button" class="clickable" onclick="window.portfolioBuilder.closeProjectModal()"
+                    style="background:none; border:none; color:var(--text-secondary); cursor:pointer; font-size:1.4rem; line-height:1;">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -588,19 +760,22 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Project Description</label>
-                    <textarea class="form-textarea" id="projDesc" placeholder="Describe highlights, tech stack, and results..." style="min-height:90px;"></textarea>
+                    <textarea class="form-textarea" id="projDesc"
+                        placeholder="Describe highlights, tech stack, and results..."
+                        style="min-height:80px;"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Tech Tags (comma-separated)</label>
                     <input type="text" class="form-input" id="projTags" placeholder="e.g. Next.js, TailwindCSS, OpenAI">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Project Demo / GitHub URL (Optional)</label>
-                    <input type="text" class="form-input" id="projLink" placeholder="e.g. https://github.com/username/project">
+                    <label class="form-label">Demo / GitHub URL (Optional)</label>
+                    <input type="text" class="form-input" id="projLink"
+                        placeholder="https://github.com/username/project">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Project Status</label>
-                    <select class="form-select" id="projStatus" style="width:100%; padding:8px;">
+                    <select class="form-select" id="projStatus">
                         <option value="Featured">Featured</option>
                         <option value="Demo Project">Demo Project</option>
                         <option value="Case Study">Case Study</option>
@@ -609,8 +784,11 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary clickable" onclick="window.portfolioBuilder.closeProjectModal()" style="padding:10px 20px; font-size:0.85rem; border-radius:8px;">Cancel</button>
-                <button type="button" class="btn btn-glow clickable" id="btnSaveProject" style="padding:10px 20px; font-size:0.85rem; border-radius:8px;">Save Project</button>
+                <button type="button" class="btn btn-secondary clickable"
+                    onclick="window.portfolioBuilder.closeProjectModal()"
+                    style="padding:9px 18px; font-size:0.85rem; border-radius:8px;">Cancel</button>
+                <button type="button" class="btn btn-glow clickable" id="btnSaveProject"
+                    style="padding:9px 18px; font-size:0.85rem; border-radius:8px;">Save Project</button>
             </div>
         </div>
     </div>
@@ -619,34 +797,40 @@
     <div class="modal-overlay" id="certificationModal">
         <div class="modal-container">
             <div class="modal-header">
-                <h3 style="margin:0; font-family:var(--font-display); font-weight:700; font-size:1.2rem; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
-                    <i data-lucide="award" style="color:#00ffaa; width:18px; height:18px;"></i> Add Certification
+                <h3
+                    style="margin:0; font-family:var(--font-display); font-weight:700; font-size:1.1rem; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+                    <i data-lucide="award" style="color:#00ffaa; width:16px; height:16px;"></i> Add Certification
                 </h3>
-                <button type="button" class="clickable" onclick="window.portfolioBuilder.closeCertificationModal()" style="background:none; border:none; color:var(--text-secondary); cursor:pointer; font-size:1.5rem; line-height:1;">&times;</button>
+                <button type="button" class="clickable" onclick="window.portfolioBuilder.closeCertificationModal()"
+                    style="background:none; border:none; color:var(--text-secondary); cursor:pointer; font-size:1.4rem; line-height:1;">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
                     <label class="form-label">Certificate Title</label>
-                    <input type="text" class="form-input" id="certTitle" placeholder="e.g. AWS Certified Solutions Architect">
+                    <input type="text" class="form-input" id="certTitle"
+                        placeholder="e.g. AWS Certified Solutions Architect">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Issuing Organization</label>
                     <input type="text" class="form-input" id="certIssuer" placeholder="e.g. Amazon Web Services">
                 </div>
-                <div class="form-group" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                <div class="form-group" style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
                     <div>
                         <label class="form-label">Issue Date</label>
                         <input type="text" class="form-input" id="certDate" placeholder="e.g. 2025-03">
                     </div>
                     <div>
-                        <label class="form-label">Credential URL (Optional)</label>
-                        <input type="text" class="form-input" id="certLink" placeholder="e.g. https://creds.com/aws-123">
+                        <label class="form-label">Credential URL</label>
+                        <input type="text" class="form-input" id="certLink" placeholder="https://creds.com/...">
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary clickable" onclick="window.portfolioBuilder.closeCertificationModal()" style="padding:10px 20px; font-size:0.85rem; border-radius:8px;">Cancel</button>
-                <button type="button" class="btn btn-glow clickable" id="btnSaveCertification" style="padding:10px 20px; font-size:0.85rem; border-radius:8px;">Save Certification</button>
+                <button type="button" class="btn btn-secondary clickable"
+                    onclick="window.portfolioBuilder.closeCertificationModal()"
+                    style="padding:9px 18px; font-size:0.85rem; border-radius:8px;">Cancel</button>
+                <button type="button" class="btn btn-glow clickable" id="btnSaveCertification"
+                    style="padding:9px 18px; font-size:0.85rem; border-radius:8px;">Save Certification</button>
             </div>
         </div>
     </div>
@@ -655,10 +839,12 @@
     <div class="modal-overlay" id="testimonialModal">
         <div class="modal-container">
             <div class="modal-header">
-                <h3 style="margin:0; font-family:var(--font-display); font-weight:700; font-size:1.2rem; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
-                    <i data-lucide="quote" style="color:#00ffaa; width:18px; height:18px;"></i> Add Testimonial
+                <h3
+                    style="margin:0; font-family:var(--font-display); font-weight:700; font-size:1.1rem; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+                    <i data-lucide="quote" style="color:#00ffaa; width:16px; height:16px;"></i> Add Testimonial
                 </h3>
-                <button type="button" class="clickable" onclick="window.portfolioBuilder.closeTestimonialModal()" style="background:none; border:none; color:var(--text-secondary); cursor:pointer; font-size:1.5rem; line-height:1;">&times;</button>
+                <button type="button" class="clickable" onclick="window.portfolioBuilder.closeTestimonialModal()"
+                    style="background:none; border:none; color:var(--text-secondary); cursor:pointer; font-size:1.4rem; line-height:1;">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -666,22 +852,52 @@
                     <input type="text" class="form-input" id="testName" placeholder="e.g. Jane Doe">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Recommender Title & Company</label>
+                    <label class="form-label">Title &amp; Company</label>
                     <input type="text" class="form-input" id="testRole" placeholder="e.g. Product Lead at Vercel">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Quote / Message</label>
-                    <textarea class="form-textarea" id="testQuote" placeholder="What did they say about your work?..." style="min-height:100px;"></textarea>
+                    <textarea class="form-textarea" id="testQuote" placeholder="What did they say about your work?..."
+                        style="min-height:90px;"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary clickable" onclick="window.portfolioBuilder.closeTestimonialModal()" style="padding:10px 20px; font-size:0.85rem; border-radius:8px;">Cancel</button>
-                <button type="button" class="btn btn-glow clickable" id="btnSaveTestimonial" style="padding:10px 20px; font-size:0.85rem; border-radius:8px;">Save Testimonial</button>
+                <button type="button" class="btn btn-secondary clickable"
+                    onclick="window.portfolioBuilder.closeTestimonialModal()"
+                    style="padding:9px 18px; font-size:0.85rem; border-radius:8px;">Cancel</button>
+                <button type="button" class="btn btn-glow clickable" id="btnSaveTestimonial"
+                    style="padding:9px 18px; font-size:0.85rem; border-radius:8px;">Save Testimonial</button>
             </div>
         </div>
     </div>
 
     <!-- Scripts -->
     <script type="module" src="js/index.js"></script>
+
+    <!-- Device preview toggle -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const desktop = document.getElementById('deviceDesktop');
+            const mobile = document.getElementById('deviceMobile');
+            const wrapper = document.getElementById('previewWrapper');
+            const preview = document.querySelector('.portfolio-preview');
+            if (!desktop || !mobile || !preview) return;
+
+            desktop.addEventListener('click', () => {
+                desktop.classList.add('active');
+                mobile.classList.remove('active');
+                preview.style.maxWidth = '780px';
+                preview.style.padding = '48px';
+            });
+
+            mobile.addEventListener('click', () => {
+                mobile.classList.add('active');
+                desktop.classList.remove('active');
+                preview.style.maxWidth = '390px';
+                preview.style.padding = '32px 24px';
+            });
+        });
+    </script>
 </body>
+
 </html>

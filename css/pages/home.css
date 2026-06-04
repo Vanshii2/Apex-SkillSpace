@@ -4,19 +4,120 @@
    ==========================================================================
 */
 
-.navbar-container {
-    max-width: 1400px;
-    margin: auto;
-    display: flex;              /* flex instead of grid */
-    align-items: center;
-    height: 78px;
-    gap: 40px;                  /* space between logo and links */
+
+/* ---- NAVBAR ---- */
+.navbar {
+    position: sticky;
+    top: 12px;
+    z-index: 200;
+    width: calc(100% - 48px);
+    max-width: 1300px;
+    margin: 0 auto;
+    height: 54px;
+    border-radius: 14px;
+    display: block;
+    /* reset any grid */
 }
+
+/* DARK (default) */
+.navbar {
+    background: rgba(12, 12, 16, 0.6);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(255, 253, 253, 0.1);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset,
+        0 4px 24px rgba(0, 0, 0, 0.45);
+}
+
+/* LIGHT — tinted warm glass, NOT white */
+[data-theme="light"] .navbar {
+    background: rgba(248, 246, 243, 0.55);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 0 rgba(48, 46, 46, 0.05) inset,
+        0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Kill the .scrolled override that was breaking Builder */
+.navbar.scrolled {
+    background: rgba(12, 12, 16, 0.6) !important;
+    backdrop-filter: blur(20px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(40px) saturate(160%) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    top: 12px !important;
+}
+
+[data-theme="light"] .navbar.scrolled {
+    background: rgba(248, 246, 243, 0.55) !important;
+    border-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+.navbar-container {
+    max-width: 100%;
+    height: 54px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.nav-link {
+    font-size: 13.5px;
+    font-weight: 400;
+    padding: 6px 12px;
+    border-radius: 9px;
+    color: rgba(255, 255, 255, 0.5);
+    position: relative;
+    transition: color 0.18s ease, background 0.18s ease;
+}
+
+.nav-link:hover {
+    color: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-link.active {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.09);
+    font-weight: 500;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="light"] .nav-link {
+    color: rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="light"] .nav-link:hover {
+    color: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .nav-link.active {
+    color: #000;
+    background: rgba(0, 0, 0, 0.06);
+}
+
+
+
+
 
 .nav-menu {
     display: flex;
     align-items: center;
-    gap: 8px;                   /* reduced from 32px — matches Creato's tight spacing */
+    gap: 8px;
+    /* reduced from 32px — matches Creato's tight spacing */
     margin: 0;
     padding: 0;
     list-style: none;
@@ -24,21 +125,26 @@
 }
 
 .nav-actions {
-    margin-left: auto;          /* pins to far right */
+    margin-left: auto;
+    /* pins to far right */
     display: flex;
     align-items: center;
     gap: 16px;
 }
-.logo{
-    justify-self:start;
+
+.logo {
+    justify-self: start;
 }
+
 .nav-link {
     font-size: 0.9rem;
     font-weight: 400;
-    font-family: var(--font-display);   /* adds Bricolage Grotesque */
+    font-family: var(--font-display);
+    /* adds Bricolage Grotesque */
     color: rgba(255, 255, 255, 0.75);
     transition: color 0.2s ease;
-    padding: 6px 12px;                  /* adds slight padding so active pill has room */
+    padding: 6px 12px;
+    /* adds slight padding so active pill has room */
     border-radius: 99px;
 }
 
@@ -48,7 +154,8 @@
 
 .nav-link.active {
     color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.1);   /* subtle pill highlight like Creato's "Home" */
+    background: rgba(255, 255, 255, 0.1);
+    /* subtle pill highlight like Creato's "Home" */
 }
 
 [data-theme="light"] .nav-link {
@@ -66,13 +173,14 @@
 
 /* --- Hero Glow Mesh Background --- */
 .hero-section {
-    min-height: 100vh;
+    min-height: 45vh;
+    /* max-height: 60vh; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     position: relative;
-    padding: calc(var(--header-height) + 40px) 24px 80px;
+    /* padding: calc(var(--header-height)); */
     overflow: hidden;
     background: var(--bg-base);
     text-align: center;
@@ -604,140 +712,74 @@
 }
 
 /* --- Squarespace Style Infinite Marquee Carousel --- */
+/* ============================================
+   CREATO-STYLE SCROLL-SNAP CAROUSEL
+   Pure CSS scroll-snap — zero JS animation
+   ============================================ */
 .squarespace-marquee-section {
-    padding: 60px 0 40px;
-    position: relative;
+    padding: 10px 0 40px;
     overflow: hidden;
     background: transparent;
 }
 
 .marquee-track-container {
-    width: 100%;
-    overflow: hidden;
     position: relative;
+    width: 100%;
+    height: 460px;
+    overflow: hidden;
 }
 
 .marquee-track {
+    position: absolute;
+    bottom: 0;
+    /* anchor to bottom */
+    left: 0;
+    height: 100%;
     display: flex;
-    gap: 24px;
-    width: max-content;
-    animation: marquee-scroll 45s linear infinite;
-    padding: 0 24px;
-}
-
-.marquee-track.paused {
-    animation-play-state: paused;
-}
-
-.marquee-track:hover {
-    animation-play-state: paused;
-}
-
-@keyframes marquee-scroll {
-    0% {
-        transform: translateX(0);
-    }
-
-    /* Shifts exactly half the width minus half a gap to perfectly loop the 11 cards */
-    100% {
-        transform: translateX(calc(-50% - 12px));
-    }
+    align-items: flex-end;
+    /* shared bottom baseline */
+    gap: 16px;
+    will-change: transform;
 }
 
 .marquee-card {
     position: relative;
-    width: 380px;
-    height: 320px;
-    border-radius: 12px;
-    background-image: linear-gradient(135deg, #ffffff 0%, #f0f0f0 35%, #e8d8b9 100%);
-    background-size: contain;
-    overflow: hidden;
     flex-shrink: 0;
-    cursor: pointer;
+    border-radius: 24px;
+    overflow: hidden;
     background: #111;
-    border: 2px solid #4d4d4a;
-    box-shadow: inset 0 0 0 rgba(211, 177, 84, 0), 0 4px 12px rgba(229, 208, 141, 0.2);
-}
-
-@media (max-width: 768px) {
-    .marquee-card {
-        width: 300px;
-        height: 220px;
-    }
+    width: 420px;
+    /* height is driven by JS only */
 }
 
 .marquee-card img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    pointer-events: none;
 }
-
-/* .marquee-card:hover img {
-    transform: scale(1.3);
-} */
 
 .marquee-overlay {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 32px 24px 24px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%);
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    color: #ffffff;
+    padding: 48px 20px 18px;
+    background: linear-gradient(to top,
+            rgba(0, 0, 0, 0.75) 0%,
+            transparent 100%);
 }
 
 .marquee-title {
-    font-size: 1.25rem;
+    font-size: 1.05rem;
     font-weight: 500;
     margin: 0;
     font-family: var(--font-display);
-    line-height: 1.2;
     color: #ffffff;
-
-
+    letter-spacing: -0.01em;
 }
-
-
-.marquee-card:hover .marquee-arrow {
-    transform: translateX(6px);
-}
-
-.marquee-controls {
-    display: flex;
-    justify-content: flex-end;
-    padding: 24px 48px 0;
-}
-
-.marquee-btn {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: inherit;
-    transition: all 0.3s ease;
-}
-
-[data-theme="light"] .marquee-btn {
-    border-color: rgba(0, 0, 0, 0.2);
-}
-
-.marquee-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-[data-theme="light"] .marquee-btn:hover {
-    background: rgba(0, 0, 0, 0.05);
-}
-
 
 /* ========================================
    WORKFLOW COVERFLOW CAROUSEL
@@ -760,8 +802,8 @@
     padding: 48px 36px;
     border-radius: 24px;
 
-    background: rgba(255,255,255,.03);
-    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(255, 255, 255, .03);
+    border: 1px solid rgba(255, 255, 255, .08);
 
     transition:
         transform .35s ease,
@@ -774,11 +816,11 @@
 .workflow-card:hover {
     transform: translateY(-10px);
 
-    border-color: rgba(255,255,255,.18);
+    border-color: rgba(255, 255, 255, .18);
 
     box-shadow:
-        0 20px 40px rgba(0,0,0,.15),
-        0 8px 20px rgba(0,0,0,.08);
+        0 20px 40px rgba(0, 0, 0, .15),
+        0 8px 20px rgba(0, 0, 0, .08);
 }
 
 /* LEFT CARD */
@@ -801,8 +843,8 @@
     opacity: .65;
 
     z-index: 1;
-} */ */
-
+} */
+*/
 /* ACTIVE CARD */
 /* 
 .workflow-card.active {
@@ -948,8 +990,7 @@
 
 /* --- Feature Cards Discrete Carousel --- */
 .feature-carousel-section {
-    padding: 60px 0;
-    position: relative;
+    padding: 80px 0;
     background: transparent;
 }
 
@@ -960,187 +1001,196 @@
 }
 
 .feature-carousel-track-wrapper {
-    width: 100%;
     overflow: hidden;
-    position: relative;
-    margin-bottom: 24px;
+    margin-bottom: 120px;
+    /* margin-top: 20px; */
 }
 
 .feature-carousel-track {
     display: flex;
-    gap: 24px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
-    padding-bottom: 12px;
-}
-
-.feature-carousel-track::-webkit-scrollbar {
-    display: none;
+    gap: 20px;
+    transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    /* remove overflow-x scroll — JS drives translation now */
 }
 
 .feature-card {
     position: relative;
-    width: calc(25% - 18px);
-    height: 400px;
-    /* Squarespace proportion */
-    border-radius: 12px;
-    overflow: hidden;
     flex-shrink: 0;
-    scroll-snap-align: start;
-    background: #ffffff;
-    /* White background in dark theme */
-    color: #000000;
+    width: calc(33.333% - 14px);
+    height: 320px;
+    border-radius: 24px;
+    overflow: hidden;
+    cursor: pointer;
+    background: transparent;
     border: 1px solid var(--border-color);
+    transition: box-shadow 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-[data-theme="light"] .feature-card {
-    background: #111111;
-    /* Black background in light theme */
-    color: #ffffff;
-}
-
-@media (max-width: 1200px) {
-    .feature-card {
-        width: calc(33.333% - 16px);
-    }
-}
-
-@media (max-width: 900px) {
-    .feature-card {
-        width: calc(50% - 12px);
-    }
-}
-
-@media (max-width: 600px) {
-    .feature-card {
-        width: 100%;
-        min-width: unset;
-    }
+.feature-card:hover {
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
 }
 
 .feature-card-bg {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0px;
     width: 100%;
     height: 100%;
     object-fit: cover;
     z-index: 1;
-    filter: brightness(0.65);
+}
+
+/* full overlay gradient to make white text visible */
+.feature-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%);
+    z-index: 2;
+    pointer-events: none;
 }
 
 .feature-card-content {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: 32px 24px;
+    justify-content: flex-end;
+    padding: 0 28px 28px;
     color: #ffffff;
+    pointer-events: none;
+}
+
+/* category pill — add this to your HTML as .fc-cat inside the card */
+.fc-cat {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 4;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 99px;
+    padding: 4px 12px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+/* badge — add as .fc-badge */
+.fc-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 4;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 0.5px solid rgba(255, 255, 255, 0.12);
+    border-radius: 99px;
+    padding: 5px 14px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: #fff;
 }
 
 .feature-card-top h3 {
-    font-size: 1.35rem;
+    font-size: 1.2rem;
     font-weight: 600;
-    margin-bottom: 12px;
-    line-height: 1.2;
+    margin-bottom: 6px;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
 }
 
 .feature-card-top p {
-    font-size: 0.95rem;
+    font-size: 0.82rem;
     line-height: 1.5;
-    opacity: 0.9;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 16px;
 }
 
 .feature-card-bottom {
     display: flex;
-    justify-content: flex-end;
-}
-
-.feature-arrow {
-    font-size: 1.4rem;
-    transition: transform 0.3s ease;
-}
-
-.feature-card:hover .feature-arrow {
-    transform: translateX(4px);
-}
-
-/* Footer Navigation */
-.feature-carousel-footer {
-    display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 16px;
 }
 
-.feature-pagination {
+/* price pill */
+.feature-card-bottom span {
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 0.5px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 99px !important;
+    padding: 6px 16px !important;
+}
+
+/* arrow button */
+.fc-arrow-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
     display: flex;
-    gap: 8px;
     align-items: center;
     justify-content: center;
-    flex-grow: 1;
-    /* Center pagination */
-    margin-right: -80px;
-    /* Offset to perfectly center visually */
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+}
+
+.feature-card:hover .fc-arrow-btn {
+    transform: translate(3px, -3px);
+    background: #fff;
+}
+
+/* pagination dots */
+.feature-carousel-footer {
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
 
 .feature-dot {
-    width: 6px;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.2);
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
     cursor: pointer;
     transition: all 0.3s ease;
-}
-
-[data-theme="light"] .feature-dot {
-    background: rgba(0, 0, 0, 0.2);
 }
 
 .feature-dot.active {
-    width: 24px;
-    border-radius: 4px;
-    background: #ffffff;
+    width: 20px;
+    border-radius: 3px;
+    background: #fff;
+}
+
+[data-theme="light"] .feature-dot {
+    background: rgba(0, 0, 0, 0.15);
 }
 
 [data-theme="light"] .feature-dot.active {
-    background: #000000;
+    background: #000;
 }
 
-.feature-nav-buttons {
-    display: flex;
-    gap: 12px;
+@media (max-width: 1024px) {
+    .feature-card {
+        width: calc(50% - 10px);
+    }
 }
 
-.feature-nav-btn {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: inherit;
-    transition: all 0.3s ease;
-}
-
-[data-theme="light"] .feature-nav-btn {
-    border-color: rgba(0, 0, 0, 0.2);
-}
-
-.feature-nav-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-[data-theme="light"] .feature-nav-btn:hover {
-    background: rgba(0, 0, 0, 0.05);
+@media (max-width: 640px) {
+    .feature-card {
+        width: 100%;
+    }
 }
 
 /* --- Premium Minimalist Components (SaaS Style) --- */
@@ -1285,7 +1335,7 @@
 
 
 [data-theme="light"] #everything-you-need {
-    background: #A89F94 !important;
+    background: rgb(233, 233, 233) !important;
 }
 
 .premium-feature-card {

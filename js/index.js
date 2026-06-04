@@ -102,16 +102,16 @@ function initGlobalCart() {
         const cartIds = getCart();
         const allProjects = getProjects();
         const cartItems = cartIds.map(id => allProjects.find(p => p.id === id)).filter(Boolean);
-        
+
         const cartBadge = document.getElementById('cart-count-badge');
         if (cartBadge) {
             cartBadge.textContent = cartItems.length;
             cartBadge.style.display = cartItems.length > 0 ? 'flex' : 'none';
         }
-        
+
         const cartContainer = document.getElementById('cart-items');
         const totalAmountEl = document.getElementById('cart-total-amount');
-        
+
         if (cartContainer) {
             if (cartItems.length === 0) {
                 cartContainer.innerHTML = '<div class="empty-cart-state">Your cart is empty.</div>';
@@ -132,7 +132,7 @@ function initGlobalCart() {
                     `;
                 }).join('');
                 if (totalAmountEl) totalAmountEl.textContent = `₹${total.toFixed(2)}`;
-                
+
                 // Bind remove buttons
                 cartContainer.querySelectorAll('.cart-item-remove').forEach(btn => {
                     btn.addEventListener('click', () => {
@@ -152,14 +152,14 @@ function initGlobalCart() {
     const cartBackdrop = document.getElementById('cart-backdrop');
     const cartDrawer = document.getElementById('cart-drawer');
     const cartCloseBtn = document.getElementById('cart-close');
-    
+
     window.toggleCart = () => {
         if (cartDrawer && cartBackdrop) {
             cartDrawer.classList.toggle('active');
             cartBackdrop.classList.toggle('active');
         }
     };
-    
+
     document.addEventListener('click', (e) => {
         if (e.target.closest('.cart-toggle-btn') || e.target === cartCloseBtn || e.target === cartBackdrop) {
             window.toggleCart();
@@ -192,9 +192,9 @@ function detectPageAndLoadModule() {
         initMarqueeCarousel();
     }
     // How it works CAROUSEL
-//     if (document.querySelector('.workflow-carousel')) {
-//     initWorkflowCarousel();
-// }
+    //     if (document.querySelector('.workflow-carousel')) {
+    //     initWorkflowCarousel();
+    // }
 
     // SECONDARY CAROUSEL
     if (document.getElementById('secondary-carousel')) {
@@ -358,41 +358,152 @@ function bindHomeProjectActions() {
     });
 }
 
+// marquee A shaped
+
+
 export function initMarqueeCarousel() {
     const track = document.getElementById('marquee-track');
-    if (!track) return;
+    const container = track?.parentElement;
+    if (!track || !container) return;
 
-    // The marquee automatically scrolls via CSS animations.
-    // The control buttons were removed to improve performance.
+    const CARD_W = 420;
+    const GAP = 16;
+    const STEP = CARD_W + GAP;
+    const PAUSE_MS = 1400;
+    const MOVE_MS = 850;
+
+    // Height per distance-step from center. All share same bottom baseline.
+    // const HEIGHTS = [420, 350, 290, 240, 200];
+    const HEIGHTS = [360, 320, 280, 240, 180];
+
+    const origCards = Array.from(track.querySelectorAll('.marquee-card'));
+    const total = origCards.length;
+    origCards.forEach(c => track.appendChild(c.cloneNode(true)));
+    origCards.forEach(c => track.appendChild(c.cloneNode(true)));
+    const all = Array.from(track.querySelectorAll('.marquee-card'));
+
+    let offset = 0;
+    let centerIdx = total;
+    let animating = false;
+
+    const vpW = () => container.offsetWidth;
+
+    function initOffset() {
+        return vpW() / 2 - centerIdx * STEP - CARD_W / 2;
+    }
+
+    function styleCards(off) {
+        const cx = vpW() / 2;
+        all.forEach((card, i) => {
+            const cardCx = off + i * STEP + CARD_W / 2;
+            const frac = Math.abs(cardCx - cx) / STEP;
+            const lo = Math.floor(frac);
+            const hi = Math.min(lo + 1, HEIGHTS.length - 1);
+            const t = frac - lo;
+            const hLo = HEIGHTS[Math.min(lo, HEIGHTS.length - 1)];
+            const hHi = HEIGHTS[hi];
+            const h = hLo + (hHi - hLo) * t;
+            const op = 0.55 + Math.max(0, 1 - frac / 2.5) * 0.45;
+            card.style.height = h + 'px';
+            card.style.opacity = op;
+            card.style.transform = 'none'; // no scale, no translate
+        });
+    }
+
+    function setTrack(off, animated) {
+        track.style.transition = animated
+            ? `transform ${MOVE_MS}ms cubic-bezier(0.4,0,0.2,1)`
+            : 'none';
+        track.style.transform = `translateX(${off}px)`;
+    }
+
+    function easeIO(t) { return t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
+
+    function advance() {
+        if (animating) return;
+        animating = true;
+
+        const from = offset;
+        const to = offset - STEP;
+        const t0 = performance.now();
+
+        setTrack(to, true);
+
+        (function raf(now) {
+            const p = Math.min((now - t0) / MOVE_MS, 1);
+            styleCards(from + (to - from) * easeIO(p));
+            if (p < 1) requestAnimationFrame(raf);
+        })(performance.now());
+
+        setTimeout(() => {
+            offset = to;
+            centerIdx++;
+            animating = false;
+
+            if (centerIdx >= total * 2) {
+                centerIdx = total;
+                offset = initOffset();
+                setTrack(offset, false);
+                track.getBoundingClientRect();
+                styleCards(offset);
+            }
+
+            setTimeout(advance, PAUSE_MS);
+        }, MOVE_MS);
+    }
+
+    function init() {
+        offset = initOffset();
+        setTrack(offset, false);
+        styleCards(offset);
+        setTimeout(advance, PAUSE_MS);
+    }
+
+    window.addEventListener('resize', () => {
+        offset = initOffset();
+        setTrack(offset, false);
+        styleCards(offset);
+    });
+
+    setTimeout(init, 60);
 }
-
-
 export function initSecondaryCarousel() {
     const track = document.getElementById('secondary-carousel');
     const prevBtn = document.getElementById('sec-carousel-prev');
     const nextBtn = document.getElementById('sec-carousel-next');
     if (!track) return;
 
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            // Find width of first card + gap.
-            const card = track.querySelector('.feature-card');
-            if (card) {
-                const scrollAmount = card.offsetWidth + 24; // 24px gap
-                track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-            }
-        });
+    const cards = Array.from(track.children);
+    const perPage = window.innerWidth > 1024 ? 3 : window.innerWidth > 640 ? 2 : 1;
+    const pages = Math.ceil(cards.length / perPage);
+    let current = 0;
+
+    // Rebuild footer as centered dots only
+    const footer = track.closest('.feature-carousel-section').querySelector('.feature-carousel-footer');
+    if (footer) {
+        footer.innerHTML = '';
+        footer.style.justifyContent = 'center';
+        for (let i = 0; i < pages; i++) {
+            const d = document.createElement('div');
+            d.className = 'feature-dot' + (i === 0 ? ' active' : '');
+            d.addEventListener('click', () => goTo(i));
+            footer.appendChild(d);
+        }
     }
 
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            const card = track.querySelector('.feature-card');
-            if (card) {
-                const scrollAmount = card.offsetWidth + 24; // 24px gap
-                track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            }
-        });
+    function cardStep() {
+        return cards[0].offsetWidth + 20;
     }
+
+    function goTo(p) {
+        current = Math.max(0, Math.min(pages - 1, p));
+        track.style.transform = `translateX(${-current * perPage * cardStep()}px)`;
+        footer?.querySelectorAll('.feature-dot')
+            .forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
+    if (nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
 }
 // export function initWorkflowCarousel() {
 

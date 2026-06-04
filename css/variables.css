@@ -30,7 +30,8 @@
     --accent: #eaeaea;
     --accent-rgb: 234, 234, 234;
     --warning: #f5a623;
-    --success: #171717; /* Monochromatic */
+    --success: #171717;
+    /* Monochromatic */
     --danger: #e3342f;
 
     /* Shadows */
@@ -47,7 +48,7 @@
     --glass-border: rgba(255, 255, 255, 0.08);
 
     /* Layout & Structure */
-    --header-height: 72px;
+    --header-height: 52px;
     --dock-height: 64px;
     --sidebar-width: 260px;
     --max-width: 1440px;

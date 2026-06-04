@@ -225,4 +225,16 @@ a, button, select, input, textarea, [role="button"], .clickable, .btn, .dock-ite
     cursor: pointer !important;
 }
 
-
+/* --- Theme-based Logo Toggles --- */
+[data-theme="dark"] .light-logo {
+    display: none !important;
+}
+[data-theme="dark"] .dark-logo {
+    display: block !important;
+}
+[data-theme="light"] .light-logo {
+    display: block !important;
+}
+[data-theme="light"] .dark-logo {
+    display: none !important;
+}

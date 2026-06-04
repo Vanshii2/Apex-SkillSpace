@@ -9,7 +9,7 @@
     </style>
     <!-- Immediate Theme Helper to prevent FOUC -->
     <script>
-        (function() {
+        (function () {
             const savedTheme = localStorage.getItem('fpm_theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
         })();
@@ -30,7 +30,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;1,300&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap"
+        rel="stylesheet">
 
     <!-- CSS Dependencies (Linked as independent files, no @import) -->
     <link rel="stylesheet" href="css/variables.css">
@@ -63,7 +65,8 @@
     <nav class="navbar" id="app-nav">
         <div class="navbar-container">
             <a href="index.html" class="logo" id="nav-logo">
-                <img src="logo_black1.png" alt="Apex Logo" style="height: 70px; " class="nav-logo-img">
+                <img src="logo_black1.png" alt="Apex Logo" style="height: 70px; " class="nav-logo-img light-logo">
+                <img src="logo_white1.png" alt="Apex Logo" style="height: 70px; " class="nav-logo-img dark-logo">
             </a>
 
             <ul class="nav-menu">
@@ -77,7 +80,7 @@
             <div class="nav-actions">
                 <!-- Theme Toggle Button -->
                 <button class="nav-btn theme-toggle-btn" title="Toggle System Theme">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    <svg width="18" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
                         <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -100,7 +103,10 @@
 
             <div class="container hero-centered">
                 <div class="hero-logo-badge">
-                    <img src="logo_black1.png" alt="Apex Logo style" class="hero-logo-img" style="height: 70px; ">
+                    <img src="logo_black1.png" alt="Apex Logo style" class="hero-logo-img light-logo"
+                        style="height: 70px; ">
+                    <img src="logo_white1.png" alt="Apex Logo style" class="hero-logo-img dark-logo"
+                        style="height: 70px; ">
                 </div>
                 <h1 class="hero-heading antigravity-hero" id="typewriter-hero">
                     <span class="typewriter-text"></span><span class="hero-cursor-line"></span>
@@ -122,7 +128,7 @@
                         <img src="assets/infi1.jpg" alt="Frontend Developer">
                         <div class="marquee-overlay">
                             <h3 class="marquee-title">Frontend Developer</h3>
-                            
+
                         </div>
                     </div>
                     <div class="marquee-card">
@@ -209,7 +215,7 @@
                     <h2 style="font-size: 3.2rem; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 20px;">How
                         It Works</h2>
                     <p
-                        style="color: rgba(45, 40, 40, 0.909); max-width: 540px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+                        style="color: rgba(105, 99, 99, 0.909); max-width: 540px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
                         Three simple steps to launch your premium developer portfolio and get discovered by top tech
                         companies.
                     </p>
@@ -265,260 +271,260 @@
         <section class="feature-carousel-section" style="padding-top: 80px; padding-bottom: 80px;">
             <div class="feature-carousel-container">
                 <div style="margin-bottom: 40px;">
-                    <h2 style="font-size: 2.8rem; max-width: 600px; line-height: 1.1; letter-spacing: -0.02em;">One
-                        platform to streamline your workflow</h2>
+                    <h2 style="font-size: 2.8rem; max-width: 600px; line-height: 1.1; letter-spacing: -0.02em;">Featured
+                        Projects</h2>
                 </div>
 
                 <div class="feature-carousel-track-wrapper">
                     <div class="feature-carousel-track" id="secondary-carousel">
                         <!-- Card 1 -->
-                        <div class="feature-card">
-                            <img src="assets/12.webp" alt="Feature" class="feature-card-bg">
+                        <a href="marketplace.html" class="feature-card" style="display: block;">
+                            <img src="assets/project1.png" alt="Project 1" class="feature-card-bg">
                             <div class="feature-card-content">
                                 <div class="feature-card-top">
-                                    <h3>Live Builder</h3>
-                                    <p>Edit profile details, skills, links, and projects with an instant portfolio preview.</p>
+                                    <h3>Nexus E-Commerce UI</h3>
+                                    <p>Modern dark-mode store template.</p>
                                 </div>
                                 <div class="feature-card-bottom">
-                                    <span class="feature-arrow">→</span>
+                                    <span
+                                        style="font-weight: 600; font-size: 1.1rem; background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">Buy
+                                        ₹49</span>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Card 2 -->
-                        <div class="feature-card">
-                            <img src="assets/13.webp" alt="Feature" class="feature-card-bg">
-                            <div class="feature-card-content">
-                                <div class="feature-card-top">
-                                    <h3>Template Gallery</h3>
-                                    <p>Switch between polished portfolio styles for developer, business, and creative profiles.</p>
-                                </div>
-                                <div class="feature-card-bottom">
-                                    <span class="feature-arrow">→</span>
-                                </div>
+                            <div class="fc-arrow-btn"> <!-- REPLACE the old arrow span -->
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000"
+                                    stroke-width="2.5" stroke-linecap="round">
+                                    <line x1="7" y1="17" x2="17" y2="7" />
+                                    <polyline points="7 7 17 7 17 17" />
+                                </svg>
                             </div>
-                        </div>
-                        <!-- Card 3 -->
-                        <div class="feature-card">
-                            <img src="assets/14.webp" alt="Feature" class="feature-card-bg">
-                            <div class="feature-card-content">
-                                <div class="feature-card-top">
-                                    <h3>Project Showcases</h3>
-                                    <p>Turn dummy project details into clean case-study cards for a realistic reviewer demo.</p>
-                                </div>
-                                <div class="feature-card-bottom">
-                                    <span class="feature-arrow">→</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Card 4 -->
-                        <div class="feature-card">
-                            <img src="assets/15.webp" alt="Feature" class="feature-card-bg">
-                            <div class="feature-card-content">
-                                <div class="feature-card-top">
-                                    <h3>Skill Highlights</h3>
-                                    <p>Present technical capabilities with simple tags that are easy to scan.</p>
-                                </div>
-                                <div class="feature-card-bottom">
-                                    <span class="feature-arrow">→</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Card 5 -->
-                        <div class="feature-card">
-                            <img src="assets/16.webp" alt="Feature" class="feature-card-bg">
-                            <div class="feature-card-content">
-                                <div class="feature-card-top">
-                                    <h3>Creator Dashboard</h3>
-                                    <p>Show mock activity, profile completeness, achievements, and contribution history.</p>
-                                </div>
-                                <div class="feature-card-bottom">
-                                    <span class="feature-arrow">→</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Card 6 -->
-                        <div class="feature-card">
-                            <img src="assets/17.webp" alt="Feature" class="feature-card-bg">
-                            <div class="feature-card-content">
-                                <div class="feature-card-top">
-                                    <h3>Published Portfolio</h3>
-                                    <p>Save the portfolio locally and open a dedicated live portfolio view instantly.</p>
-                                </div>
-                                <div class="feature-card-bottom">
-                                    <span class="feature-arrow">→</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Card 7 -->
-                        <div class="feature-card">
-                            <img src="assets/18.webp" alt="Feature" class="feature-card-bg">
-                            <div class="feature-card-content">
-                                <div class="feature-card-top">
-                                    <h3>Social Links</h3>
-                                    <p>Attach GitHub, LinkedIn, and Twitter handles to complete the professional profile.</p>
-                                </div>
-                                <div class="feature-card-bottom">
-                                    <span class="feature-arrow">→</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Card 8 -->
-                        <div class="feature-card">
-                            <img src="assets/19.webp" alt="Feature" class="feature-card-bg">
-                            <div class="feature-card-content">
-                                <div class="feature-card-top">
-                                    <h3>Dummy Data Ready</h3>
-                                    <p>Load seeded portfolios when you want to demonstrate the experience quickly.</p>
-                                </div>
-                                <div class="feature-card-bottom">
-                                    <span class="feature-arrow">→</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Footer with pagination and arrows -->
-                <div class="feature-carousel-footer"
-                    style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
-                    <div class="feature-pagination" style="display: flex; gap: 8px; align-items: center;">
-                        <div style="width: 4px; height: 4px; border-radius: 50%; background: var(--text-muted);"></div>
-                        <div style="width: 24px; height: 4px; border-radius: 2px; background: var(--text-primary);">
-                        </div>
-                        <div style="width: 4px; height: 4px; border-radius: 50%; background: var(--text-muted);"></div>
-                        <div style="width: 4px; height: 4px; border-radius: 50%; background: var(--text-muted);"></div>
-                    </div>
-                    <div style="display: flex; gap: 12px;">
-                        <button class="marquee-btn" id="sec-carousel-prev"
-                            style="width: 44px; height: 44px; border-color: rgba(255,255,255,0.2);">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <polyline points="15 18 9 12 15 6"></polyline>
-                            </svg>
-                        </button>
-                        <button class="marquee-btn" id="sec-carousel-next"
-                            style="width: 44px; height: 44px; border-color: rgba(255,255,255,0.2);">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- New Section: Everything You Need In One Portfolio -->
-        <section class="section" id="everything-you-need" style="background:rgba(255,255,255,0.01);">
-            <div class="container">
-                <div style="margin-bottom:48px;">
-                    <h2 style="font-size:2.8rem; margin-top:12px; letter-spacing: -0.02em;">Everything You Need In One
-                        Portfolio</h2>
-                </div>
-                <div class="everything-layout">
-
-                    <div class="portfolio-preview">
-
-                        <img src="assets/right2.jpg" class="preview-main">
-
-                        <!-- <img src="assets/2.webp" class="preview-top"> -->
-
-                        <!-- <img src="assets/3.webp" class="preview-bottom"> -->
-
-                    </div>
-
-                    <div class="features-side">
-
-                        <div class="grid grid-2" style="gap: 24px;">
-                            <div class="premium-feature-card">
-                                <h3 class="premium-feature-title">Skills</h3>
-                                <p class="premium-feature-desc">Highlight your technical and soft skills with visually
-                                    appealing tags and proficiency indicators.</p>
-                            </div>
-                            <div class="premium-feature-card">
-                                <h3 class="premium-feature-title">Projects</h3>
-                                <p class="premium-feature-desc">Showcase your best work with deep-dive case studies,
-                                    image galleries, and live demo links.</p>
-                            </div>
-                            <div class="premium-feature-card">
-                                <h3 class="premium-feature-title">Resume</h3>
-                                <p class="premium-feature-desc">Provide your professional history in an easy-to-read,
-                                    downloadable format for recruiters.</p>
-                            </div>
-                            <div class="premium-feature-card">
-                                <h3 class="premium-feature-title">Social Links</h3>
-                                <p class="premium-feature-desc">Connect your GitHub, LinkedIn, Twitter, and other
-                                    platforms directly to your portfolio hub.</p>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-        </section>
-
-
-        <!-- Final CTA -->
-        <section class="section final-cta">
-            <div class="container hero-centered">
-                <h2 style="font-size:2.5rem; margin-bottom:24px;">
-                    Monetize Your Skills
-                </h2>
-
-                <a href="marketplace.html" class="btn btn-hero-solid clickable"
-                    style="padding:16px 32px;font-size:1.1rem;">
-                    Get Started
-                </a>
-            </div>
-        </section>
-
-
-
-
-
-
-
-        <!-- Premium Footer -->
-        <footer class="footer">
-            <div class="container">
-                <div class="footer-grid">
-                    <div class="footer-brand">
-                        <a href="index.html" class="logo">
-                            <img src="logo.png" alt="Apex Logo" class="nav-logo-img">
-                            <span class="nav-logo-text">Apex SkillSpace</span>
                         </a>
-                        <p class="footer-desc">The ultimate platform for building stunning, high-converting professional
-                            portfolios.</p>
-                    </div>
-                    <div>
-                        <h4 class="footer-title">Platform</h4>
-                        <ul class="footer-links">
-                            <li><a href="index.html" class="footer-link">Home</a></li>
-                            <li><a href="login.html" class="footer-link">Login</a></li>
-                            <li><a href="signup.html" class="footer-link">Sign Up</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="footer-title">Legal</h4>
-                        <ul class="footer-links">
-                            <li><a href="#" class="footer-link">Privacy Policy</a></li>
-                            <li><a href="#" class="footer-link">Terms of Service</a></li>
-                            <li><a href="#" class="footer-link">Contact Us</a></li>
-                        </ul>
+                        <!-- Card 2 -->
+                        <a href="marketplace.html" class="feature-card" style="display: block;">
+                            <img src="assets/project2.png" alt="Project 2" class="feature-card-bg">
+                            <div class="feature-card-content">
+                                <div class="feature-card-top">
+                                    <h3>Apex Creative Portfolio</h3>
+                                    <p>Minimalist showcase for creative teams.</p>
+                                </div>
+                                <div class="feature-card-bottom">
+                                    <span
+                                        style="font-weight: 600; font-size: 1.1rem; background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">Buy
+                                        ₹39</span>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Card 3 -->
+                        <a href="marketplace.html" class="feature-card" style="display: block;">
+                            <img src="assets/project3.png" alt="Project 3" class="feature-card-bg">
+                            <div class="feature-card-content">
+                                <div class="feature-card-top">
+                                    <h3>Lumina Admin Dashboard</h3>
+                                    <p>Comprehensive UI kit for web apps.</p>
+                                </div>
+                                <div class="feature-card-bottom">
+                                    <span
+                                        style="font-weight: 600; font-size: 1.1rem; background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">Buy
+                                        ₹59</span>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Card 4 -->
+                        <!-- <a href="marketplace.html" class="feature-card" style="display: block;">
+                            <img src="assets/project4.png" alt="Project 4" class="feature-card-bg">
+                            <div class="feature-card-content">
+                                <div class="feature-card-top">
+                                    <h3>Nova SaaS Landing Page</h3>
+                                    <p>High-converting layout for software.</p>
+                                </div>
+                                <div class="feature-card-bottom">
+                                    <span
+                                        style="font-weight: 600; font-size: 1.1rem; background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">Buy
+                                        ₹29</span>
+                                </div>
+                            </div>
+                        </a> -->
+                        <!-- Card 5 -->
+                        <!-- <a href="marketplace.html" class="feature-card" style="display: block;">
+                            <img src="assets/project5.png" alt="Project 5" class="feature-card-bg">
+                            <div class="feature-card-content">
+                                <div class="feature-card-top">
+                                    <h3>Aura Mobile App Kit</h3>
+                                    <p>100+ screens for iOS and Android.</p>
+                                </div>
+                                <div class="feature-card-bottom">
+                                    <span
+                                        style="font-weight: 600; font-size: 1.1rem; background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">Buy
+                                        ₹69</span>
+                                </div>
+                            </div>
+                        </a> -->
+                        <!-- Card 6 -->
+                        <!-- <a href="marketplace.html" class="feature-card" style="display: block;">
+                            <img src="assets/project6.png" alt="Project 6" class="feature-card-bg">
+                            <div class="feature-card-content">
+                                <div class="feature-card-top">
+                                    <h3>Zenith Crypto Exchange</h3>
+                                    <p>Trading platform interface elements.</p>
+                                </div>
+                                <div class="feature-card-bottom">
+                                    <span
+                                        style="font-weight: 600; font-size: 1.1rem; background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">Buy
+                                        ₹45</span>
+                                </div>
+                            </div>
+                        </a> -->
+                        <!-- Card 7 -->
+                        <!-- <a href="marketplace.html" class="feature-card" style="display: block;">
+                            <img src="assets/project7.png" alt="Project 7" class="feature-card-bg">
+                            <div class="feature-card-content">
+                                <div class="feature-card-top">
+                                    <h3>Horizon Real Estate App</h3>
+                                    <p>Property listing and management UI.</p>
+                                </div>
+                                <div class="feature-card-bottom">
+                                    <span
+                                        style="font-weight: 600; font-size: 1.1rem; background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">Buy
+                                        ₹35</span>
+                                </div>
+                            </div>
+                        </a> -->
+                        <!-- Card 8 -->
+                        <!-- <a href="marketplace.html" class="feature-card" style="display: block;">
+                            <img src="assets/project8.png" alt="Project 8" class="feature-card-bg">
+                            <div class="feature-card-content">
+                                <div class="feature-card-top">
+                                    <h3>Prism Developer Portfolio</h3>
+                                    <p>Clean template for personal branding.</p>
+                                </div>
+                                <div class="feature-card-bottom">
+                                    <span
+                                        style="font-weight: 600; font-size: 1.1rem; background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">Buy
+                                        ₹19</span>
+                                </div>
+                            </div>
+                        </a> -->
                     </div>
                 </div>
 
-                <div class="footer-bottom">
-                    <span>© 2026 Apex SkillSpace. All rights reserved.</span>
-                    <span>Designed for you.</span>
-                </div>
-            </div>
-        </footer>
 
-        <!-- Main JavaScript Modules -->
-        <script type="module" src="js/index.js"></script>
+                <!-- New Section: Everything You Need In One Portfolio -->
+                <section class="section" id="everything-you-need" style="background:rgba(255,255,255,0.01);">
+                    <div class="container">
+                        <div style="margin-bottom:48px;">
+                            <h2 style="font-size:2.8rem; margin-top:12px; letter-spacing: -0.02em;">Everything You Need
+                                In One
+                                Portfolio</h2>
+                        </div>
+                        <div class="everything-layout">
+
+                            <div class="portfolio-preview">
+
+                                <img src="assets/right2.jpg" class="preview-main">
+
+                                <!-- <img src="assets/2.webp" class="preview-top"> -->
+
+                                <!-- <img src="assets/3.webp" class="preview-bottom"> -->
+
+                            </div>
+
+                            <div class="features-side">
+
+                                <div class="grid grid-2" style="gap: 24px;">
+                                    <div class="premium-feature-card">
+                                        <h3 class="premium-feature-title">Skills</h3>
+                                        <p class="premium-feature-desc">Highlight your technical and soft skills with
+                                            visually
+                                            appealing tags and proficiency indicators.</p>
+                                    </div>
+                                    <div class="premium-feature-card">
+                                        <h3 class="premium-feature-title">Projects</h3>
+                                        <p class="premium-feature-desc">Showcase your best work with deep-dive case
+                                            studies,
+                                            image galleries, and live demo links.</p>
+                                    </div>
+                                    <div class="premium-feature-card">
+                                        <h3 class="premium-feature-title">Resume</h3>
+                                        <p class="premium-feature-desc">Provide your professional history in an
+                                            easy-to-read,
+                                            downloadable format for recruiters.</p>
+                                    </div>
+                                    <div class="premium-feature-card">
+                                        <h3 class="premium-feature-title">Social Links</h3>
+                                        <p class="premium-feature-desc">Connect your GitHub, LinkedIn, Twitter, and
+                                            other
+                                            platforms directly to your portfolio hub.</p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </section>
+
+
+                <!-- Final CTA -->
+                <section class="section final-cta">
+                    <div class="container hero-centered">
+                        <h2 style="font-size:2.5rem; margin-bottom:24px;">
+                            Monetize Your Skills
+                        </h2>
+
+                        <a href="marketplace.html" class="btn btn-hero-solid clickable"
+                            style="padding:16px 32px;font-size:1.1rem;">
+                            Get Started
+                        </a>
+                    </div>
+                </section>
+
+
+
+
+
+
+
+                <!-- Premium Footer -->
+                <footer class="footer">
+                    <div class="container">
+                        <div class="footer-grid">
+                            <div class="footer-brand">
+                                <a href="index.html" class="logo">
+                                    <img src="logo.png" alt="Logo" class="nav-logo-img">
+                                </a>
+
+                                <p class="footer-desc">The ultimate platform for building stunning, high-converting
+                                    professional
+                                    portfolios.</p>
+                            </div>
+                            <div>
+                                <h4 class="footer-title">Platform</h4>
+                                <ul class="footer-links">
+                                    <li><a href="index.html" class="footer-link">Home</a></li>
+                                    <li><a href="login.html" class="footer-link">Login</a></li>
+                                    <li><a href="signup.html" class="footer-link">Sign Up</a></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="footer-title">Legal</h4>
+                                <ul class="footer-links">
+                                    <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                                    <li><a href="#" class="footer-link">Terms of Service</a></li>
+                                    <li><a href="#" class="footer-link">Contact Us</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="footer-bottom">
+                            <span>© 2026 Apex SkillSpace. All rights reserved.</span>
+                            <span>Designed for you.</span>
+                        </div>
+                    </div>
+                </footer>
+
+                <!-- Main JavaScript Modules -->
+                <script type="module" src="js/index.js"></script>
 </body>
 
 </html>
