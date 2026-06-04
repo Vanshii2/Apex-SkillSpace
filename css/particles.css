@@ -17,7 +17,7 @@
 
 .particle {
     position: absolute;
-    border-radius: 4px; /* small rounded rectangles */
+    border-radius: 2px; /* small rounded rectangles */
     will-change: transform;
     opacity: 0.8;
     background-color: #ffd700; /* Golden color for dark mode default */

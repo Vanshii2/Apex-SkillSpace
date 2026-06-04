@@ -22,10 +22,10 @@ export function initParticles() {
     container.style.opacity = '0';
 
     // Configuration
-    const numParticles = 450; // Massively increased particle count
+    const numParticles = 200; // Massively increased particle count
     const colors = ['#4285F4', '#b91d1dff', '#F4B400', '#eb45e5ff', '#39fc04ff']; // Blue, Purple, Orange, Pink
     const maxRadius = 400;
-    const minRadius = 80;
+    const minRadius = 130;
 
     const particles = [];
 
@@ -72,9 +72,9 @@ export function initParticles() {
         p.className = 'particle';
 
         // Base height between 1.5px and 3.5px
-        const baseSize = Math.random() * 2 + 1.5;
+        const baseSize = Math.random() * 2 + 0.5;
         // Make width slightly longer (2x - 4x height) to form a rounded rectangle
-        const width = baseSize * (1.5 + Math.random() * 1.2);
+        const width = baseSize * (1.5 + Math.random() * 0.2);
 
         p.style.width = `${width}px`;
         p.style.height = `${baseSize}px`;
