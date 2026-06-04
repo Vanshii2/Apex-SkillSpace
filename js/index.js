@@ -192,9 +192,9 @@ function detectPageAndLoadModule() {
         initMarqueeCarousel();
     }
     // How it works CAROUSEL
-    if (document.querySelector('.workflow-carousel')) {
-    initWorkflowCarousel();
-}
+//     if (document.querySelector('.workflow-carousel')) {
+//     initWorkflowCarousel();
+// }
 
     // SECONDARY CAROUSEL
     if (document.getElementById('secondary-carousel')) {
@@ -394,83 +394,83 @@ export function initSecondaryCarousel() {
         });
     }
 }
-export function initWorkflowCarousel() {
+// export function initWorkflowCarousel() {
 
-    const cards =
-        document.querySelectorAll('.workflow-card');
+//     const cards =
+//         document.querySelectorAll('.workflow-card');
 
-    if (!cards.length) return;
+//     if (!cards.length) return;
 
-    let activeIndex = 1; // CREATE starts in center
+//     let activeIndex = 1; // CREATE starts in center
 
-    function updateCards() {
+//     function updateCards() {
 
-        cards.forEach(card => {
-            card.classList.remove(
-                'prev',
-                'active',
-                'next'
-            );
-        });
-        // console.log("workflow initialized");
+//         cards.forEach(card => {
+//             card.classList.remove(
+//                 'prev',
+//                 'active',
+//                 'next'
+//             );
+//         });
+//         // console.log("workflow initialized");
 
-        cards[activeIndex].classList.add('active');
+//         cards[activeIndex].classList.add('active');
 
-        cards[
-            (activeIndex - 1 + cards.length)
-            % cards.length
-        ].classList.add('prev');
+//         cards[
+//             (activeIndex - 1 + cards.length)
+//             % cards.length
+//         ].classList.add('prev');
 
-        cards[
-            (activeIndex + 1)
-            % cards.length
-        ].classList.add('next');
-    }
+//         cards[
+//             (activeIndex + 1)
+//             % cards.length
+//         ].classList.add('next');
+//     }
 
-    updateCards();
+//     updateCards();
 
-    cards.forEach((card, index) => {
+//     cards.forEach((card, index) => {
 
-        card.addEventListener('click', () => {
+//         card.addEventListener('click', () => {
 
-            activeIndex = index;
+//             activeIndex = index;
 
-            updateCards();
-        });
+//             updateCards();
+//         });
 
-    });
+//     });
 
-    let startX = 0;
+//     let startX = 0;
 
-    const carousel =
-        document.querySelector('.workflow-carousel');
+//     const carousel =
+//         document.querySelector('.workflow-carousel');
 
-    carousel.addEventListener('touchstart', e => {
-        startX = e.touches[0].clientX;
-    });
+//     carousel.addEventListener('touchstart', e => {
+//         startX = e.touches[0].clientX;
+//     });
 
-    carousel.addEventListener('touchend', e => {
+//     carousel.addEventListener('touchend', e => {
 
-        const endX =
-            e.changedTouches[0].clientX;
+//         const endX =
+//             e.changedTouches[0].clientX;
 
-        if (startX - endX > 50) {
+//         if (startX - endX > 50) {
 
-            activeIndex =
-                (activeIndex + 1)
-                % cards.length;
+//             activeIndex =
+//                 (activeIndex + 1)
+//                 % cards.length;
 
-            updateCards();
-        }
+//             updateCards();
+//         }
 
-        if (endX - startX > 50) {
+//         if (endX - startX > 50) {
 
-            activeIndex =
-                (activeIndex - 1 + cards.length)
-                % cards.length;
+//             activeIndex =
+//                 (activeIndex - 1 + cards.length)
+//                 % cards.length;
 
-            updateCards();
-        }
-    });
+//             updateCards();
+//         }
+//     });
 
-}
+// }

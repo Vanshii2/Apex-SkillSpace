@@ -4,6 +4,34 @@
    ==========================================================================
 */
 
+.navbar-container{
+    max-width:1400px;
+    margin:auto;
+
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+
+    align-items:center;
+    height:78px;
+}
+.logo{
+    justify-self:start;
+}
+
+.nav-menu{
+   display:flex;
+    align-items:center;
+
+    gap: 12px; /* 12-20 px max */
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+
+.nav-actions{
+    justify-self:end;
+}
+
 /* --- Hero Glow Mesh Background --- */
 .hero-section {
     min-height: 100vh;
@@ -613,9 +641,9 @@
     transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.marquee-card:hover img {
+/* .marquee-card:hover img {
     transform: scale(1.3);
-}
+} */
 
 .marquee-overlay {
     position: absolute;
@@ -689,7 +717,7 @@
     align-items: flex-end;
     gap: 28px;
     perspective: 1200px;
-    padding: 60px 0;
+    padding: 30px 0;
     overflow: visible;
 }
 
@@ -697,28 +725,32 @@
     position: relative;
     width: 430px;
     min-height: 300px;
-
     padding: 48px 36px;
-
     border-radius: 24px;
 
-    background: rgba(255, 255, 255, 0.03);
-
-    border: 1px solid rgba(255, 255, 255, 0.08);
-
-    backdrop-filter: blur(20px);
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.08);
 
     transition:
-        transform .65s cubic-bezier(.22, 1, .36, 1),
-        opacity .65s cubic-bezier(.22, 1, .36, 1),
-        box-shadow .65s cubic-bezier(.22, 1, .36, 1),
-        border-color .65s cubic-bezier(.22, 1, .36, 1);
+        transform .35s ease,
+        box-shadow .35s ease,
+        border-color .35s ease;
 
     cursor: pointer;
 }
 
-/* LEFT CARD */
+.workflow-card:hover {
+    transform: translateY(-10px);
 
+    border-color: rgba(255,255,255,.18);
+
+    box-shadow:
+        0 20px 40px rgba(0,0,0,.15),
+        0 8px 20px rgba(0,0,0,.08);
+}
+
+/* LEFT CARD */
+/* 
 .workflow-card.prev {
     transform:
         translateY(28px) scale(.92) rotateY(10deg);
@@ -730,17 +762,17 @@
 
 /* RIGHT CARD */
 
-.workflow-card.next {
+/* .workflow-card.next {
     transform:
         translateY(28px) scale(.92) rotateY(-10deg);
 
     opacity: .65;
 
     z-index: 1;
-}
+} */ */
 
 /* ACTIVE CARD */
-
+/* 
 .workflow-card.active {
     transform:
         translateY(-40px) scale(1.06);
@@ -754,10 +786,10 @@
     box-shadow:
         0 50px 100px rgba(0, 0, 0, .35),
         0 20px 40px rgba(0, 0, 0, .18);
-}
+} */
 
 /* Glow Behind Active Card */
-
+/* 
 .workflow-card.active::before {
     content: "";
 
@@ -773,7 +805,7 @@
             transparent 70%);
 
     z-index: -1;
-}
+} */
 
 /* NUMBER */
 
@@ -822,13 +854,13 @@
 
 /* ACTIVE CONTENT POP */
 
-.workflow-card.active .workflow-title {
+/* .workflow-card.active .workflow-title {
     transform: translateY(-2px);
 }
 
 .workflow-card.active .workflow-desc {
     opacity: .9;
-}
+} */
 
 /* HOVER */
 
@@ -1169,23 +1201,17 @@
 }
 
 [data-theme="light"] #how-it-works {
-    background:
-        radial-gradient(circle at top right,
-            rgba(212, 175, 55, .18),
-            transparent 30%),
-        linear-gradient(135deg,
-            #2f241d,
-            #4a3728);
+    background-color: rgb(233, 233, 233);
 
 }
 
 [data-theme="light"] #how-it-works h2 {
-    color: #ffffff;
+    color: #0c0202;
 }
 
 [data-theme="light"] #how-it-works .badge {
-    color: #ffffff;
-    border-color: rgba(255, 255, 255, 0.4);
+    color: #0b0808;
+    border-color: rgba(11, 10, 10, 0.4);
 }
 
 .how-card:hover {
@@ -1270,10 +1296,10 @@
     position: relative;
 
     /* background-image: url("assets/mon.jpg"); */
-    background-color: #c9b19b;
+    background-color: #fcfcfc;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
 
-    padding: 160px 0;
+    padding: 50px 50px 0px 50px;
 }
