@@ -17,6 +17,9 @@ export function initTheme() {
             const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
             const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
             setTheme(targetTheme);
+            if (window.portfolioBuilder && typeof window.portfolioBuilder.updatePreview === 'function') {
+                window.portfolioBuilder.updatePreview();
+            }
         });
     });
 }

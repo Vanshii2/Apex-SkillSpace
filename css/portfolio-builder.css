@@ -12,10 +12,11 @@
     margin-top: 72px; /* Push below the 72px fixed navbar */
     height: calc(100vh - 72px);
     overflow: hidden;
-    background: #08080a;
+    background: var(--bg-base);
     position: relative;
     z-index: 2;
     box-sizing: border-box;
+    transition: background var(--transition-normal);
 }
 
 @media (max-width: 1400px) {
@@ -48,18 +49,19 @@
 
 /* Left Sidebar - Editor Panel */
 .editor-sidebar {
-    background: rgba(14, 14, 18, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
     border-radius: 16px;
     padding: 20px;
     overflow-y: auto;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
     gap: 20px;
     max-height: 100%;
+    transition: background var(--transition-normal), border-color var(--transition-normal);
 }
 
 .editor-sidebar::-webkit-scrollbar {
@@ -69,7 +71,7 @@
     background: transparent;
 }
 .editor-sidebar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(var(--primary-rgb), 0.15);
     border-radius: 99px;
 }
 
@@ -77,16 +79,17 @@
 .editor-tabs-nav {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(var(--primary-rgb), 0.03);
+    border: 1px solid var(--border-color);
     border-radius: 10px;
     padding: 4px;
+    transition: border-color var(--transition-normal);
 }
 
 .tab-btn {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-secondary);
     padding: 10px 4px;
     font-size: 11px;
     font-weight: 500;
@@ -105,8 +108,8 @@
 }
 
 .tab-btn:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-primary);
+    background: rgba(var(--primary-rgb), 0.03);
 }
 
 .tab-btn.active {
@@ -129,8 +132,9 @@
 /* Editor Sections inside Tabs */
 .editor-section {
     margin-bottom: 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 20px;
+    transition: border-color var(--transition-normal);
 }
 
 .editor-section:last-child {
@@ -144,7 +148,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.75px;
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--text-primary);
     margin-top: 0;
     margin-bottom: 14px;
     display: flex;
@@ -167,7 +171,7 @@
     display: block;
     font-size: 11px;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     margin-bottom: 6px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -178,26 +182,27 @@
 .form-select {
     width: 100%;
     padding: 8px 12px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(var(--primary-rgb), 0.02);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    color: #fff;
+    color: var(--text-primary);
     font-family: inherit;
     font-size: 13px;
     transition: all 0.25s ease;
     box-sizing: border-box;
 }
 
-.form-select option {
-    background: #12131a !important;
-    color: #ffffff !important;
+.form-select option,
+select option {
+    background-color: var(--bg-surface) !important;
+    color: var(--text-primary) !important;
 }
 
 .form-input:focus,
 .form-textarea:focus,
 .form-select:focus {
     outline: none;
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(var(--primary-rgb), 0.04);
     border-color: rgba(0, 255, 170, 0.5);
     box-shadow: 0 0 10px rgba(0, 255, 170, 0.12);
 }
@@ -209,7 +214,7 @@
 
 .form-input::placeholder,
 .form-textarea::placeholder {
-    color: rgba(255, 255, 255, 0.25);
+    color: var(--text-muted);
 }
 
 /* Preset Cards Grid */
@@ -253,12 +258,12 @@
 .preset-name {
     font-size: 12px;
     font-weight: 600;
-    color: #fff;
+    color: var(--text-primary);
 }
 
 .preset-title {
     font-size: 10px;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-secondary);
     font-family: var(--font-mono);
 }
 
@@ -289,7 +294,7 @@
 
 .photo-upload-placeholder {
     text-align: center;
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--text-muted);
     font-size: 11px;
 }
 
@@ -364,8 +369,8 @@
 
 /* Experience & Item Lists */
 .exp-item {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(var(--primary-rgb), 0.02);
+    border: 1px solid var(--border-color);
     padding: 10px 12px;
     border-radius: 8px;
     margin-bottom: 8px;
@@ -373,20 +378,21 @@
 }
 
 .exp-item:hover {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--primary-rgb), 0.04);
+    border-color: var(--border-color-hover);
 }
 
 /* Center Section - Live Preview Panel */
 .preview-section {
-    background: #0f1015;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
     max-height: 100%;
+    transition: background var(--transition-normal), border-color var(--transition-normal);
 }
 
 .portfolio-preview-wrapper {
@@ -544,13 +550,13 @@
 .templates-title {
     font-size: 12px;
     font-weight: 700;
-    color: #fff;
+    color: var(--text-primary);
     text-transform: uppercase;
     letter-spacing: 1px;
     display: flex;
     align-items: center;
     gap: 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 10px;
     margin-bottom: 4px;
 }
@@ -565,8 +571,8 @@
 .template-card {
     border-radius: 10px;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    background: rgba(var(--primary-rgb), 0.02);
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -603,7 +609,7 @@
 .template-name {
     font-size: 11px;
     font-weight: 600;
-    color: #fff;
+    color: var(--text-primary);
 }
 
 /* Dashboard Widgets */
@@ -614,8 +620,8 @@
 }
 
 .dashboard-widget {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(var(--primary-rgb), 0.03);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 14px;
     text-align: center;
@@ -631,15 +637,15 @@
 
 .widget-label {
     font-size: 10px;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 /* Activity Heatmap */
 .heatmap-container {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(var(--primary-rgb), 0.02);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 12px;
 }
@@ -653,7 +659,7 @@
 .heatmap-cell {
     width: 100%;
     aspect-ratio: 1;
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(var(--primary-rgb), 0.04);
     border-radius: 2px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -690,13 +696,14 @@
 .modal-container {
     width: 90%;
     max-width: 480px;
-    background: #0e0f14;
-    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
     overflow: hidden;
     transform: scale(0.95);
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    box-shadow: var(--shadow-lg);
 }
 
 .modal-overlay.show .modal-container {
@@ -705,7 +712,7 @@
 
 .modal-header {
     padding: 16px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -717,11 +724,11 @@
 
 .modal-footer {
     padding: 14px 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: 1px solid var(--border-color);
     display: flex;
     justify-content: flex-end;
     gap: 12px;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(var(--primary-rgb), 0.02);
 }
 
 /* Range Sliders */
@@ -729,7 +736,7 @@
     -webkit-appearance: none;
     height: 6px;
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--primary-rgb), 0.1);
     outline: none;
     margin: 8px 0;
 }

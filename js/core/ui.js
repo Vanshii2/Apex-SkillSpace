@@ -191,8 +191,8 @@ export function initCommandPalette() {
                 <span>Go to Sell Dashboard</span>
                 <span class="cmd-shortcut">⏎</span>
             </li>
-            <li class="cmd-item" data-action="nav" data-href="dashboard.html">
-                <span>Go to Personal Dashboard</span>
+            <li class="cmd-item" data-action="nav" data-href="portfolio.html">
+                <span>Go to Portfolio Builder</span>
                 <span class="cmd-shortcut">⏎</span>
             </li>
             <li class="cmd-item" data-action="nav" data-href="profile.html">

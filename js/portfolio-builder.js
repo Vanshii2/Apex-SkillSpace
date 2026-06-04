@@ -557,9 +557,9 @@ function renderExperience() {
         <div class="exp-item">
             <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
                 <div>
-                    <div style="font-weight: 600; color: #fff; font-size: 13px;">${exp.title}</div>
-                    <div style="font-size: 12px; color: rgba(255,255,255,0.6);">${exp.company}</div>
-                    <div style="font-size: 11px; color: rgba(255,255,255,0.4);">${exp.startDate} – ${exp.endDate}</div>
+                    <div style="font-weight: 600; color: var(--text-primary); font-size: 13px;">${exp.title}</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">${exp.company}</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">${exp.startDate} – ${exp.endDate}</div>
                 </div>
                 <button onclick="window.portfolioBuilder.removeExperience(${idx})" style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px;">&times;</button>
             </div>
@@ -585,9 +585,9 @@ function renderEducation() {
         <div class="exp-item">
             <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
                 <div>
-                    <div style="font-weight: 600; color: #fff; font-size: 13px;">${edu.degree}</div>
-                    <div style="font-size: 12px; color: rgba(255,255,255,0.6);">${edu.school}</div>
-                    <div style="font-size: 11px; color: rgba(255,255,255,0.4);">${edu.startDate} – ${edu.endDate}</div>
+                    <div style="font-weight: 600; color: var(--text-primary); font-size: 13px;">${edu.degree}</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">${edu.school}</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">${edu.startDate} – ${edu.endDate}</div>
                 </div>
                 <button onclick="window.portfolioBuilder.removeEducation(${idx})" style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px;">&times;</button>
             </div>
@@ -612,8 +612,8 @@ function renderProjects() {
         <div class="exp-item">
             <div style="display: flex; justify-content: space-between; gap: 12px; margin-bottom: 4px;">
                 <div>
-                    <div style="font-weight: 600; color: #fff; font-size: 13px;">${project.title}</div>
-                    <div style="font-size: 11px; color: rgba(255,255,255,0.5);">${project.description.substring(0, 45)}...</div>
+                    <div style="font-weight: 600; color: var(--text-primary); font-size: 13px;">${project.title}</div>
+                    <div style="font-size: 11px; color: var(--text-secondary);">${project.description.substring(0, 45)}...</div>
                     <div style="font-size: 10px; color: rgba(0, 255, 170, 0.6); font-family: var(--font-mono);">${(project.tags || []).join(', ')}</div>
                 </div>
                 <button onclick="window.portfolioBuilder.removeProject(${idx})" style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px;">&times;</button>
@@ -640,8 +640,8 @@ function renderCertifications() {
         <div class="exp-item">
             <div style="display: flex; justify-content: space-between; gap: 12px; margin-bottom: 4px;">
                 <div>
-                    <div style="font-weight: 600; color: #fff; font-size: 13px;">${cert.title}</div>
-                    <div style="font-size: 12px; color: rgba(255,255,255,0.6);">${cert.issuer} (${cert.date})</div>
+                    <div style="font-weight: 600; color: var(--text-primary); font-size: 13px;">${cert.title}</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">${cert.issuer} (${cert.date})</div>
                 </div>
                 <button onclick="window.portfolioBuilder.removeCertification(${idx})" style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px;">&times;</button>
             </div>
@@ -666,8 +666,8 @@ function renderTestimonials() {
         <div class="exp-item">
             <div style="display: flex; justify-content: space-between; gap: 12px; margin-bottom: 4px;">
                 <div>
-                    <div style="font-weight: 600; color: #fff; font-size: 13px;">${test.name}</div>
-                    <div style="font-size: 11px; color: rgba(255,255,255,0.5);">${test.quote.substring(0, 45)}...</div>
+                    <div style="font-weight: 600; color: var(--text-primary); font-size: 13px;">${test.name}</div>
+                    <div style="font-size: 11px; color: var(--text-secondary);">${test.quote.substring(0, 45)}...</div>
                 </div>
                 <button onclick="window.portfolioBuilder.removeTestimonial(${idx})" style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px;">&times;</button>
             </div>
@@ -872,62 +872,77 @@ function injectPreviewStyles(t, isCustom = false) {
         document.head.appendChild(styleTag);
     }
     
+    const activeTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    const isSystemDark = activeTheme === 'dark';
+
     // Fallback/Custom check variables
     const font = isCustom ? portfolioState.customTheme.font : t.font;
-    const accent = isCustom ? portfolioState.customTheme.accent : t.colors.accent;
-    const text = isCustom ? portfolioState.customTheme.text : t.colors.text;
+    let accent = isCustom ? portfolioState.customTheme.accent : t.colors.accent;
+    let text = isCustom ? portfolioState.customTheme.text : t.colors.text;
     const cardStyle = isCustom ? portfolioState.customTheme.cardStyle : t.cardStyle;
     
-    // Background style resolution
-    let bgStyle = '';
-    if (isCustom) {
-        if (portfolioState.customTheme.backgroundType === 'gradient') {
-            bgStyle = `linear-gradient(135deg, ${portfolioState.customTheme.backgroundGradientStart} 0%, ${portfolioState.customTheme.backgroundGradientEnd} 100%)`;
-        } else {
-            bgStyle = portfolioState.customTheme.backgroundSolid;
+    // Auto adapt text and accent color visibility based on system dark/light theme
+    if (isSystemDark) {
+        text = '#ffffff';
+        if (accent === '#000000' || accent === '#000' || accent === '#111111' || accent === '#111') {
+            accent = '#00ffaa';
         }
     } else {
-        bgStyle = `radial-gradient(circle at top right, ${t.colors.accent}22, transparent 34rem), ${t.colors.background}`;
+        text = '#111111';
+        if (accent === '#ffffff' || accent === '#fff' || accent === '#eaeaea') {
+            accent = '#000000';
+        }
+    }
+
+    // Background style resolution
+    let bgStyle = '';
+    if (isSystemDark) {
+        bgStyle = 'rgba(10, 10, 12, 0.35)'; // transparent and dark
+    } else {
+        bgStyle = 'rgba(255, 255, 255, 0.45)'; // transparent and light
     }
     
-    const isGlass = cardStyle === 'glassmorphism';
-    const isGlow = cardStyle === 'glow';
+    const isGlass = cardStyle === 'glassmorphism' || isSystemDark;
+    const isGlow = cardStyle === 'glow' && !isSystemDark;
     
-    const bgSolid = isCustom ? portfolioState.customTheme.backgroundSolid : t.colors.background;
-    const bgGradStart = isCustom ? portfolioState.customTheme.backgroundGradientStart : t.colors.background;
-    const bgType = isCustom ? portfolioState.customTheme.backgroundType : 'solid';
-    const currentBg = bgType === 'solid' ? bgSolid : bgGradStart;
-    const isLight = isColorLight(currentBg);
-    
-    const blur = isCustom ? portfolioState.customTheme.blurIntensity : '15px';
+    const blur = isCustom ? portfolioState.customTheme.blurIntensity : '20px';
     const borderOp = isCustom ? portfolioState.customTheme.borderOpacity : '0.08';
     
     let cardBg = '';
     let cardBorder = '';
     let cardShadow = '';
     
-    if (isGlass) {
-        cardBg = isLight ? `rgba(0, 0, 0, 0.03)` : `rgba(255, 255, 255, 0.045)`;
-        cardBorder = `1px solid ${isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255, 255, 255, ' + borderOp + ')'}`;
+    if (isSystemDark) {
+        cardBg = 'rgba(255, 255, 255, 0.035)';
+        cardBorder = '1px solid rgba(255, 255, 255, 0.08)';
         cardShadow = 'none';
-    } else if (isGlow) {
-        cardBg = isLight ? '#ffffff' : '#0f1220';
-        cardBorder = `1px solid ${accent}33`;
-        cardShadow = `0 8px 30px ${accent}0e, 0 0 16px ${accent}04`;
-    } else if (cardStyle === 'shadow') {
-        cardBg = isLight ? '#ffffff' : '#111322';
-        cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1e293b';
-        cardShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.06)';
     } else {
-        cardBg = isLight ? '#f9fafb' : '#0f1220';
-        cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1e293b';
-        cardShadow = 'none';
+        if (isGlass) {
+            cardBg = 'rgba(0, 0, 0, 0.025)';
+            cardBorder = '1px solid rgba(0, 0, 0, 0.06)';
+            cardShadow = 'none';
+        } else if (isGlow) {
+            cardBg = '#ffffff';
+            cardBorder = `1px solid ${accent}33`;
+            cardShadow = `0 8px 30px ${accent}0e, 0 0 16px ${accent}04`;
+        } else if (cardStyle === 'shadow') {
+            cardBg = '#ffffff';
+            cardBorder = '1px solid #e5e7eb';
+            cardShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.06)';
+        } else {
+            cardBg = '#f9fafb';
+            cardBorder = '1px solid #e5e7eb';
+            cardShadow = 'none';
+        }
     }
     
     styleTag.innerHTML = `
         .portfolio-preview {
             font-family: "${font}", var(--font-sans) !important;
             background: ${bgStyle} !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border: 1px solid ${isSystemDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)'} !important;
             color: ${text} !important;
             transition: background 0.3s ease, color 0.3s ease;
             border-radius: 12px;
@@ -945,7 +960,7 @@ function injectPreviewStyles(t, isCustom = false) {
         }
 
         .portfolio-preview .preview-tagline {
-            color: ${text}bb !important;
+            color: ${isSystemDark ? 'rgba(255, 255, 255, 0.75)' : 'rgba(0, 0, 0, 0.7)'} !important;
             font-family: "${font}", var(--font-sans) !important;
         }
 
@@ -956,13 +971,13 @@ function injectPreviewStyles(t, isCustom = false) {
         }
 
         .portfolio-preview .preview-about {
-            color: ${text}cc !important;
+            color: ${isSystemDark ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.8)'} !important;
             font-family: "${font}", var(--font-sans) !important;
         }
 
         .portfolio-preview .preview-section-title {
             color: ${text} !important;
-            border-bottom: 2px dashed ${accent}33 !important;
+            border-bottom: 2px dashed ${isSystemDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)'} !important;
             font-family: "${font}", var(--font-sans) !important;
             margin-bottom: 20px;
         }
@@ -980,15 +995,15 @@ function injectPreviewStyles(t, isCustom = false) {
         }
 
         .portfolio-preview .preview-skill {
-            background: ${isGlass ? 'rgba(255, 255, 255, 0.05)' : accent + '10'} !important;
-            color: ${isLight ? '#111111' : '#ffffff'} !important;
-            border: 1px solid ${isGlass ? 'rgba(255, 255, 255, 0.08)' : accent + '20'} !important;
+            background: ${isSystemDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.03)'} !important;
+            color: ${isSystemDark ? '#ffffff' : '#111111'} !important;
+            border: 1px solid ${isSystemDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.06)'} !important;
             font-family: var(--font-mono) !important;
         }
 
         .portfolio-preview .preview-experience-item {
-            background: ${isGlass ? 'rgba(255, 255, 255, 0.02)' : (isLight ? '#f3f4f6' : '#070912')} !important;
-            border: 1px solid ${isGlass ? 'rgba(255, 255, 255, 0.04)' : (isLight ? '#e5e7eb' : '#1e293b')} !important;
+            background: ${isSystemDark ? 'rgba(255, 255, 255, 0.02)' : '#f9fafb'} !important;
+            border: 1px solid ${isSystemDark ? 'rgba(255, 255, 255, 0.05)' : '#e5e7eb'} !important;
             padding: 16px;
             border-radius: 10px;
             margin-bottom: 12px;
@@ -1006,7 +1021,7 @@ function injectPreviewStyles(t, isCustom = false) {
         }
 
         .portfolio-preview .preview-exp-period {
-            color: ${text}77 !important;
+            color: ${isSystemDark ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)'} !important;
             font-family: var(--font-mono) !important;
         }
 
@@ -1015,7 +1030,7 @@ function injectPreviewStyles(t, isCustom = false) {
         }
 
         .portfolio-preview .social-anchor {
-            color: ${text}88 !important;
+            color: ${isSystemDark ? 'rgba(255, 255, 255, 0.65)' : 'rgba(0, 0, 0, 0.6)'} !important;
             text-decoration: none;
             font-size: 0.9rem;
             transition: color 0.2s ease;
@@ -1023,6 +1038,13 @@ function injectPreviewStyles(t, isCustom = false) {
 
         .portfolio-preview .social-anchor:hover {
             color: ${accent} !important;
+        }
+
+        .portfolio-preview .form-input,
+        .portfolio-preview .form-textarea {
+            background: ${isSystemDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)'} !important;
+            border: 1px solid ${isSystemDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)'} !important;
+            color: ${text} !important;
         }
     `;
 }
@@ -1257,8 +1279,9 @@ function updatePreviewTestimonials() {
         return;
     }
 
+    const isSystemDark = document.documentElement.getAttribute('data-theme') === 'dark';
     testimonialsContainer.innerHTML = portfolioState.testimonials.map(test => `
-        <div class="preview-experience-item" style="border-left: 2px solid rgba(0,0,0,0.15); background:rgba(0,0,0,0.015); padding:16px;">
+        <div class="preview-experience-item" style="border-left: 2px solid ${isSystemDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'}; background:${isSystemDark ? 'rgba(255,255,255,0.015)' : 'rgba(0,0,0,0.015)'}; padding:16px;">
             <p style="font-style:italic; font-size:0.85rem; line-height:1.5; margin:0 0 10px 0;">"${test.quote}"</p>
             <div style="font-weight:600; font-size:0.85rem;">${test.name}</div>
             <div style="font-size:0.75rem; opacity:0.7; margin-top:1px;">${test.role}</div>
@@ -1438,6 +1461,7 @@ export const portfolioBuilder = {
     selectTemplate,
     updateDashboard,
     loadPreset,
+    updatePreview,
     
     openExperienceModal,
     closeExperienceModal,

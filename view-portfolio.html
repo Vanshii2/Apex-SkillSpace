@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viewer // Custom Live Portfolio</title>
+    <title>Apex SkillSpace // Custom Live Portfolio</title>
     
     <!-- Google Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -487,6 +487,9 @@
             const bgType = (isCustom && customTheme) ? customTheme.backgroundType : 'solid';
             const currentBg = bgType === 'solid' ? bgSolid : bgGradStart;
             const isLight = isColorLight(currentBg);
+            
+            // Set global theme attribute so text and button variables adapt automatically
+            document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
             
             const blur = (isCustom && customTheme) ? customTheme.blurIntensity : '15px';
             const borderOp = (isCustom && customTheme) ? customTheme.borderOpacity : '0.08';

@@ -14,10 +14,10 @@ import { addToCart, getCart, removeFromCart } from './modules/db.js';
 // --- Page Specific Imports ---
 import { initPortfolioPage, openGlobalPreviewDrawer, closeGlobalPreviewDrawer } from './modules/portfolio.js';
 import { initShopPage } from './modules/shop.js';
-import { initDashboard } from './modules/dashboard.js';
 import { initProfilePage } from './modules/profile.js';
 import { logoutUser, requireAuth, getCurrentUser } from './auth.js';
 import { initParticles } from './modules/particles.js';
+import { initPortfolioBuilder } from './portfolio-builder.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize Client Database Seeds
@@ -64,8 +64,7 @@ function updateNavbarAuthButtons() {
 
     if (isLoggedIn) {
         if (loginLink) {
-            loginLink.textContent = 'Dashboard';
-            loginLink.href = 'dashboard.html';
+            loginLink.style.display = 'none';
         }
         if (signupLink) {
             signupLink.textContent = 'Logout';
@@ -204,16 +203,21 @@ function detectPageAndLoadModule() {
     // C. MARKETPLACE / SHOP PAGE
     if (document.getElementById('shop-projects-grid')) {
         initShopPage();
-    }    // D. USER HUB DASHBOARD
-    if (document.getElementById('heatmap-grid')) {
-        if (requireAuth()) {
-            initDashboard();
-        }
     }
 
     // E. PUBLIC PROFILE PAGE
     if (document.getElementById('prof-avatar')) {
         initProfilePage();
+    }
+
+    // F. PORTFOLIO BUILDER PAGE
+    if (document.querySelector('.portfolio-builder-container')) {
+        initPortfolioBuilder().then(() => {
+            console.log('Portfolio Builder initialized');
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+        });
     }
 }
 

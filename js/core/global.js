@@ -335,8 +335,7 @@ export function initPageTransitions() {
         'index.html',
         'login.html',
         'signup.html',
-        'dashboard.html',
-        'portfolio-builder.html',
+        'portfolio.html',
         '404.html'
     ];
 

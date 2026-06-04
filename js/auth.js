@@ -18,8 +18,8 @@ export function registerUser(name, email, password) {
     localStorage.setItem(USER_DATA_KEY, JSON.stringify(userData));
     localStorage.setItem(IS_LOGGED_IN_KEY, 'true');
     
-    // Redirect to dashboard
-    window.location.href = 'dashboard.html';
+    // Redirect to portfolio builder
+    window.location.href = 'portfolio.html';
 }
 
 export function loginUser(email, password) {
@@ -33,7 +33,7 @@ export function loginUser(email, password) {
         const user = JSON.parse(storedData);
         if (user.email === email && user.password === password) {
             localStorage.setItem(IS_LOGGED_IN_KEY, 'true');
-            window.location.href = 'dashboard.html';
+            window.location.href = 'portfolio.html';
             return { success: true };
         } else {
             return { success: false, message: 'Invalid email or password.' };
@@ -60,7 +60,7 @@ export function requireAuth() {
 export function redirectIfLoggedIn() {
     const isLoggedIn = localStorage.getItem(IS_LOGGED_IN_KEY) === 'true';
     if (isLoggedIn) {
-        window.location.href = 'dashboard.html';
+        window.location.href = 'portfolio.html';
     }
 }
 
