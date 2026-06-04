@@ -83,14 +83,14 @@ function updateNavbarAuthButtons() {
         }
 
         // Add Profile link to navbar menu dynamically
-        const navMenu = document.querySelector('.nav-menu');
-        if (navMenu && !navMenu.querySelector('a[href="profile.html"]')) {
-            const li = document.createElement('li');
-            const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-            const isActive = currentPath === 'profile.html';
-            li.innerHTML = `<a href="profile.html" class="nav-link ${isActive ? 'active' : ''}">Profile</a>`;
-            navMenu.appendChild(li);
-        }
+        // const navMenu = document.querySelector('.nav-menu');
+        // if (navMenu && !navMenu.querySelector('a[href="profile.html"]')) {
+        //     const li = document.createElement('li');
+        //     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+        //     const isActive = currentPath === 'profile.html';
+        //     li.innerHTML = `<a href="profile.html" class="nav-link ${isActive ? 'active' : ''}">Profile</a>`;
+        //     navMenu.appendChild(li);
+        // }
     }
 }
 

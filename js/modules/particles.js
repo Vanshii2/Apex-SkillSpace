@@ -72,9 +72,9 @@ export function initParticles() {
         p.className = 'particle';
 
         // Base height between 1.5px and 3.5px
-        const baseSize = Math.random() * 2 + 0.5;
+        const baseSize = Math.random() * 2 + 1.5;
         // Make width slightly longer (2x - 4x height) to form a rounded rectangle
-        const width = baseSize * (1.5 + Math.random() * 0.2);
+        const width = baseSize * (1.5 + Math.random() * 1.2);
 
         p.style.width = `${width}px`;
         p.style.height = `${baseSize}px`;
