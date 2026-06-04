@@ -15,13 +15,19 @@ export function initNavbarScroll() {
     if (!navbar) return;
     
     const handleScroll = () => {
-        if (window.scrollY > 20) {
+        const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+        const forceScrolled = currentPath === 'portfolio.html' || currentPath === 'profile.html' || document.querySelector('.portfolio-builder-container') || document.querySelector('.profile-banner-container');
+        
+        if (forceScrolled) {
+            navbar.classList.add('scrolled');
+        } else if (window.scrollY > 20) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
     };
     
+    window.removeEventListener('scroll', handleScroll);
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Initial check
 }

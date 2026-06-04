@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
+    <style id="fouc-preload">
+        * {
+            transition: none !important;
+        }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apex SkillSpace // Creator Profile</title>
@@ -28,11 +33,15 @@
     <link rel="stylesheet" href="css/pages/dashboard.css">
     <link rel="stylesheet" href="css/pages/profile.css">
     
-    <!-- Authentication Gate -->
+    <!-- Immediate Theme Helper & Authentication Gate -->
     <script>
-        if (localStorage.getItem('isLoggedIn') !== 'true') {
-            window.location.href = 'login.html';
-        }
+        (function() {
+            const savedTheme = localStorage.getItem('fpm_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'login.html';
+            }
+        })();
     </script>
 </head>
 <body>
@@ -152,7 +161,7 @@
                         <h3 style="font-size:0.95rem; font-family:var(--font-mono); color:var(--text-muted); text-transform:uppercase; margin-bottom:14px; display:flex; align-items:center; gap:6px;">
                             <i data-lucide="calendar" style="color:#00ffaa; width:14px; height:14px;"></i> Activity Contributions
                         </h3>
-                        <div class="heatmap-container" style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:16px; overflow-x:auto;">
+                        <div class="heatmap-container" style="overflow-x:auto; padding:16px;">
                             <div id="heatmap-widget"></div>
                         </div>
                     </div>

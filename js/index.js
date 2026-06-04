@@ -20,6 +20,12 @@ import { initParticles } from './modules/particles.js';
 import { initPortfolioBuilder } from './portfolio-builder.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Remove transitions override to re-enable them for hover events
+    setTimeout(() => {
+        const foucStyle = document.getElementById('fouc-preload');
+        if (foucStyle) foucStyle.remove();
+    }, 50);
+
     // 1. Initialize Client Database Seeds
     initDB();
 

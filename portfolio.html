@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
+    <style id="fouc-preload">
+        * {
+            transition: none !important;
+        }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apex // Premium Portfolio Builder</title>
@@ -23,11 +28,15 @@
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/portfolio-builder.css">
     
-    <!-- Authentication Gate -->
+    <!-- Immediate Theme Helper & Authentication Gate -->
     <script>
-        if (localStorage.getItem('isLoggedIn') !== 'true') {
-            window.location.href = 'login.html';
-        }
+        (function() {
+            const savedTheme = localStorage.getItem('fpm_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'login.html';
+            }
+        })();
     </script>
 </head>
 <body>

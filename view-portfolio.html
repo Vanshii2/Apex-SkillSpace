@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
+    <style id="fouc-preload">
+        * {
+            transition: none !important;
+        }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apex SkillSpace // Custom Live Portfolio</title>
@@ -23,11 +28,53 @@
         /* Dynamic styles will be inserted here */
     </style>
     
-    <!-- Authentication Gate -->
+    <!-- Immediate Theme Helper & Authentication Gate -->
     <script>
-        if (localStorage.getItem('isLoggedIn') !== 'true') {
-            window.location.href = 'login.html';
-        }
+        (function() {
+            // Check auth first
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'login.html';
+                return;
+            }
+            // Determine username from URL
+            const params = new URLSearchParams(window.location.search);
+            const userParam = params.get('user') || 'current';
+            let data = null;
+            if (userParam === 'current') {
+                const saved = localStorage.getItem('apex-portfolio');
+                if (saved) data = JSON.parse(saved);
+            }
+            let isLight = false;
+            if (data) {
+                if (data.selectedTemplate !== 'custom') {
+                    const tId = data.selectedTemplate || 'minimal';
+                    if (tId === 'minimal') isLight = true;
+                } else if (data.customTheme) {
+                    const ct = data.customTheme;
+                    const bgSolid = ct.backgroundSolid;
+                    const bgGradStart = ct.backgroundGradientStart;
+                    const bgType = ct.backgroundType || 'solid';
+                    const currentBg = bgType === 'solid' ? bgSolid : bgGradStart;
+                    if (currentBg) {
+                        let cleanHex = currentBg.trim().replace('#', '');
+                        if (cleanHex.length === 3) {
+                            cleanHex = cleanHex.split('').map(c => c + c).join('');
+                        }
+                        if (cleanHex.length === 6) {
+                            const r = parseInt(cleanHex.substring(0, 2), 16);
+                            const g = parseInt(cleanHex.substring(2, 4), 16);
+                            const b = parseInt(cleanHex.substring(4, 6), 16);
+                            const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+                            isLight = luminance > 140;
+                        }
+                    }
+                }
+                document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
+            } else {
+                const savedTheme = localStorage.getItem('fpm_theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+        })();
     </script>
 </head>
 <body>
@@ -426,6 +473,12 @@
             if (window.lucide) {
                 window.lucide.createIcons();
             }
+
+            // Remove transitions override to re-enable them for hover events
+            setTimeout(() => {
+                const foucStyle = document.getElementById('fouc-preload');
+                if (foucStyle) foucStyle.remove();
+            }, 50);
         });
 
         function normaliseSocialUrl(platform, value) {

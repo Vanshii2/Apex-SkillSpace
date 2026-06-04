@@ -126,6 +126,19 @@ export function initLazyLoadSections() {
 export function updateLayoutActiveStates() {
     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
 
+    // Update Navbar Scrolled Class State immediately to prevent FOUC / flashes
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        const forceScrolled = currentPath === 'portfolio.html' || currentPath === 'profile.html' || document.querySelector('.portfolio-builder-container') || document.querySelector('.profile-banner-container');
+        if (forceScrolled) {
+            navbar.classList.add('scrolled');
+        } else if (window.scrollY > 20) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    }
+
     // Update Navbar Links
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {

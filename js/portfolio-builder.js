@@ -944,7 +944,7 @@ function injectPreviewStyles(t, isCustom = false) {
             -webkit-backdrop-filter: blur(20px) !important;
             border: 1px solid ${isSystemDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)'} !important;
             color: ${text} !important;
-            transition: background 0.3s ease, color 0.3s ease;
+            transition: background 0.05s ease, color 0.05s ease;
             border-radius: 12px;
             padding: 48px;
         }
