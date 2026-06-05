@@ -1,12 +1,82 @@
 import { getProjects, getCreators, bookmarkProject, addToCart } from './db.js';
 import { showToast } from '../core/global.js';
 
+/* ==========================================================================
+   HELPERS
+   ========================================================================== */
+
+
+/* ==========================================================================
+   PROJECT CARD TEMPLATE
+   Image-first. Bottom bar: name + price only.
+   Hover: single "View Details" button over blurred image.
+   ========================================================================== */
+
+function renderProjectCard(project) {
+    return `
+        <div class="project-card" data-id="${project.id}">
+
+            <div class="project-img-wrap">
+                <img src="${project.image}" alt="${project.title}" loading="lazy">
+
+               
+
+                <div class="project-hover-overlay">
+                    <button class="overlay-btn-primary btn-view-details" data-id="${project.id}">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2.5"
+                             stroke-linecap="round" stroke-linejoin="round"
+                             aria-hidden="true">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                        View Details
+                    </button>
+                </div>
+            </div>
+
+            <div class="project-body">
+                <h3 class="project-title">${project.title}</h3>
+                <span class="project-price">₹${project.price.toFixed(2)}</span>
+            </div>
+
+        </div>
+    `;
+}
+
+/* ==========================================================================
+   BIND CARD EVENTS
+   Call this immediately after rendering cards into the grid.
+   ========================================================================== */
+
+function bindProjectCardEvents(gridEl) {
+    // "View Details" button — opens drawer, stops card click from double-firing
+    gridEl.querySelectorAll('.btn-view-details').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openGlobalPreviewDrawer(btn.dataset.id);
+        });
+    });
+
+    // Clicking anywhere on the card itself also opens the drawer
+    gridEl.querySelectorAll('.project-card').forEach(card => {
+        card.addEventListener('click', () => {
+            openGlobalPreviewDrawer(card.dataset.id);
+        });
+    });
+}
+
+/* ==========================================================================
+   INIT PORTFOLIO / SHOWCASE PAGE
+   ========================================================================== */
+
 export function initPortfolioPage() {
     const creatorsSection = document.getElementById('portfolio-creators-list');
-    const projectsGrid = document.getElementById('portfolio-projects-grid');
+    const projectsGrid    = document.getElementById('portfolio-projects-grid');
 
     if (!creatorsSection || !projectsGrid) return;
 
+    // ── Render creator cards ──────────────────────────────────────────────────
     const creators = getCreators();
     creatorsSection.innerHTML = creators.map(creator => `
         <div class="creator-card" data-username="${creator.username}">
@@ -21,14 +91,13 @@ export function initPortfolioPage() {
                 <div class="skills-row">
                     ${creator.skills.slice(0, 3).map(s => `<span class="skill-tag">${s}</span>`).join('')}
                 </div>
-                <div class="creator-stats">
-                 
-                </div>
+                <div class="creator-stats"></div>
                 <a href="view-portfolio.html?user=${creator.username}" class="btn-view">View portfolio</a>
             </div>
         </div>
     `).join('');
 
+    // ── Render project cards ──────────────────────────────────────────────────
     const renderProjects = () => {
         const projects = getProjects();
 
@@ -42,64 +111,19 @@ export function initPortfolioPage() {
             return;
         }
 
-        projectsGrid.innerHTML = projects.map(p => {
-            const isFeatured = p.status === 'Featured';
-            const isTrending = p.status === 'Trending';
-            const statusClass = isFeatured ? 'status-featured' : isTrending ? 'status-trending' : 'status-default';
+        // Use the new card template for every project
+        projectsGrid.innerHTML = projects.map(renderProjectCard).join('');
 
-            return `
-                <div class="project-card" data-id="${p.id}">
-                    <div class="project-img-wrap">
-                        <img src="${p.image}" alt="${p.title}">
-                        <span class="project-status ${statusClass}">${p.status}</span>
-                    </div>
-                    <div class="project-body">
-                        <div class="project-meta">
-                            <span class="project-seller">by @${p.seller}</span>
-                            <span class="project-price">₹${p.price.toFixed(2)}</span>
-                        </div>
-                        <h3 class="project-title">${p.title}</h3>
-                        <p class="project-desc">${p.description}</p>
-                        <div class="project-tags">
-                            ${p.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}
-                        </div>
-                        <div class="project-footer">
-                            <button class="btn-bookmark bookmark-btn" title="Bookmark">
-                                <i class="ti ti-bookmark"></i>
-                            </button>
-                            <button class="btn-details preview-trigger">View details</button>
-                        </div>
-                    </div>
-                </div>`;
-        }).join('');
-
-        bindProjectInteractionListeners();
-    };
-
-    const bindProjectInteractionListeners = () => {
-        projectsGrid.querySelectorAll('.bookmark-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const id = btn.closest('.project-card').dataset.id;
-                const result = bookmarkProject(id);
-                btn.classList.toggle('active', result.isBookmarked);
-                showToast(
-                    result.isBookmarked ? 'Added to bookmarks!' : 'Removed from bookmarks.',
-                    result.isBookmarked ? 'success' : 'info'
-                );
-            });
-        });
-
-        projectsGrid.querySelectorAll('.preview-trigger').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.closest('.project-card').dataset.id;
-                openGlobalPreviewDrawer(id);
-            });
-        });
+        // Wire up the hover overlay button + card click → drawer
+        bindProjectCardEvents(projectsGrid);
     };
 
     renderProjects();
 }
+
+/* ==========================================================================
+   GLOBAL PREVIEW DRAWER
+   ========================================================================== */
 
 export function openGlobalPreviewDrawer(id) {
     const projects = getProjects();
@@ -109,12 +133,12 @@ export function openGlobalPreviewDrawer(id) {
     const drawer = document.getElementById('preview-drawer');
     if (!drawer) return;
 
-    document.getElementById('drawer-title').textContent = p.title;
-    document.getElementById('drawer-img').src = p.image;
-    document.getElementById('drawer-badge').textContent = p.status;
-    document.getElementById('drawer-price').textContent = `₹${p.price.toFixed(2)}`;
-    document.getElementById('drawer-desc').textContent = p.description;
-    document.getElementById('drawer-tags').innerHTML = p.tags
+    document.getElementById('drawer-title').textContent  = p.title;
+    document.getElementById('drawer-img').src            = p.image;
+    document.getElementById('drawer-badge').textContent  = p.status;
+    document.getElementById('drawer-price').textContent  = `₹${p.price.toFixed(2)}`;
+    document.getElementById('drawer-desc').textContent   = p.description;
+    document.getElementById('drawer-tags').innerHTML     = p.tags
         .map(t => `<span class="project-tag">${t}</span>`).join('');
 
     document.getElementById('drawer-buy-btn').onclick = () => {
@@ -141,5 +165,3 @@ export function closeGlobalPreviewDrawer() {
     const drawer = document.getElementById('preview-drawer');
     if (drawer) drawer.classList.remove('show');
 }
-
-
