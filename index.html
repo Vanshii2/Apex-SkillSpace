@@ -206,208 +206,159 @@
         </section>
 
         <!-- New Beautiful Section: How It Works -->
-        <section class="section" id="how-it-works" style="position: relative; overflow: hidden; padding: 100px 0;">
-            <div class="container">
+        <!--
+    HOW IT WORKS — SECTION HTML
+    Link the stylesheet: <link rel="stylesheet" href="css/pages/how-it-works.css">
+    Drop this block where the old workflow-carousel section was in index.html.
+-->
 
-                <div style="text-align: center; margin-bottom: 72px;">
-                    <span class="badge badge-outline text-mono"
-                        style="margin-bottom: 16px; border-color: rgb(21, 20, 20); color:rgb(17, 13, 13);">WORKFLOW</span>
-                    <h2 style="font-size: 3.2rem; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 20px;">How
-                        It Works</h2>
-                    <p
-                        style="color: rgba(105, 99, 99, 0.909); max-width: 540px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
-                        Three simple steps to launch your premium developer portfolio and get discovered by top tech
-                        companies.
+<section class="how-it-works-section" id="how-it-works">
+    <div class="container">
+
+        <!-- Header -->
+        <div class="hiw-header">
+            <span class="hiw-eyebrow">Workflow</span>
+            <h2 class="hiw-heading">How It Works</h2>
+            <p class="hiw-subheading">
+                Three simple steps to launch your premium developer portfolio
+                and get discovered by top tech companies.
+            </p>
+        </div>
+
+        <!-- Card Grid -->
+        <div class="hiw-grid">
+
+            <!-- Card 1 — Purple -->
+            <div class="hiw-card hiw-card--purple">
+                <div class="hiw-inner">
+                    <span class="hiw-step">Step 01</span>
+                    <h3 class="hiw-title"><strong>CREATE</strong> your profile</h3>
+                    <p class="hiw-desc">
+                        Sign up and set up your core identity. Choose your aesthetic
+                        and let your personal brand shine through.
                     </p>
                 </div>
+            </div>
 
+            <!-- Card 2 — Green -->
+            <div class="hiw-card hiw-card--green">
+                <div class="hiw-inner">
+                    <span class="hiw-step">Step 02</span>
+                    <h3 class="hiw-title"><strong>ADD</strong> your projects</h3>
+                    <p class="hiw-desc">
+                        Upload your best work. Our platform automatically formats
+                        it into stunning, responsive case studies.
+                    </p>
+                </div>
+            </div>
 
-                <div class="workflow-carousel">
-
-                    <!-- LEFT -->
-                    <div class="workflow-card">
-                        <div class="workflow-number text-mono">[ 01 ]</div>
-                        <h3 class="workflow-title">
-                            <strong>CREATE</strong> your profile
-                        </h3>
-                        <p class="workflow-desc">
-                            Sign up and set up your core identity.
-                            Choose your aesthetic and let your
-                            personal brand shine through.
-                        </p>
-                    </div>
-
-                    <!-- CENTER -->
-                    <div class="workflow-card">
-                        <div class="workflow-number text-mono">[ 02 ]</div>
-                        <h3 class="workflow-title">
-                            <strong>ADD</strong> your projects
-                        </h3>
-                        <p class="workflow-desc">
-                            Upload your best work. Our platform
-                            automatically formats it into stunning,
-                            responsive case studies.
-                        </p>
-                    </div>
-
-                    <!-- RIGHT -->
-                    <div class="workflow-card">
-                        <div class="workflow-number text-mono">[ 03 ]</div>
-                        <h3 class="workflow-title">
-                            <strong>PUBLISH</strong> & share
-                        </h3>
-                        <p class="workflow-desc">
-                            Go live instantly. Share your unique
-                            link with recruiters and your network
-                            to open new opportunities.
-                        </p>
-                    </div>
+            <!-- Card 3 — Orange -->
+            <div class="hiw-card hiw-card--orange">
+                <div class="hiw-inner">
+                    <span class="hiw-step">Step 03</span>
+                    <h3 class="hiw-title"><strong>PUBLISH</strong> &amp; share</h3>
+                    <p class="hiw-desc">
+                        Go live instantly. Share your unique link with recruiters
+                        and your network to open new opportunities.
+                    </p>
 
                 </div>
             </div>
-        </section>
+
+        </div>
+    </div>
+</section>
+
+
 
         <!-- Feature Carousel Section -->
-        <section class="feature-carousel-section" style="padding-top: 80px; padding-bottom: 80px;">
-            <div class="feature-carousel-container">
-                <div style="margin-bottom: 40px;">
-                    <h2 style="font-size: 2.8rem; max-width: 600px; line-height: 1.1; letter-spacing: -0.02em;">Featured
-                        Projects</h2>
-                </div>
+       
+            
+                
+<!--
+    FEATURED PROJECTS — SECTION HTML
+    ─────────────────────────────────────────────────────
+    1. Add to <head>:
+       <link rel="stylesheet" href="css/pages/featured-projects.css">
 
-                <div class="feature-carousel-track-wrapper">
-                    <div class="feature-carousel-track" id="secondary-carousel">
-                        <!-- Card 1 -->
-                        <a href="marketplace.html" class="feature-card" style="display: block;">
-                            <img src="assets/project1.png" alt="Project 1" class="feature-card-bg">
-                            <div class="feature-card-content">
-                                <div class="feature-card-top">
-                                    <h3>Face recognition website</h3>
-                                </div>
-                                <div class="feature-card-bottom">
-                                    <span
-                                        style="font-weight: 600; font-size: 1.1rem; background: rgba(255, 255, 255, 0.5); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">Buy
-                                        ₹49</span>
-                                </div>
-                            </div>
-                            <div class="fc-arrow-btn"> <!-- REPLACE the old arrow span -->
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000"
-                                    stroke-width="2.5" stroke-linecap="round">
-                                    <line x1="7" y1="17" x2="17" y2="7" />
-                                    <polyline points="7 7 17 7 17 17" />
+    2. Replace your entire <section class="feature-carousel-section">
+       block with this section.
+
+    3. Move featured-projects.css into css/pages/ alongside home.css.
+    ─────────────────────────────────────────────────────
+-->
+
+                <section class="featured-projects-section">
+                    <div class="featured-projects-container">
+
+                        <!-- Header row -->
+                        <div class="fp-header">
+                            <h2 class="fp-heading">Featured Projects</h2>
+                            <a href="marketplace.html" class="fp-view-all">
+                                View all projects
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    aria-hidden="true">
+                                    <line x1="7" y1="17" x2="17" y2="7"/>
+                                    <polyline points="7 7 17 7 17 17"/>
                                 </svg>
-                            </div>
-                        </a>
-                        <!-- Card 2 -->
-                        <a href="marketplace.html" class="feature-card" style="display: block;">
-                            <img src="assets/project2.png" alt="Project 2" class="feature-card-bg">
-                            <div class="feature-card-content">
-                                <div class="feature-card-top">
-                                    <h3>Heart Disease Detection</h3>                                </div>
-                                <div class="feature-card-bottom">
-                                    <span
-                                        style="font-weight: 600; font-size: 1.1rem; background: rgba(255, 255, 255, 0.5); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">Buy
-                                        ₹39</span>
+                            </a>
+                        </div>
+
+                        <!-- Cards -->
+                        <div class="fp-grid">
+
+                            <!-- Card 1 -->
+                            <a href="marketplace.html" class="fp-card">
+                                <div class="fp-img-wrap">
+                                    <img src="assets/project1.png" alt="Face Recognition Dashboard" class="fp-img">
+                                    <span class="fp-cat">AI · Vision</span>
                                 </div>
-                            </div>
-                        </a>
-                        <!-- Card 3 -->
-                        <a href="marketplace.html" class="feature-card" style="display: block;">
-                            <img src="assets/project3.png" alt="Project 3" class="feature-card-bg">
-                            <div class="feature-card-content">
-                                <div class="feature-card-top">
-                                    <h3>Shoe Mark Recognition</h3>                                </div>
-                                <div class="feature-card-bottom">
-                                    <span
-                                        style="font-weight: 600; font-size: 1.1rem; background: rgba(255, 255, 255, 0.5); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">Buy
-                                        ₹59</span>
+                                <div class="fp-footer">
+                                    <h3 class="fp-title">Face Recognition Dashboard</h3>
+                                    <span class="fp-price">₹49</span>
                                 </div>
-                            </div>
-                        </a>
-                        <!-- Card 4 -->
-                        <!-- <a href="marketplace.html" class="feature-card" style="display: block;">
-                            <img src="assets/project4.png" alt="Project 4" class="feature-card-bg">
-                            <div class="feature-card-content">
-                                <div class="feature-card-top">
-                                    <h3>Nova SaaS Landing Page</h3>
-                                    <p>High-converting layout for software.</p>
+                            </a>
+
+                            <!-- Card 2 -->
+                            <a href="marketplace.html" class="fp-card">
+                                <div class="fp-img-wrap">
+                                    <img src="assets/project2.png" alt="Health Monitoring System" class="fp-img">
+                                    <span class="fp-cat">ML · Health</span>
                                 </div>
-                                <div class="feature-card-bottom">
-                                    <span
-                                        style="font-weight: 600; font-size: 1.1rem; background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">Buy
-                                        ₹29</span>
+                                <div class="fp-footer">
+                                    <h3 class="fp-title">Health Monitoring System</h3>
+                                    <span class="fp-price">₹39</span>
                                 </div>
-                            </div>
-                        </a> -->
-                        <!-- Card 5 -->
-                        <!-- <a href="marketplace.html" class="feature-card" style="display: block;">
-                            <img src="assets/project5.png" alt="Project 5" class="feature-card-bg">
-                            <div class="feature-card-content">
-                                <div class="feature-card-top">
-                                    <h3>Aura Mobile App Kit</h3>
-                                    <p>100+ screens for iOS and Android.</p>
+                            </a>
+
+                            <!-- Card 3 -->
+                            <a href="marketplace.html" class="fp-card">
+                                <div class="fp-img-wrap">
+                                    <img src="assets/project3.png" alt="Shoe Mark Recognition" class="fp-img">
+                                    <span class="fp-cat">Computer Vision</span>
                                 </div>
-                                <div class="feature-card-bottom">
-                                    <span
-                                        style="font-weight: 600; font-size: 1.1rem; background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">Buy
-                                        ₹69</span>
+                                <div class="fp-footer">
+                                    <h3 class="fp-title">Shoe Mark Recognition</h3>
+                                    <span class="fp-price">₹59</span>
                                 </div>
-                            </div>
-                        </a> -->
-                        <!-- Card 6 -->
-                        <!-- <a href="marketplace.html" class="feature-card" style="display: block;">
-                            <img src="assets/project6.png" alt="Project 6" class="feature-card-bg">
-                            <div class="feature-card-content">
-                                <div class="feature-card-top">
-                                    <h3>Zenith Crypto Exchange</h3>
-                                    <p>Trading platform interface elements.</p>
-                                </div>
-                                <div class="feature-card-bottom">
-                                    <span
-                                        style="font-weight: 600; font-size: 1.1rem; background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">Buy
-                                        ₹45</span>
-                                </div>
-                            </div>
-                        </a> -->
-                        <!-- Card 7 -->
-                        <!-- <a href="marketplace.html" class="feature-card" style="display: block;">
-                            <img src="assets/project7.png" alt="Project 7" class="feature-card-bg">
-                            <div class="feature-card-content">
-                                <div class="feature-card-top">
-                                    <h3>Horizon Real Estate App</h3>
-                                    <p>Property listing and management UI.</p>
-                                </div>
-                                <div class="feature-card-bottom">
-                                    <span
-                                        style="font-weight: 600; font-size: 1.1rem; background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">Buy
-                                        ₹35</span>
-                                </div>
-                            </div>
-                        </a> -->
-                        <!-- Card 8 -->
-                        <!-- <a href="marketplace.html" class="feature-card" style="display: block;">
-                            <img src="assets/project8.png" alt="Project 8" class="feature-card-bg">
-                            <div class="feature-card-content">
-                                <div class="feature-card-top">
-                                    <h3>Prism Developer Portfolio</h3>
-                                    <p>Clean template for personal branding.</p>
-                                </div>
-                                <div class="feature-card-bottom">
-                                    <span
-                                        style="font-weight: 600; font-size: 1.1rem; background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">Buy
-                                        ₹19</span>
-                                </div>
-                            </div>
-                        </a> -->
+                            </a>
+
+                            <!--
+                                Add more cards here by duplicating the block above.
+                                The nth-child color cycle in the CSS handles accent colors
+                                automatically up to 6 cards.
+                            -->
+
+                        </div>
                     </div>
-                </div>
-
-
+                </section>
                 <!-- New Section: Everything You Need In One Portfolio -->
-                <section class="section" id="everything-you-need" style="background:rgba(255,255,255,0.01);">
+                <section class="section" id="everything-you-need" ">
                     <div class="container">
                         <div style="margin-bottom:48px;">
-                            <h2 style="font-size:2.8rem; margin-top:12px; letter-spacing: -0.02em; color: white;">Everything You Need
+                            <h2 style="font-size:2.8rem; margin-top:12px; letter-spacing: -0.02em; ">Everything You Need
                                 In One
                                 Portfolio</h2>
                         </div>
