@@ -60,7 +60,7 @@ function placeOrder() {
         return;
     }
 
-    const orderId = 'APEX-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+    const orderId = 'DESIGNX-' + Math.random().toString(36).substr(2, 9).toUpperCase();
     const displayEl = document.getElementById('order-id-display');
     if (displayEl) {
         displayEl.textContent = orderId;

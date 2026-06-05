@@ -8,10 +8,12 @@
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apex SkillSpace // Secure Checkout</title>
+    <title>DesignX</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+     <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/core.css">
     <link rel="stylesheet" href="css/utilities.css">
@@ -30,21 +32,41 @@
     </script>
 </head>
 <body>
-
+/* sticky nav bar */
+ <!-- Sticky Navbar -->
     <nav class="navbar" id="app-nav">
         <div class="navbar-container">
-            <a href="index.html" class="logo">
-                <img src="logo.png" alt="Logo" class="nav-logo-img" style="height:40px;">
+            <a href="index.html" class="logo" id="nav-logo">
+                <img src="logo_black1.png" alt="DesignX Logo" style="height: 70px; " class="nav-logo-img light-logo">
+                <img src="logo_white1.png" alt="DesignX Logo" style="height: 70px; " class="nav-logo-img dark-logo">
             </a>
 
-            <div style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                </svg>
-                Secure 256-bit SSL Checkout
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="showcase.html" class="nav-link">Portfolios</a></li>
+                <li><a href="portfolio.html" class="nav-link">Builder</a></li>
+                <li><a href="marketplace.html" class="nav-link">Marketplace</a></li>
+                <a href="profile.html" class="nav-link">Profile</a>
+            </ul>
+
+            <div class="nav-actions">
+                <!-- Theme Toggle Button -->
+                <button class="nav-btn theme-toggle-btn" title="Toggle System Theme">
+                    <svg width="18" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                    </svg>
+                </button>
+
+                <a href="login.html" class="nav-link" style="margin-left: 12px; font-weight: 500;">Login</a>
+                <a href="signup.html" class="btn btn-hero-solid clickable"
+                    style="padding: 10px 20px; font-size: 0.9rem;">Get Started</a>
             </div>
         </div>
     </nav>
+
 
     <div id="app-content">
         <main style="padding-top: var(--header-height); min-height: 100vh;">

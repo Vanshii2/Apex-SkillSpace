@@ -8,7 +8,7 @@
 /* ---- NAVBAR ---- */
 .navbar {
     position: sticky;
-    top: 12px;
+    top: 6px;
     z-index: 200;
     width: calc(100% - 48px);
     max-width: 1300px;
@@ -173,7 +173,7 @@
 
 /* --- Hero Glow Mesh Background --- */
 .hero-section {
-    min-height: 45vh;
+    min-height: 50vh;
     /* max-height: 60vh; */
     display: flex;
     flex-direction: column;
@@ -1106,14 +1106,10 @@
     margin-bottom: 6px;
     line-height: 1.25;
     letter-spacing: -0.02em;
+    color: rgb(255, 255, 255);
 }
 
-.feature-card-top p {
-    font-size: 0.82rem;
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.55);
-    margin-bottom: 16px;
-}
+
 
 .feature-card-bottom {
     display: flex;
@@ -1335,7 +1331,8 @@
 
 
 [data-theme="light"] #everything-you-need {
-    background: rgb(233, 233, 233) !important;
+    background:  #0E635E !important;
+    color:white !important;
 }
 
 .premium-feature-card {

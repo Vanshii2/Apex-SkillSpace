@@ -11,25 +11,44 @@ import { showToast } from './global.js';
 
 // --- 1. Dynamic Navbar scroll state handler ---
 export function initNavbarScroll() {
-    const navbar = document.querySelector('.navbar');
-    if (!navbar) return;
-    
-    const handleScroll = () => {
-        const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-        const forceScrolled = currentPath === 'portfolio.html' || currentPath === 'profile.html' || document.querySelector('.portfolio-builder-container') || document.querySelector('.profile-banner-container');
-        
-        if (forceScrolled) {
+
+    const navbar =
+    document.querySelector('.navbar');
+
+    if(!navbar) return;
+
+    function handleScroll(){
+
+        const currentPath =
+        window.location.pathname
+        .split('/')
+        .pop();
+
+        const forceScrolled =
+
+            currentPath === 'portfolio.html' ||
+
+            currentPath === 'profile.html';
+
+        if(forceScrolled){
+
             navbar.classList.add('scrolled');
-        } else if (window.scrollY > 20) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
+
+            return;
         }
-    };
-    
-    window.removeEventListener('scroll', handleScroll);
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
+
+        navbar.classList.toggle(
+            'scrolled',
+            window.scrollY > 20
+        );
+    }
+
+    window.addEventListener(
+        'scroll',
+        handleScroll
+    );
+
+    handleScroll();
 }
 
 // --- 2. Floating Dock Visibility & Active states ---

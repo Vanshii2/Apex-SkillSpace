@@ -205,7 +205,7 @@ export function initSellPage() {
         };
         
         saveProject(payload);
-        showToast('Premium project asset published to Apex successfully!', 'success');
+        showToast('Premium project asset published to DesignX successfully!', 'success');
         
         // Direct back to shop to view listed project shortly
         setTimeout(() => {
