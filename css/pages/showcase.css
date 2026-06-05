@@ -1,147 +1,270 @@
 /*
    ==========================================================================
    SHOWCASE PAGE — showcase.css
-   Creator cards + Project cards (image-first, hover = View Details only)
+   Tech / 3D / Creative Grid Creator Cards
    ==========================================================================
 */
 
-/* ─── CREATOR CARDS ─────────────────────────────────────────── */
+
 
 .creator-card {
-    background: var(--bg-card, #111);
-    border: 1px solid var(--border-color);
-    border-radius: 18px;
+    background: rgba(14, 14, 18, 0.72);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 22px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: transform 0.22s cubic-bezier(0.4,0,0.2,1),
-                border-color 0.22s ease,
-                box-shadow 0.22s ease;
+    position: relative;
+    box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.55),
+                inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    transition: transform 0.32s cubic-bezier(0.175, 0.885, 0.32, 1.2),
+                border-color 0.25s ease,
+                box-shadow 0.32s ease;
     cursor: pointer;
 }
-
+ 
 .creator-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(255,255,255,0.18);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+    transform: translateY(-6px) scale(1.015);
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.65),
+                inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    z-index: 10;
 }
-
+ 
+/* ── Banner ── */
 .creator-banner {
     width: 100%;
-    height: 80px;
+    height: 120px;
+    position: relative;
+    overflow: hidden;
+    background: #0f0f14;
+    flex-shrink: 0;
+}
+ 
+.creator-banner::before,
+.creator-banner::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(32px);
+    opacity: 0.75;
+    transition: transform 0.5s ease;
+}
+ 
+.creator-banner::before {
+    width: 160px; height: 160px;
+    top: -60px; left: -15px;
+}
+ 
+.creator-banner::after {
+    width: 120px; height: 120px;
+    bottom: -45px; right: 10px;
+}
+ 
+.creator-card:hover .creator-banner::before {
+    transform: scale(1.2) translate(8px, 8px);
+}
+ 
+.banner-purple::before { background: #7F77DD; }
+.banner-purple::after  { background: #534AB7; }
+.banner-teal::before   { background: #1D9E75; }
+.banner-teal::after    { background: #0F6E56; }
+.banner-coral::before  { background: #D85A30; }
+.banner-coral::after   { background: #993C1D; }
+.banner-pink::before   { background: #D4537E; }
+.banner-pink::after    { background: #993556; }
+.banner-amber::before  { background: #EF9F27; }
+.banner-amber::after   { background: #BA7517; }
+.banner-blue::before   { background: #378ADD; }
+.banner-blue::after    { background: #185FA5; }
+ 
+.creator-banner[style*="background-image"] {
     background-size: cover;
     background-position: center;
-    background-color: var(--bg-surface);
 }
-
+.creator-banner[style*="background-image"]::before,
+.creator-banner[style*="background-image"]::after { display: none; }
+ 
+/* ── Body ── */
 .creator-body {
-    padding: 0 16px 18px;
+    padding: 0 22px 22px;
     display: flex;
     flex-direction: column;
     flex: 1;
 }
-
+ 
+/* ── Avatar ── */
 .creator-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    border: 3px solid var(--bg-card, #111);
-    margin-top: -24px;
-    margin-bottom: 10px;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.14);
+    background: rgba(10, 10, 15, 0.9);
+    margin-top: -32px;
+    margin-bottom: 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
     overflow: hidden;
+    position: relative;
+    z-index: 2;
+    transition: transform 0.28s ease, border-color 0.25s ease;
     flex-shrink: 0;
-    background: var(--bg-surface);
 }
-
+ 
+.creator-card:hover .creator-avatar {
+    transform: translateY(-3px) scale(1.05);
+    border-color: rgba(255, 255, 255, 0.32);
+}
+ 
 .creator-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 14px;
 }
-
+ 
+/* ── Name ── */
 .creator-name {
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 2px;
-    color: var(--text-primary);
+    font-size: 1.08rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin: 0 0 6px;
+    line-height: 1.2;
+    font-family: inherit;
 }
-
+ 
+/* ── Handle ── */
 .creator-handle {
-    font-size: 0.7rem;
-    font-family: monospace;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-}
-
-.creator-bio {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    line-height: 1.55;
-    flex: 1;
+    display: inline-block;
+    font-size: 0.72rem;
+    font-family: inherit;
+    color: #7878a0;
     margin-bottom: 12px;
+    letter-spacing: 0.01em;
 }
-
+ 
+/* ── Bio ── */
+.creator-bio {
+    font-size: 0.82rem;
+    font-family: inherit;
+    color: #8888a8;
+    line-height: 1.65;
+    margin-bottom: 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+ 
+/* ── Skills ── */
 .skills-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
-    margin-bottom: 14px;
+    gap: 7px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    margin-bottom: 18px;
 }
-
+ 
 .skill-tag {
     font-size: 0.65rem;
-    padding: 3px 8px;
-    border-radius: 999px;
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    background: transparent;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 5px 11px;
+    border-radius: 7px;
+    background: rgba(199, 194, 194, 0.1);
+    border: 1px solid rgba(192, 185, 185, 0.22);
+    color: #ffffff;
 }
-
-.creator-stats {
-    display: flex;
-    gap: 20px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border-color);
-    margin-bottom: 14px;
-}
-
-.stat {
-    font-size: 0.72rem;
-    color: var(--text-secondary);
-}
-
-.stat strong {
-    font-weight: 600;
-    font-size: 0.95rem;
-    display: block;
-    color: var(--text-primary);
-}
-
+ 
+/* ── Stats (hidden but kept for JS) ── */
+.creator-stats { display: none; }
+ 
+/* ── Button ── */
 .btn-view {
-    display: block;
-    text-align: center;
-    padding: 9px 0;
-    border-radius: 9px;
-    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 13px 0;
+    border-radius: 12px;
+    font-size: 0.83rem;
     font-weight: 600;
-    background: #000;
-    border: 1px solid #000;
-    color: #fff !important;
+    font-family: inherit;
+    letter-spacing: 0.01em;
     text-decoration: none;
-    cursor: pointer;
-    transition: background 0.15s;
+    margin-top: auto;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #fff !important;
+    transition: background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.18s ease;
 }
-
-.btn-view:hover { background: #1a1a1a; }
-
-[data-theme="dark"] .btn-view {
+ 
+.btn-view::after {
+    content: '→';
+    transition: transform 0.2s ease;
+}
+ 
+.btn-view:hover {
+    background: rgba(255, 255, 255, 0.13);
+    border-color: rgba(255, 255, 255, 0.26);
+    transform: translateY(-1px);
+}
+ 
+.btn-view:hover::after { transform: translateX(4px); }
+ 
+ 
+/* ═══════════════════════════════════════════════════════════════
+   LIGHT MODE — CREATOR CARDS
+   ═══════════════════════════════════════════════════════════════ */
+ 
+[data-theme="light"] .creator-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 0, 0, 0.07);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+ 
+[data-theme="light"] .creator-card:hover {
+    border-color: rgba(0, 0, 0, 0.13);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+}
+ 
+[data-theme="light"] .creator-banner { background: #f3f0ff; }
+ 
+[data-theme="light"] .creator-avatar {
     background: #fff;
-    border-color: #fff;
-    color: #000 !important;
+    border-color: rgba(0, 0, 0, 0.09);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
 }
-
-[data-theme="dark"] .btn-view:hover { background: #e8e8e8; }
-
+ 
+[data-theme="light"] .creator-name    { color: #0f0f18; }
+[data-theme="light"] .creator-handle  { color: #888; }
+[data-theme="light"] .creator-bio     { color: #5a5a72; }
+ 
+[data-theme="light"] .skills-row { border-top-color: rgba(0, 0, 0, 0.07); }
+ 
+[data-theme="light"] .skill-tag {
+    background: rgba(202, 197, 197, 0.07);
+    border-color: rgba(188, 184, 184, 0.2);
+    color: #000000;
+}
+ 
+[data-theme="light"] .btn-view {
+    background: #0f0f18;
+    border-color: #0f0f18;
+    color: #fff !important;
+}
+ 
+[data-theme="light"] .btn-view:hover {
+    background: #26215C;
+    border-color: #26215C;
+}
 
 /* ─── PROJECT CARDS ─────────────────────────────────────────── */
 

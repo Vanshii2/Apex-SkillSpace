@@ -90,13 +90,9 @@
     animation: auth-card-entrance 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     opacity: 0;
     transform: translateY(20px);
-    background:
-        linear-gradient(135deg,
-            #ffffff 0%,
-            #fffdf8 35%,
-            #f8f0d8 100%);
+    background:white;
 
-    border-radius: 24px;
+    border-radius: 12px;
 
     border: 1px solid rgba(0, 0, 0, 0.08);
 
@@ -135,8 +131,8 @@
 }
 
 .auth-logo img {
-    width: 36px;
-    height: 36px;
+    width: 100px;
+    height: 60px;
     border-radius: 10px;
 }
 
@@ -204,7 +200,7 @@
 .auth-btn {
     width: 100%;
     padding: 16px;
-    border-radius: 8px;
+    border-radius: 4px;
     color: #ffffff;
     border: none;
     font-size: 1.05rem;
