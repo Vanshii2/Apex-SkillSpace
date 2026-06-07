@@ -6,7 +6,7 @@
    ==========================================================================
 */
 
-import { getProjects, addToCart, removeFromCart, addToWishlist, getCart, getWishlist } from './db.js';
+import { getProjects, addToCart, removeFromCart, addToWishlist, removeFromWishlist, getCart, getWishlist } from './db.js';
 import { showToast } from '../core/global.js';
 import { openGlobalPreviewDrawer } from './portfolio.js';
 
@@ -144,9 +144,12 @@ export function initShopPage() {
     const bindProductActions = () => {
         // Preview modal drawer
         projectsGrid.querySelectorAll('.preview-trigger-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 const card = btn.closest('.shop-product-card');
                 const id = card.dataset.id;
+                console.log("View Details button clicked for id:", id);
                 openGlobalPreviewDrawer(id);
             });
         });
@@ -171,19 +174,27 @@ export function initShopPage() {
             });
         });
         
-        // Wishlist simulated fav button
+        // Wishlist simulated fav button — toggles red ↔ white
         projectsGrid.querySelectorAll('.wishlist-action-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const card = btn.closest('.shop-product-card');
                 const id = card.dataset.id;
-                
-                const isAdded = addToWishlist(id);
-                if (isAdded) {
+                const currentlyWishlisted = getWishlist().includes(id);
+
+                if (currentlyWishlisted) {
+                    // Remove from wishlist — reset to white/default
+                    removeFromWishlist(id);
+                    btn.style.color = '';
+                    btn.style.borderColor = '';
+                    btn.style.background = '';
+                    showToast('Removed from your wishlist.', 'info');
+                } else {
+                    // Add to wishlist — turn red
+                    addToWishlist(id);
                     btn.style.color = 'var(--danger)';
                     btn.style.borderColor = 'var(--danger)';
+                    btn.style.background = 'rgba(239, 68, 68, 0.1)';
                     showToast('Added to your favorite wishlist!', 'success');
-                } else {
-                    showToast('Item already saved in wishlist.', 'info');
                 }
             });
         });

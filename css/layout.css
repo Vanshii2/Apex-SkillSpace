@@ -698,3 +698,70 @@
     font-size: 0.8rem;
     color: var(--text-muted);
 }
+
+/* ==========================================================================
+   MOBILE RESPONSIVE MEDIA QUERIES
+   Only apply below 768px — laptop/desktop layout is fully preserved.
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+    /* --- Navbar --- */
+    .navbar {
+        width: calc(100% - 24px);
+        top: 4px;
+    }
+
+    .navbar-container {
+        padding: 0 12px;
+        gap: 0;
+    }
+
+    .nav-menu {
+        display: none; /* hide full nav links on mobile */
+    }
+
+    .nav-actions {
+        gap: 10px;
+    }
+
+    /* --- Footer --- */
+    .footer {
+        padding: 40px 0 24px;
+        margin-top: 40px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    /* --- Modal --- */
+    .modal-container {
+        max-width: 94vw;
+        border-radius: 16px;
+    }
+
+    /* --- Notification dropdown --- */
+    .notification-dropdown {
+        width: 90vw;
+        right: -40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .footer-desc {
+        max-width: 100%;
+    }
+}

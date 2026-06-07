@@ -1363,3 +1363,86 @@
 
     padding: 50px 50px 0px 50px;
 }
+
+/* ==========================================================================
+   HOME PAGE — MOBILE RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+    /* Hero section */
+    .antigravity-hero {
+        font-size: 28px !important;
+        padding: 0 16px;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+        padding: 0 16px;
+    }
+
+    .hero-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0 16px;
+    }
+
+    /* Stats bar */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+
+    /* Marquee track container */
+    .marquee-track-container {
+        height: 280px;
+    }
+
+    /* Everything You Need layout */
+    .everything-layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    /* HIW grid */
+    .hiw-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* Featured projects */
+    .fp-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* Navbar pill on home */
+    .navbar {
+        width: calc(100% - 24px);
+    }
+
+    /* Preview drawer full width */
+    .preview-drawer {
+        width: 100%;
+    }
+
+    /* Testimonial scroller */
+    .testimonial-card {
+        min-width: 260px;
+        padding: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .antigravity-hero {
+        font-size: 22px !important;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .stat-number {
+        font-size: 1.8rem;
+    }
+}

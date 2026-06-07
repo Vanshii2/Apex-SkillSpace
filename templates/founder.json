@@ -6,7 +6,7 @@
   "colors": {
     "background": "#ffffff",
     "text": "#0a0a0a",
-    "accent": "#ff6b35"
+    "accent": "#111111"
   },
   "sections": {
     "photo": true,

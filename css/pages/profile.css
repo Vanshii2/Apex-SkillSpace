@@ -361,3 +361,68 @@ body {
     font-weight: 600;
     margin: 0 0 8px 0;
 }
+
+/* Form inputs & Upload Zone */
+.form-label {
+    display: block;
+    font-family: monospace;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+.profile-upload-zone {
+    border: 2px dashed var(--border-color);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    background: rgba(128, 128, 128, 0.02);
+}
+
+.profile-upload-zone:hover {
+    border-color: var(--text-primary);
+    background: rgba(128, 128, 128, 0.05);
+}
+
+.profile-upload-zone i {
+    transition: var(--transition);
+}
+
+.profile-upload-zone:hover i {
+    transform: scale(1.1);
+}
+
+.form-input {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 12px;
+    padding: 16px;
+    font-family: var(--font-body);
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.form-textarea {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 12px;
+    padding: 16px;
+    font-family: var(--font-body);
+    resize: vertical;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.form-input:focus, .form-textarea:focus {
+    border-color: var(--text-primary);
+}

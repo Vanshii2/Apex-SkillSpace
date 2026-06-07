@@ -43,41 +43,127 @@ export function initProfilePage() {
     // Render uploaded projects
     renderCreatorOwnedProjects(user.username);
 
-    // Wire edit button actions (Biography)
+    // Wire edit button actions (Biography, Name, and Profile Photo via Modal)
     const editBtn = document.getElementById('prof-edit-bio-btn');
     const saveBtn = document.getElementById('prof-save-bio-btn');
-    const bioBox = document.getElementById('prof-bio-editor-box');
+    const modal = document.getElementById('profileEditModal');
+    const closeBtn = document.getElementById('btn-close-profile-modal');
+    const cancelBtn = document.getElementById('btn-cancel-profile');
+    
     const bioInput = document.getElementById('prof-bio-input');
+    const nameInput = document.getElementById('prof-name-input');
+    const uploadZone = document.getElementById('prof-upload-zone');
+    const fileInput = document.getElementById('prof-avatar-file-input');
+    const filenameSpan = document.getElementById('prof-upload-filename');
+    
+    let tempAvatarBase64 = null;
 
-    if (editBtn && saveBtn && bioBox && bioInput) {
+    if (editBtn && modal) {
+        // Open modal
         editBtn.addEventListener('click', () => {
-            bioInput.value = user.bio || '';
-            bioBox.classList.add('active');
-            bioText.style.display = 'none';
-            editBtn.style.display = 'none';
+            if (nameInput) nameInput.value = user.name || '';
+            if (bioInput) bioInput.value = user.bio || '';
+            if (filenameSpan) filenameSpan.textContent = '';
+            tempAvatarBase64 = null;
+            modal.classList.add('show');
         });
 
-        saveBtn.addEventListener('click', () => {
-            const newVal = bioInput.value.trim();
-            if (newVal) {
-                user.bio = newVal;
+        // Close modal helper
+        const closeModal = () => {
+            modal.classList.remove('show');
+        };
+
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+
+        // Upload zone file triggers
+        if (uploadZone && fileInput) {
+            uploadZone.addEventListener('click', () => fileInput.click());
+
+            uploadZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadZone.style.borderColor = 'var(--text-primary)';
+                uploadZone.style.background = 'rgba(128, 128, 128, 0.08)';
+            });
+
+            uploadZone.addEventListener('dragleave', () => {
+                uploadZone.style.borderColor = 'var(--border-color)';
+                uploadZone.style.background = 'rgba(128, 128, 128, 0.02)';
+            });
+
+            uploadZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadZone.style.borderColor = 'var(--border-color)';
+                uploadZone.style.background = 'rgba(128, 128, 128, 0.02)';
+                
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    handleAvatarFile(e.dataTransfer.files[0]);
+                }
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    handleAvatarFile(e.target.files[0]);
+                }
+            });
+        }
+
+        function handleAvatarFile(file) {
+            if (!file.type.startsWith('image/')) {
+                showToast('Please select a valid image file', 'error');
+                return;
+            }
+
+            if (filenameSpan) {
+                filenameSpan.textContent = `Selected: ${file.name}`;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                tempAvatarBase64 = e.target.result;
+                showToast('Image uploaded successfully!', 'success');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Save action
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                const newVal = bioInput ? bioInput.value.trim() : '';
+                const newName = nameInput ? nameInput.value.trim() : '';
+
+                if (!newName) {
+                    showToast('Name cannot be empty', 'error');
+                    return;
+                }
+
+                // Update User state
+                user.name = newName;
+                user.bio = newVal || 'Enter a short professional biography to display here.';
+
+                if (tempAvatarBase64) {
+                    user.avatar = tempAvatarBase64;
+                    if (avatarEl) avatarEl.src = tempAvatarBase64;
+                }
 
                 if (user.profileProgress < 100) {
                     user.profileProgress = Math.min(100, user.profileProgress + 15);
                 }
 
+                // Update Database
                 updateCurrentUser(user);
 
-                bioText.textContent = newVal;
-                bioBox.classList.remove('active');
-                bioText.style.display = 'block';
-                editBtn.style.display = 'inline-flex';
+                // Sync view
+                document.getElementById('prof-name-inline').textContent = newName;
+                bioText.textContent = user.bio;
 
-                addNotification('You updated your public biography details.');
+                closeModal();
+
+                addNotification('You updated your public profile details.');
                 logActivity(2);
-                showToast('Biography updated successfully!', 'success');
-            }
-        });
+                showToast('Profile updated successfully!', 'success');
+            });
+        }
     }
 
     // Wire Follow Simulation

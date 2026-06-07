@@ -34,7 +34,7 @@ const portfolioState = {
         backgroundGradientStart: '#0f1220',
         backgroundGradientEnd: '#060814',
         text: '#111111',
-        accent: '#000000',
+        accent: '#111111',
         font: 'Inter',
         cardStyle: 'flat', // 'flat', 'glassmorphism', 'shadow', 'glow'
         blurIntensity: '15px',
@@ -60,72 +60,258 @@ export async function initPortfolioBuilder() {
     // Initialize Database
     initDB();
 
-    // Load portfolio data from localStorage
-    loadPortfolioData();
-
-    // Initialize particles
-    initParticles();
-
     // Load templates
     await loadTemplates();
 
-    // Setup tabs
-    setupEditorTabs();
+    // Setup collapsible accordions
+    setupAccordions();
+
+    // Setup resizable left panel
+    setupPanelResize();
+
+    // Setup device toggle view
+    setupDeviceToggle();
 
     // Setup event listeners
     setupEditorListeners();
     setupTemplateGallery();
 
-    // Initial preview render
-    updatePreview();
+    // Setup Switcher listeners
+    setupPortfolioSwitcher();
 
-    // Update stats dashboard
-    updateDashboard();
+    // Initialize state
+    const list = getPortfoliosList();
+    if (list.length === 0) {
+        const defaultPort = createPlaceholderPortfolio('port_default');
+        savePortfoliosList([defaultPort]);
+        localStorage.setItem('apex-current-portfolio-id', 'port_default');
+    }
+
+    let activeId = localStorage.getItem('apex-current-portfolio-id');
+    if (!activeId || !list.some(p => p.id === activeId)) {
+        const currentList = getPortfoliosList();
+        if (currentList.length > 0) {
+            activeId = currentList[0].id;
+            localStorage.setItem('apex-current-portfolio-id', activeId);
+        }
+    }
+
+    loadPortfolioData();
+    populatePortfolioSelect();
+    updatePreview();
 
     console.log('Portfolio Builder Ready');
 }
 
-// Setup horizontal editor tab switching
-function setupEditorTabs() {
-    const tabs = document.querySelectorAll('.tab-btn');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+// Setup collapsible accordions
+function setupAccordions() {
+    const headers = document.querySelectorAll('.accordion-header');
+    headers.forEach(header => {
+        header.addEventListener('click', () => {
+            const section = header.parentElement;
+            const isOpen = section.classList.contains('open');
 
-            tab.classList.add('active');
-            const tabId = tab.getAttribute('data-tab');
-            const activePane = document.getElementById(tabId);
-            if (activePane) {
-                activePane.classList.add('active');
+            // Collapse all others
+            document.querySelectorAll('.accordion-section').forEach(s => {
+                s.classList.remove('open');
+            });
+
+            if (!isOpen) {
+                section.classList.add('open');
             }
         });
     });
 }
 
+// Setup resizable sidebar panel width
+function setupPanelResize() {
+    const handle = document.getElementById('panelResizeHandle');
+    const panel = document.getElementById('builderPanel');
+    if (!handle || !panel) return;
+
+    let isResizing = false;
+
+    handle.addEventListener('mousedown', (e) => {
+        isResizing = true;
+        handle.classList.add('resizing');
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isResizing) return;
+        const newWidth = e.clientX;
+        if (newWidth >= 280 && newWidth <= 520) {
+            panel.style.width = newWidth + 'px';
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isResizing) {
+            isResizing = false;
+            handle.classList.remove('resizing');
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+        }
+    });
+}
+
+// Setup device preview mode toggles
+function setupDeviceToggle() {
+    const desktopBtn = document.getElementById('deviceDesktop');
+    const mobileBtn = document.getElementById('deviceMobile');
+    const frame = document.getElementById('canvasPreviewFrame');
+
+    if (desktopBtn && mobileBtn && frame) {
+        desktopBtn.addEventListener('click', () => {
+            desktopBtn.classList.add('active');
+            mobileBtn.classList.remove('active');
+            frame.classList.remove('mobile-view');
+        });
+
+        mobileBtn.addEventListener('click', () => {
+            mobileBtn.classList.add('active');
+            desktopBtn.classList.remove('active');
+            frame.classList.add('mobile-view');
+        });
+    }
+}
+
+// Helper to get list of portfolios from local storage
+function getPortfoliosList() {
+    const saved = localStorage.getItem('apex-portfolios-list');
+    if (saved) {
+        try {
+            return JSON.parse(saved);
+        } catch (e) {
+            console.error('Failed to parse portfolios list, resetting...', e);
+        }
+    }
+
+    // Fallback/Migration: seed default list with the current single portfolio if it exists
+    const single = localStorage.getItem('apex-portfolio');
+    if (single) {
+        try {
+            const parsed = JSON.parse(single);
+            parsed.id = parsed.id || 'port_default';
+            parsed.updatedAt = parsed.updatedAt || Date.now();
+            const defaultList = [parsed];
+            localStorage.setItem('apex-portfolios-list', JSON.stringify(defaultList));
+            return defaultList;
+        } catch (e) { }
+    }
+
+    return [];
+}
+
+// Helper to save list of portfolios
+function savePortfoliosList(list) {
+    localStorage.setItem('apex-portfolios-list', JSON.stringify(list));
+}
+
+// Create new blank portfolio object with placeholder values
+const createPlaceholderPortfolio = (id) => ({
+    id: id || 'port_' + Date.now(),
+    name: 'Your Name',
+    role: 'Your Professional Role',
+    tagline: 'Crafting beautiful and functional digital experiences.',
+    location: 'San Francisco, CA',
+    email: 'hello@yourdomain.com',
+    phone: '+1 (555) 000-0000',
+    websiteUrl: '',
+    about: 'Describe your professional summary and background story in detail here...',
+    photo: '',
+    skills: ['HTML', 'CSS', 'JavaScript'],
+    experience: [],
+    education: [],
+    projects: [],
+    certifications: [],
+    testimonials: [],
+    socialLinks: {},
+    selectedTemplate: 'minimal',
+    theme: 'dark',
+    customTheme: {
+        backgroundType: 'solid',
+        backgroundSolid: '#ffffff',
+        backgroundGradientStart: '#0f1220',
+        backgroundGradientEnd: '#060814',
+        text: '#111111',
+        accent: '#111111',
+        font: 'Inter',
+        cardStyle: 'flat',
+        blurIntensity: '15px',
+        borderOpacity: '0.08'
+    },
+    sectionVisibility: {
+        photo: true,
+        about: true,
+        skills: true,
+        experience: true,
+        education: true,
+        projects: true,
+        certifications: true,
+        testimonials: true,
+        contact: true
+    },
+    updatedAt: Date.now()
+});
+
 // Load data from localStorage
 function loadPortfolioData() {
-    const saved = localStorage.getItem('apex-portfolio');
-    if (saved) {
-        const parsed = JSON.parse(saved);
+    const activeId = localStorage.getItem('apex-current-portfolio-id');
+    if (!activeId) return;
 
+    const list = getPortfoliosList();
+    const activePort = list.find(p => p.id === activeId);
+
+    if (activePort) {
         // Handle migration fields gracefully
-        if (!parsed.customTheme) {
-            parsed.customTheme = { ...portfolioState.customTheme };
+        if (!activePort.customTheme) {
+            activePort.customTheme = {
+                backgroundType: 'solid',
+                backgroundSolid: '#ffffff',
+                backgroundGradientStart: '#0f1220',
+                backgroundGradientEnd: '#060814',
+                text: '#111111',
+                accent: '#111111',
+                font: 'Inter',
+                cardStyle: 'flat',
+                blurIntensity: '15px',
+                borderOpacity: '0.08'
+            };
         }
-        if (!parsed.sectionVisibility) {
-            parsed.sectionVisibility = { ...portfolioState.sectionVisibility };
+        if (activePort.customTheme.accent === '#00ffaa' || activePort.customTheme.accent === '#00FFAA' || activePort.customTheme.accent === '#dc2626') {
+            activePort.customTheme.accent = '#111111';
         }
-        if (!parsed.education) parsed.education = [];
-        if (!parsed.certifications) parsed.certifications = [];
-        if (!parsed.testimonials) parsed.testimonials = [];
-        if (!parsed.tagline) parsed.tagline = portfolioState.tagline;
-        if (!parsed.location) parsed.location = portfolioState.location;
-        if (!parsed.email) parsed.email = '';
-        if (!parsed.phone) parsed.phone = '';
-        if (!parsed.websiteUrl) parsed.websiteUrl = '';
+        if (!activePort.sectionVisibility) {
+            activePort.sectionVisibility = {
+                photo: true,
+                about: true,
+                skills: true,
+                experience: true,
+                education: true,
+                projects: true,
+                certifications: true,
+                testimonials: true,
+                contact: true
+            };
+        }
+        if (!activePort.education) activePort.education = [];
+        if (!activePort.certifications) activePort.certifications = [];
+        if (!activePort.testimonials) activePort.testimonials = [];
+        if (!activePort.tagline) activePort.tagline = 'Crafting beautiful and functional digital experiences.';
+        if (!activePort.location) activePort.location = 'San Francisco, CA';
+        if (!activePort.email) activePort.email = '';
+        if (!activePort.phone) activePort.phone = '';
+        if (!activePort.websiteUrl) activePort.websiteUrl = '';
+        if (!activePort.socialLinks) activePort.socialLinks = {};
 
-        Object.assign(portfolioState, parsed);
+        Object.assign(portfolioState, activePort);
+    } else {
+        const placeholder = createPlaceholderPortfolio(activeId);
+        list.push(placeholder);
+        savePortfoliosList(list);
+        Object.assign(portfolioState, placeholder);
     }
 
     // Populate form fields with saved data
@@ -134,7 +320,124 @@ function loadPortfolioData() {
 
 // Save data to localStorage
 function savePortfolioData() {
+    const activeId = localStorage.getItem('apex-current-portfolio-id');
+    if (!activeId) return;
+
+    portfolioState.id = activeId;
+    portfolioState.updatedAt = Date.now();
+
+    const list = getPortfoliosList();
+    const idx = list.findIndex(p => p.id === activeId);
+
+    if (idx !== -1) {
+        list[idx] = { ...portfolioState };
+    } else {
+        list.push({ ...portfolioState });
+    }
+
+    savePortfoliosList(list);
+
+    // Sync active state back for index.html/marketplace compatibility
     localStorage.setItem('apex-portfolio', JSON.stringify(portfolioState));
+
+    // Refresh dropdown name/role display text
+    populatePortfolioSelect();
+}
+
+// Setup Portfolio Switcher and Dropdown Event Listeners
+function setupPortfolioSwitcher() {
+    const btnCreate = document.getElementById('btnCreateNewSidebar');
+    if (btnCreate) {
+        btnCreate.addEventListener('click', () => {
+            createNewPortfolio();
+        });
+    }
+
+    const selectEl = document.getElementById('portfolioSelect');
+    if (selectEl) {
+        selectEl.addEventListener('change', (e) => {
+            const id = e.target.value;
+            if (id) {
+                editPortfolio(id);
+            }
+        });
+    }
+}
+
+// Populate the Switcher Dropdown in the Sidebar
+function populatePortfolioSelect() {
+    const selectEl = document.getElementById('portfolioSelect');
+    if (!selectEl) return;
+
+    const list = getPortfoliosList();
+    const activeId = localStorage.getItem('apex-current-portfolio-id');
+
+    selectEl.innerHTML = list.map(port => `
+        <option value="${port.id}" ${port.id === activeId ? 'selected' : ''}>
+            ${port.name || 'Untitled Portfolio'} (${port.role || 'No Role'})
+        </option>
+    `).join('');
+}
+
+// Create New Portfolio from Sidebar
+export function createNewPortfolio() {
+    const list = getPortfoliosList();
+    const newId = 'port_' + Date.now();
+    const newPort = createPlaceholderPortfolio(newId);
+
+    list.push(newPort);
+    savePortfoliosList(list);
+
+    localStorage.setItem('apex-current-portfolio-id', newId);
+
+    loadPortfolioData();
+    populatePortfolioSelect();
+    updatePreview();
+}
+
+// Edit/Switch Portfolio
+export function editPortfolio(id) {
+    localStorage.setItem('apex-current-portfolio-id', id);
+    loadPortfolioData();
+    populatePortfolioSelect();
+    updatePreview();
+}
+
+// Delete Portfolio
+export function deletePortfolio(id) {
+    const list = getPortfoliosList();
+    const item = list.find(p => p.id === id);
+    if (!item) return;
+
+    if (confirm(`Are you sure you want to delete "${item.name || 'Untitled Portfolio'}"?`)) {
+        const updated = list.filter(p => p.id !== id);
+        savePortfoliosList(updated);
+
+        const activeId = localStorage.getItem('apex-current-portfolio-id');
+        if (activeId === id) {
+            if (updated.length > 0) {
+                localStorage.setItem('apex-current-portfolio-id', updated[0].id);
+            } else {
+                const newId = 'port_' + Date.now();
+                const newPort = createPlaceholderPortfolio(newId);
+                savePortfoliosList([newPort]);
+                localStorage.setItem('apex-current-portfolio-id', newId);
+            }
+        }
+        loadPortfolioData();
+        populatePortfolioSelect();
+        updatePreview();
+    }
+}
+
+// Helper to set current active portfolio id and view it
+export function setCurrentAndNavigate(id, event) {
+    localStorage.setItem('apex-current-portfolio-id', id);
+    const list = getPortfoliosList();
+    const port = list.find(p => p.id === id);
+    if (port) {
+        localStorage.setItem('apex-portfolio', JSON.stringify(port));
+    }
 }
 
 // Populate editor form with current data
@@ -166,7 +469,6 @@ function populateEditorForm() {
     if (twitter) twitter.value = portfolioState.socialLinks.twitter || '';
 
     // Theme inputs populate
-    const themeBgType = document.getElementById('themeBgType');
     const themeBgSolid = document.getElementById('themeBgSolid');
     const themeBgSolidHex = document.getElementById('themeBgSolidHex');
     const themeBgGradStart = document.getElementById('themeBgGradStart');
@@ -178,29 +480,39 @@ function populateEditorForm() {
     const themeText = document.getElementById('themeText');
     const themeTextHex = document.getElementById('themeTextHex');
     const themeFont = document.getElementById('themeFont');
+    const themeFontSize = document.getElementById('themeFontSize');
     const themeCardStyle = document.getElementById('themeCardStyle');
     const themeBlur = document.getElementById('themeBlur');
     const themeBorderOpacity = document.getElementById('themeBorderOpacity');
 
     const ct = portfolioState.customTheme;
-    if (themeBgType) {
-        themeBgType.value = ct.backgroundType;
-        toggleBgInputs(ct.backgroundType);
+
+    // Set background type radios
+    const bgTypeSolid = document.querySelector('input[name="bgType"][value="solid"]');
+    const bgTypeGradient = document.querySelector('input[name="bgType"][value="gradient"]');
+    if (ct.backgroundType === 'gradient') {
+        if (bgTypeGradient) bgTypeGradient.checked = true;
+        toggleBgInputs('gradient');
+    } else {
+        if (bgTypeSolid) bgTypeSolid.checked = true;
+        toggleBgInputs('solid');
     }
-    if (themeBgSolid) themeBgSolid.value = ct.backgroundSolid;
-    if (themeBgSolidHex) themeBgSolidHex.value = ct.backgroundSolid;
-    if (themeBgGradStart) themeBgGradStart.value = ct.backgroundGradientStart;
-    if (themeBgGradStartHex) themeBgGradStartHex.value = ct.backgroundGradientStart;
-    if (themeBgGradEnd) themeBgGradEnd.value = ct.backgroundGradientEnd;
-    if (themeBgGradEndHex) themeBgGradEndHex.value = ct.backgroundGradientEnd;
-    if (themeAccent) themeAccent.value = ct.accent;
-    if (themeAccentHex) themeAccentHex.value = ct.accent;
-    if (themeText) themeText.value = ct.text;
-    if (themeTextHex) themeTextHex.value = ct.text;
-    if (themeFont) themeFont.value = ct.font;
+
+    if (themeBgSolid) themeBgSolid.value = ct.backgroundSolid || '#ffffff';
+    if (themeBgSolidHex) themeBgSolidHex.value = ct.backgroundSolid || '#ffffff';
+    if (themeBgGradStart) themeBgGradStart.value = ct.backgroundGradientStart || '#0f1220';
+    if (themeBgGradStartHex) themeBgGradStartHex.value = ct.backgroundGradientStart || '#0f1220';
+    if (themeBgGradEnd) themeBgGradEnd.value = ct.backgroundGradientEnd || '#060814';
+    if (themeBgGradEndHex) themeBgGradEndHex.value = ct.backgroundGradientEnd || '#060814';
+    if (themeAccent) themeAccent.value = ct.accent || '#111111';
+    if (themeAccentHex) themeAccentHex.value = ct.accent || '#111111';
+    if (themeText) themeText.value = ct.text || '#111111';
+    if (themeTextHex) themeTextHex.value = ct.text || '#111111';
+    if (themeFont) themeFont.value = ct.font || 'Inter';
+    if (themeFontSize) themeFontSize.value = ct.fontSize || '16px';
     if (themeCardStyle) {
-        themeCardStyle.value = ct.cardStyle;
-        toggleCardInputs(ct.cardStyle);
+        themeCardStyle.value = ct.cardStyle || 'flat';
+        toggleCardInputs(ct.cardStyle || 'flat');
     }
     if (themeBlur) {
         themeBlur.value = parseInt(ct.blurIntensity) || 15;
@@ -220,6 +532,10 @@ function populateEditorForm() {
         if (cb) cb.checked = vis[key];
     });
 
+    // Populate profile photo URL
+    const profilePhotoUrl = document.getElementById('profilePhotoUrl');
+    if (profilePhotoUrl) profilePhotoUrl.value = portfolioState.photo || '';
+
     // Sync avatar upload view
     const photoArea = document.getElementById('photoUploadArea');
     if (photoArea) {
@@ -227,7 +543,7 @@ function populateEditorForm() {
             photoArea.innerHTML = `<img src="${portfolioState.photo}" class="photo-upload-preview">`;
             photoArea.classList.add('has-image');
         } else {
-            photoArea.innerHTML = `<div class="photo-upload-placeholder"><i data-lucide="camera" style="width: 24px; height: 24px; color: rgba(0, 255, 170, 0.7); margin-bottom: 8px;"></i><div>Click or drag avatar</div></div>`;
+            photoArea.innerHTML = `<div class="photo-upload-placeholder"><i data-lucide="camera" style="width: 24px; height: 24px; color: rgba(255, 255, 255, 0.4); margin-bottom: 8px;"></i><div>Click or drag image here</div></div>`;
             photoArea.classList.remove('has-image');
         }
     }
@@ -291,13 +607,13 @@ function setupEditorListeners() {
     const btnPublish = document.getElementById('btnPublishPortfolio');
     if (btnPublish) {
         btnPublish.addEventListener('click', () => {
-            savePortfolioData();
             btnPublish.innerHTML = '<i data-lucide="loader" style="width:14px;height:14px;animation:spin 1s linear infinite"></i> Publishing...';
             btnPublish.disabled = true;
             btnPublish.style.opacity = '0.7';
             if (window.lucide) window.lucide.createIcons();
             setTimeout(() => {
-                window.location.href = 'view-portfolio.html?user=current';
+                publishToShowcase();
+                window.location.href = 'showcase.html';
             }, 900);
         });
     }
@@ -328,9 +644,31 @@ function setupEditorListeners() {
     bindSocialInput('linkedinLink', 'linkedin');
     bindSocialInput('twitterLink', 'twitter');
 
-    // Photo upload
+    // Photo upload and profile URL
     const photoInput = document.getElementById('profilePhotoInput');
     const photoUploadArea = document.getElementById('photoUploadArea');
+    const photoUrlInput = document.getElementById('profilePhotoUrl');
+
+    if (photoUrlInput) {
+        photoUrlInput.addEventListener('input', (e) => {
+            const url = e.target.value.trim();
+            portfolioState.photo = url;
+            savePortfolioData();
+
+            // Sync drag-and-drop zone thumbnail
+            if (photoUploadArea) {
+                if (url) {
+                    photoUploadArea.innerHTML = `<img src="${url}" class="photo-upload-preview">`;
+                    photoUploadArea.classList.add('has-image');
+                } else {
+                    photoUploadArea.innerHTML = `<div class="photo-upload-placeholder"><i data-lucide="camera" style="width: 24px; height: 24px; color: rgba(255, 255, 255, 0.4); margin-bottom: 8px;"></i><div>Click or drag image here</div></div>`;
+                    photoUploadArea.classList.remove('has-image');
+                    if (window.lucide) window.lucide.createIcons();
+                }
+            }
+            updatePreview();
+        });
+    }
 
     if (photoUploadArea) {
         photoUploadArea.addEventListener('click', () => {
@@ -339,11 +677,11 @@ function setupEditorListeners() {
 
         photoUploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
-            photoUploadArea.style.borderColor = 'rgba(0, 255, 170, 0.8)';
+            photoUploadArea.style.borderColor = 'rgba(255, 255, 255, 0.6)';
         });
 
         photoUploadArea.addEventListener('dragleave', () => {
-            photoUploadArea.style.borderColor = 'rgba(0, 255, 170, 0.25)';
+            photoUploadArea.style.borderColor = 'rgba(255, 255, 255, 0.15)';
         });
 
         photoUploadArea.addEventListener('drop', (e) => {
@@ -420,12 +758,21 @@ function setupEditorListeners() {
     if (btnSaveTest) btnSaveTest.addEventListener('click', saveTestimonial);
 
     // Theme Customizer event bindings
-    const themeBgType = document.getElementById('themeBgType');
-    if (themeBgType) {
-        themeBgType.addEventListener('change', (e) => {
+    const bgTypeRadios = document.querySelectorAll('input[name="bgType"]');
+    bgTypeRadios.forEach(radio => {
+        radio.addEventListener('change', (e) => {
             const val = e.target.value;
             portfolioState.customTheme.backgroundType = val;
             toggleBgInputs(val);
+            savePortfolioData();
+            updatePreview();
+        });
+    });
+
+    const themeFontSize = document.getElementById('themeFontSize');
+    if (themeFontSize) {
+        themeFontSize.addEventListener('change', (e) => {
+            portfolioState.customTheme.fontSize = e.target.value;
             savePortfolioData();
             updatePreview();
         });
@@ -524,6 +871,11 @@ function handlePhotoUpload(file) {
             photoArea.classList.add('has-image');
         }
 
+        const photoUrlInput = document.getElementById('profilePhotoUrl');
+        if (photoUrlInput) {
+            photoUrlInput.value = e.target.result;
+        }
+
         updatePreview();
     };
     reader.readAsDataURL(file);
@@ -563,9 +915,9 @@ function renderExperience() {
         <div class="exp-item">
             <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
                 <div>
-                    <div style="font-weight: 600; color: var(--text-primary); font-size: 13px;">${exp.title}</div>
-                    <div style="font-size: 12px; color: var(--text-secondary);">${exp.company}</div>
-                    <div style="font-size: 11px; color: var(--text-muted);">${exp.startDate} – ${exp.endDate}</div>
+                    <div class="exp-item-title" style="font-size: 13px;">${exp.title}</div>
+                    <div class="exp-item-sub" style="font-size: 12px; margin-top: 2px;">${exp.company}</div>
+                    <div class="exp-item-date" style="font-size: 11px; margin-top: 2px;">${exp.startDate} – ${exp.endDate}</div>
                 </div>
                 <button onclick="window.portfolioBuilder.removeExperience(${idx})" style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px;">&times;</button>
             </div>
@@ -591,9 +943,9 @@ function renderEducation() {
         <div class="exp-item">
             <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
                 <div>
-                    <div style="font-weight: 600; color: var(--text-primary); font-size: 13px;">${edu.degree}</div>
-                    <div style="font-size: 12px; color: var(--text-secondary);">${edu.school}</div>
-                    <div style="font-size: 11px; color: var(--text-muted);">${edu.startDate} – ${edu.endDate}</div>
+                    <div class="exp-item-title" style="font-size: 13px;">${edu.degree}</div>
+                    <div class="exp-item-sub" style="font-size: 12px; margin-top: 2px;">${edu.school}</div>
+                    <div class="exp-item-date" style="font-size: 11px; margin-top: 2px;">${edu.startDate} – ${edu.endDate}</div>
                 </div>
                 <button onclick="window.portfolioBuilder.removeEducation(${idx})" style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px;">&times;</button>
             </div>
@@ -618,9 +970,9 @@ function renderProjects() {
         <div class="exp-item">
             <div style="display: flex; justify-content: space-between; gap: 12px; margin-bottom: 4px;">
                 <div>
-                    <div style="font-weight: 600; color: var(--text-primary); font-size: 13px;">${project.title}</div>
-                    <div style="font-size: 11px; color: var(--text-secondary);">${project.description.substring(0, 45)}...</div>
-                    <div style="font-size: 10px; color: rgba(0, 255, 170, 0.6); font-family: var(--font-mono);">${(project.tags || []).join(', ')}</div>
+                    <div class="exp-item-title" style="font-size: 13px;">${project.title}</div>
+                    <div class="exp-item-sub" style="font-size: 11px; margin-top: 2px;">${project.description.substring(0, 45)}...</div>
+                    <div class="exp-item-date" style="font-size: 10px; font-family: var(--font-mono); margin-top: 2px;">${(project.tags || []).join(', ')}</div>
                 </div>
                 <button onclick="window.portfolioBuilder.removeProject(${idx})" style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px;">&times;</button>
             </div>
@@ -646,8 +998,8 @@ function renderCertifications() {
         <div class="exp-item">
             <div style="display: flex; justify-content: space-between; gap: 12px; margin-bottom: 4px;">
                 <div>
-                    <div style="font-weight: 600; color: var(--text-primary); font-size: 13px;">${cert.title}</div>
-                    <div style="font-size: 12px; color: var(--text-secondary);">${cert.issuer} (${cert.date})</div>
+                    <div class="exp-item-title" style="font-size: 13px;">${cert.title}</div>
+                    <div class="exp-item-sub" style="font-size: 12px; margin-top: 2px;">${cert.issuer} (${cert.date})</div>
                 </div>
                 <button onclick="window.portfolioBuilder.removeCertification(${idx})" style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px;">&times;</button>
             </div>
@@ -672,8 +1024,8 @@ function renderTestimonials() {
         <div class="exp-item">
             <div style="display: flex; justify-content: space-between; gap: 12px; margin-bottom: 4px;">
                 <div>
-                    <div style="font-weight: 600; color: var(--text-primary); font-size: 13px;">${test.name}</div>
-                    <div style="font-size: 11px; color: var(--text-secondary);">${test.quote.substring(0, 45)}...</div>
+                    <div class="exp-item-title" style="font-size: 13px;">${test.name}</div>
+                    <div class="exp-item-sub" style="font-size: 11px; margin-top: 2px;">${test.quote.substring(0, 45)}...</div>
                 </div>
                 <button onclick="window.portfolioBuilder.removeTestimonial(${idx})" style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px;">&times;</button>
             </div>
@@ -770,7 +1122,10 @@ export function saveProjectItem() {
     const title = document.getElementById('projTitle').value.trim();
     const description = document.getElementById('projDesc').value.trim();
     const tagsVal = document.getElementById('projTags').value.trim();
-    const link = document.getElementById('projLink').value.trim();
+    let link = document.getElementById('projLink').value.trim();
+    if (link && !/^https?:\/\//i.test(link)) {
+        link = 'https://' + link;
+    }
     const status = document.getElementById('projStatus').value;
 
     if (!title || !description) {
@@ -878,81 +1233,90 @@ function injectPreviewStyles(t, isCustom = false) {
         document.head.appendChild(styleTag);
     }
 
-    const activeTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-    const isSystemDark = activeTheme === 'dark';
-
     // Fallback/Custom check variables
     const font = isCustom ? portfolioState.customTheme.font : t.font;
+    const fontSize = isCustom ? (portfolioState.customTheme.fontSize || '16px') : '16px';
     let accent = isCustom ? portfolioState.customTheme.accent : t.colors.accent;
     let text = isCustom ? portfolioState.customTheme.text : t.colors.text;
     const cardStyle = isCustom ? portfolioState.customTheme.cardStyle : t.cardStyle;
 
-    // Auto adapt text and accent color visibility based on system dark/light theme
-    if (isSystemDark) {
-        text = '#ffffff';
-        if (accent === '#000000' || accent === '#000' || accent === '#111111' || accent === '#111') {
-            accent = '#00ffaa';
-        }
-    } else {
-        text = '#111111';
-        if (accent === '#ffffff' || accent === '#fff' || accent === '#eaeaea') {
-            accent = '#000000';
-        }
-    }
-
-    // Background style resolution
+    // Resolve background
     let bgStyle = '';
-    if (isSystemDark) {
-        bgStyle = 'rgba(10, 10, 12, 0.35)'; // transparent and dark
+    const ct = portfolioState.customTheme;
+    if (isCustom) {
+        if (ct.backgroundType === 'gradient') {
+            bgStyle = `linear-gradient(135deg, ${ct.backgroundGradientStart} 0%, ${ct.backgroundGradientEnd} 100%)`;
+        } else {
+            bgStyle = ct.backgroundSolid;
+        }
     } else {
-        bgStyle = 'rgba(255, 255, 255, 0.45)'; // transparent and light
+        bgStyle = t.colors.background || '#ffffff';
     }
 
-    const isGlass = cardStyle === 'glassmorphism' || isSystemDark;
-    const isGlow = cardStyle === 'glow' && !isSystemDark;
+    // Resolve if background color is light or dark to adapt classes
+    const bgSolid = isCustom ? ct.backgroundSolid : t.colors.background;
+    const bgGradStart = isCustom ? ct.backgroundGradientStart : t.colors.background;
+    const bgType = isCustom ? ct.backgroundType : 'solid';
+    const currentBg = bgType === 'solid' ? bgSolid : bgGradStart;
+    const isLight = isColorLight(currentBg);
 
-    const blur = isCustom ? portfolioState.customTheme.blurIntensity : '20px';
-    const borderOp = isCustom ? portfolioState.customTheme.borderOpacity : '0.08';
+    // Apply data-theme attribute on preview container to sync styles
+    const previewContainer = document.querySelector('.portfolio-preview');
+    if (previewContainer) {
+        previewContainer.setAttribute('data-theme', isLight ? 'light' : 'dark');
+    }
+
+    // Auto adapt text and accent color visibility based on theme for presets
+    if (!isCustom) {
+        if (!isLight) {
+            text = '#ffffff';
+            if (accent === '#000000' || accent === '#000' || accent === '#111111' || accent === '#111' || accent === '#dc2626') {
+                accent = '#ffffff';
+            }
+        } else {
+            text = '#111111';
+            if (accent === '#ffffff' || accent === '#fff' || accent === '#eaeaea') {
+                accent = '#000000';
+            }
+        }
+    }
+
+    const isGlass = cardStyle === 'glassmorphism';
+    const isGlow = cardStyle === 'glow';
+
+    const blur = isCustom ? ct.blurIntensity : '15px';
+    const borderOp = isCustom ? ct.borderOpacity : '0.08';
 
     let cardBg = '';
     let cardBorder = '';
     let cardShadow = '';
 
-    if (isSystemDark) {
-        cardBg = 'rgba(255, 255, 255, 0.035)';
-        cardBorder = '1px solid rgba(255, 255, 255, 0.08)';
+    if (isGlass) {
+        cardBg = isLight ? `rgba(0,0,0,0.025)` : `rgba(255,255,255,0.045)`;
+        cardBorder = `1px solid ${isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255, 255, 255, ' + borderOp + ')'}`;
         cardShadow = 'none';
+    } else if (isGlow) {
+        cardBg = isLight ? '#ffffff' : '#0f1220';
+        cardBorder = `1px solid ${accent}44`;
+        cardShadow = `0 10px 30px ${accent}12, 0 0 20px ${accent}04`;
+    } else if (cardStyle === 'shadow') {
+        cardBg = isLight ? '#ffffff' : '#111322';
+        cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1e293b';
+        cardShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05)';
     } else {
-        if (isGlass) {
-            cardBg = 'rgba(0, 0, 0, 0.025)';
-            cardBorder = '1px solid rgba(0, 0, 0, 0.06)';
-            cardShadow = 'none';
-        } else if (isGlow) {
-            cardBg = '#ffffff';
-            cardBorder = `1px solid ${accent}33`;
-            cardShadow = `0 8px 30px ${accent}0e, 0 0 16px ${accent}04`;
-        } else if (cardStyle === 'shadow') {
-            cardBg = '#ffffff';
-            cardBorder = '1px solid #e5e7eb';
-            cardShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.06)';
-        } else {
-            cardBg = '#f9fafb';
-            cardBorder = '1px solid #e5e7eb';
-            cardShadow = 'none';
-        }
+        // Flat
+        cardBg = isLight ? '#f9fafb' : '#0e101f';
+        cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1a1d35';
+        cardShadow = 'none';
     }
 
     styleTag.innerHTML = `
         .portfolio-preview {
             font-family: "${font}", var(--font-sans) !important;
+            font-size: ${fontSize} !important;
             background: ${bgStyle} !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            border: 1px solid ${isSystemDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)'} !important;
             color: ${text} !important;
-            transition: background 0.05s ease, color 0.05s ease;
-            border-radius: 12px;
-            padding: 48px;
+            transition: background 0.2s, color 0.2s;
         }
 
         .portfolio-preview .preview-name {
@@ -966,7 +1330,7 @@ function injectPreviewStyles(t, isCustom = false) {
         }
 
         .portfolio-preview .preview-tagline {
-            color: ${isSystemDark ? 'rgba(255, 255, 255, 0.75)' : 'rgba(0, 0, 0, 0.7)'} !important;
+            color: ${isLight ? 'rgba(0,0,0,0.7)' : 'rgba(255, 255, 255, 0.75)'} !important;
             font-family: "${font}", var(--font-sans) !important;
         }
 
@@ -977,13 +1341,13 @@ function injectPreviewStyles(t, isCustom = false) {
         }
 
         .portfolio-preview .preview-about {
-            color: ${isSystemDark ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.8)'} !important;
+            color: ${isLight ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.85)'} !important;
             font-family: "${font}", var(--font-sans) !important;
         }
 
         .portfolio-preview .preview-section-title {
             color: ${text} !important;
-            border-bottom: 2px dashed ${isSystemDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)'} !important;
+            border-bottom: 2.5px dashed ${accent}25 !important;
             font-family: "${font}", var(--font-sans) !important;
             margin-bottom: 20px;
         }
@@ -994,26 +1358,32 @@ function injectPreviewStyles(t, isCustom = false) {
             box-shadow: ${cardShadow} !important;
             backdrop-filter: blur(${blur}) !important;
             -webkit-backdrop-filter: blur(${blur}) !important;
-            padding: 24px;
             border-radius: 14px;
             margin-bottom: 24px;
+            padding: 32px !important;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .portfolio-preview .preview-skill {
-            background: ${isSystemDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.03)'} !important;
-            color: ${isSystemDark ? '#ffffff' : '#111111'} !important;
-            border: 1px solid ${isSystemDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.06)'} !important;
+            background: ${isLight ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.06)'} !important;
+            color: ${text} !important;
+            border: 1px solid ${isLight ? 'rgba(0, 0, 0, 0.08)' : 'rgba(255, 255, 255, 0.12)'} !important;
             font-family: var(--font-mono) !important;
         }
 
         .portfolio-preview .preview-experience-item {
-            background: ${isSystemDark ? 'rgba(255, 255, 255, 0.02)' : '#f9fafb'} !important;
-            border: 1px solid ${isSystemDark ? 'rgba(255, 255, 255, 0.05)' : '#e5e7eb'} !important;
+            background: ${isLight ? 'rgba(255, 255, 255, 0.65)' : 'rgba(255, 255, 255, 0.035)'} !important;
+            border: 1px solid ${isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.08)'} !important;
+            box-shadow: ${isLight ? '0 8px 32px 0 rgba(31, 38, 135, 0.04)' : '0 8px 32px 0 rgba(0, 0, 0, 0.2)'} !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
             padding: 16px;
-            border-radius: 10px;
-            margin-bottom: 12px;
-            border-left: 3px solid ${accent} !important;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            color: ${text} !important;
+            display: flex;
+            gap: 16px;
+            align-items: center;
         }
 
         .portfolio-preview .preview-exp-title {
@@ -1027,16 +1397,16 @@ function injectPreviewStyles(t, isCustom = false) {
         }
 
         .portfolio-preview .preview-exp-period {
-            color: ${isSystemDark ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)'} !important;
+            color: ${isLight ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.6)'} !important;
             font-family: var(--font-mono) !important;
         }
 
         .portfolio-preview .preview-photo {
-            border: 3px solid ${accent} !important;
+            border: 3.5px solid ${accent} !important;
         }
 
         .portfolio-preview .social-anchor {
-            color: ${isSystemDark ? 'rgba(255, 255, 255, 0.65)' : 'rgba(0, 0, 0, 0.6)'} !important;
+            color: ${isLight ? 'rgba(0, 0, 0, 0.65)' : 'rgba(255, 255, 255, 0.65)'} !important;
             text-decoration: none;
             font-size: 0.9rem;
             transition: color 0.2s ease;
@@ -1048,8 +1418,8 @@ function injectPreviewStyles(t, isCustom = false) {
 
         .portfolio-preview .form-input,
         .portfolio-preview .form-textarea {
-            background: ${isSystemDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)'} !important;
-            border: 1px solid ${isSystemDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)'} !important;
+            background: ${isLight ? 'rgba(0, 0, 0, 0.02)' : 'rgba(255, 255, 255, 0.03)'} !important;
+            border: 1px solid ${isLight ? 'rgba(0, 0, 0, 0.08)' : 'rgba(255, 255, 255, 0.08)'} !important;
             color: ${text} !important;
         }
     `;
@@ -1080,10 +1450,29 @@ function updatePreview() {
 
         if (section === 'photo') {
             if (photoSection) {
-                photoSection.style.display = vis.photo ? 'block' : 'none';
+                const hasPhoto = !!portfolioState.photo;
+                photoSection.style.display = (vis.photo && hasPhoto) ? 'block' : 'none';
             }
         } else if (container) {
-            container.style.display = vis[section] ? 'block' : 'none';
+            let hasContent = true;
+            if (section === 'skills') {
+                hasContent = portfolioState.skills && portfolioState.skills.length > 0;
+            } else if (section === 'experience') {
+                hasContent = portfolioState.experience && portfolioState.experience.length > 0;
+            } else if (section === 'education') {
+                hasContent = portfolioState.education && portfolioState.education.length > 0;
+            } else if (section === 'projects') {
+                hasContent = portfolioState.projects && portfolioState.projects.length > 0;
+            } else if (section === 'certifications') {
+                hasContent = portfolioState.certifications && portfolioState.certifications.length > 0;
+            } else if (section === 'testimonials') {
+                hasContent = portfolioState.testimonials && portfolioState.testimonials.length > 0;
+            } else if (section === 'about') {
+                hasContent = portfolioState.about && portfolioState.about.trim() !== '' &&
+                    !portfolioState.about.trim().startsWith('Tell your') &&
+                    !portfolioState.about.trim().startsWith('Describe your');
+            }
+            container.style.display = (vis[section] && hasContent) ? 'block' : 'none';
         }
     });
 
@@ -1136,6 +1525,10 @@ function updatePreview() {
 
     // Update testimonials
     updatePreviewTestimonials();
+
+    if (window.lucide) {
+        window.lucide.createIcons();
+    }
 }
 
 function updatePreviewConnectRow() {
@@ -1196,11 +1589,22 @@ function updatePreviewExperience() {
         return;
     }
 
+    const isLight = document.querySelector('.portfolio-preview')?.getAttribute('data-theme') === 'light';
+    const isCustom = portfolioState.selectedTemplate === 'custom' || portfolioState.customTheme.backgroundSolid !== '';
+    const template = getTemplate(portfolioState.selectedTemplate);
+    const fallbackAccent = isLight ? '#111111' : '#ffffff';
+    const accent = (isCustom ? portfolioState.customTheme.accent : (template ? template.colors.accent : null)) || fallbackAccent;
+
     expContainer.innerHTML = portfolioState.experience.map(exp => `
         <div class="preview-experience-item">
-            <div class="preview-exp-title" style="font-weight:600; font-size:1rem;">${exp.title}</div>
-            <div class="preview-exp-company" style="font-weight:500; font-size:0.85rem; margin-top: 2px;">${exp.company}</div>
-            <div class="preview-exp-period" style="font-size:0.75rem; margin-top: 4px;">${exp.startDate} – ${exp.endDate}</div>
+            <div class="card-icon-container" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: ${isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)'}; color: ${accent}; flex-shrink: 0;">
+                <i data-lucide="briefcase" style="width: 18px; height: 18px;"></i>
+            </div>
+            <div style="flex: 1; min-width: 0;">
+                <div class="preview-exp-title" style="font-weight:600; font-size:1rem;">${exp.title}</div>
+                <div class="preview-exp-company" style="font-weight:500; font-size:0.85rem; margin-top: 2px;">${exp.company}</div>
+                <div class="preview-exp-period" style="font-size:0.75rem; margin-top: 4px;">${exp.startDate} – ${exp.endDate}</div>
+            </div>
         </div>
     `).join('');
 }
@@ -1219,11 +1623,22 @@ function updatePreviewEducation() {
         return;
     }
 
+    const isLight = document.querySelector('.portfolio-preview')?.getAttribute('data-theme') === 'light';
+    const isCustom = portfolioState.selectedTemplate === 'custom' || portfolioState.customTheme.backgroundSolid !== '';
+    const template = getTemplate(portfolioState.selectedTemplate);
+    const fallbackAccent = isLight ? '#111111' : '#ffffff';
+    const accent = (isCustom ? portfolioState.customTheme.accent : (template ? template.colors.accent : null)) || fallbackAccent;
+
     eduContainer.innerHTML = portfolioState.education.map(edu => `
         <div class="preview-experience-item">
-            <div class="preview-exp-title" style="font-weight:600; font-size:1rem;">${edu.degree}</div>
-            <div class="preview-exp-company" style="font-weight:500; font-size:0.85rem; margin-top: 2px;">${edu.school}</div>
-            <div class="preview-exp-period" style="font-size:0.75rem; margin-top: 4px;">${edu.startDate} – ${edu.endDate}</div>
+            <div class="card-icon-container" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: ${isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)'}; color: ${accent}; flex-shrink: 0;">
+                <i data-lucide="graduation-cap" style="width: 18px; height: 18px;"></i>
+            </div>
+            <div style="flex: 1; min-width: 0;">
+                <div class="preview-exp-title" style="font-weight:600; font-size:1rem;">${edu.degree}</div>
+                <div class="preview-exp-company" style="font-weight:500; font-size:0.85rem; margin-top: 2px;">${edu.school}</div>
+                <div class="preview-exp-period" style="font-size:0.75rem; margin-top: 4px;">${edu.startDate} – ${edu.endDate}</div>
+            </div>
         </div>
     `).join('');
 }
@@ -1243,12 +1658,15 @@ function updatePreviewProjects() {
     }
 
     projectsContainer.innerHTML = portfolioState.projects.map(project => `
-        <div class="preview-experience-item">
-            <div class="preview-exp-title" style="font-weight:600; font-size:1rem;">${project.title}</div>
-            <div class="preview-exp-company" style="font-size:0.85rem; margin: 4px 0 8px 0; line-height: 1.4;">${project.description}</div>
-            ${project.link ? `<a href="${project.link}" target="_blank" style="font-size:0.75rem; color:inherit; text-decoration:underline; display:inline-block; margin-bottom:8px;">View Link &rarr;</a>` : ''}
-            <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:4px;">
-                ${(project.tags || []).map(tag => `<span class="preview-skill" style="font-size:0.7rem; padding:3px 8px;">${tag}</span>`).join('')}
+        <div class="preview-experience-item" style="align-items: flex-start; cursor: ${project.link ? 'pointer' : 'default'};" ${project.link ? `onclick="window.open('${project.link}', '_blank')"` : ''}>
+            <img src="${project.image || 'assets/right2.jpg'}" alt="${project.title}" style="width: 72px; height: 72px; object-fit: cover; border-radius: 8px; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.05);">
+            <div style="flex: 1; min-width: 0;">
+                <div class="preview-exp-title" style="font-weight:600; font-size:1rem;">${project.title}</div>
+                <div class="preview-exp-company" style="font-size:0.85rem; margin: 4px 0 8px 0; line-height: 1.4; color: inherit; opacity: 0.85;">${project.description}</div>
+                ${project.link ? `<a href="${project.link}" target="_blank" style="font-size:0.75rem; color:inherit; text-decoration:underline; display:inline-block; margin-bottom:8px;" onclick="event.stopPropagation();">View Link &rarr;</a>` : ''}
+                <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:4px;">
+                    ${(project.tags || []).map(tag => `<span class="preview-skill" style="font-size:0.7rem; padding:3px 8px;">${tag}</span>`).join('')}
+                </div>
             </div>
         </div>
     `).join('');
@@ -1268,13 +1686,24 @@ function updatePreviewCertifications() {
         return;
     }
 
+    const isLight = document.querySelector('.portfolio-preview')?.getAttribute('data-theme') === 'light';
+    const isCustom = portfolioState.selectedTemplate === 'custom' || portfolioState.customTheme.backgroundSolid !== '';
+    const template = getTemplate(portfolioState.selectedTemplate);
+    const fallbackAccent = isLight ? '#111111' : '#ffffff';
+    const accent = (isCustom ? portfolioState.customTheme.accent : (template ? template.colors.accent : null)) || fallbackAccent;
+
     certsContainer.innerHTML = portfolioState.certifications.map(cert => `
-        <div class="preview-experience-item" style="border-left-width: 2px;">
-            <div class="preview-exp-title" style="font-weight:600; font-size:0.95rem;">${cert.title}</div>
-            <div class="preview-exp-company" style="font-size:0.85rem; margin-top:2px;">
-                ${cert.issuer} &bull; <span style="font-size:0.75rem; opacity:0.6;">${cert.date}</span>
+        <div class="preview-experience-item">
+            <div class="card-icon-container" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: ${isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)'}; color: ${accent}; flex-shrink: 0;">
+                <i data-lucide="award" style="width: 18px; height: 18px;"></i>
             </div>
-            ${cert.link ? `<a href="${cert.link}" target="_blank" style="font-size:0.75rem; color:inherit; text-decoration:underline; display:inline-block; margin-top:4px;">Verify Credentials &rarr;</a>` : ''}
+            <div style="flex: 1; min-width: 0;">
+                <div class="preview-exp-title" style="font-weight:600; font-size:0.95rem;">${cert.title}</div>
+                <div class="preview-exp-company" style="font-size:0.85rem; margin-top:2px; color: inherit; opacity: 0.85;">
+                    ${cert.issuer} &bull; <span style="font-size:0.75rem; opacity:0.6;">${cert.date}</span>
+                </div>
+                ${cert.link ? `<a href="${cert.link}" target="_blank" style="font-size:0.75rem; color:inherit; text-decoration:underline; display:inline-block; margin-top:4px;">Verify Credentials &rarr;</a>` : ''}
+            </div>
         </div>
     `).join('');
 }
@@ -1293,12 +1722,22 @@ function updatePreviewTestimonials() {
         return;
     }
 
-    const isSystemDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const isLight = document.querySelector('.portfolio-preview')?.getAttribute('data-theme') === 'light';
+    const isCustom = portfolioState.selectedTemplate === 'custom' || portfolioState.customTheme.backgroundSolid !== '';
+    const template = getTemplate(portfolioState.selectedTemplate);
+    const fallbackAccent = isLight ? '#111111' : '#ffffff';
+    const accent = (isCustom ? portfolioState.customTheme.accent : (template ? template.colors.accent : null)) || fallbackAccent;
+
     testimonialsContainer.innerHTML = portfolioState.testimonials.map(test => `
-        <div class="preview-experience-item" style="border-left: 2px solid ${isSystemDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'}; background:${isSystemDark ? 'rgba(255,255,255,0.015)' : 'rgba(0,0,0,0.015)'}; padding:16px;">
-            <p style="font-style:italic; font-size:0.85rem; line-height:1.5; margin:0 0 10px 0;">"${test.quote}"</p>
-            <div style="font-weight:600; font-size:0.85rem;">${test.name}</div>
-            <div style="font-size:0.75rem; opacity:0.7; margin-top:1px;">${test.role}</div>
+        <div class="preview-experience-item" style="align-items: flex-start;">
+            <div class="card-icon-container" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: ${isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)'}; color: ${accent}; flex-shrink: 0; margin-top: 2px;">
+                <i data-lucide="quote" style="width: 16px; height: 16px;"></i>
+            </div>
+            <div style="flex: 1; min-width: 0;">
+                <p style="font-style: italic; font-size: 0.85rem; line-height: 1.5; margin: 0 0 10px 0; color: inherit;">"${test.quote}"</p>
+                <div style="font-weight: 600; font-size: 0.85rem; color: inherit;">${test.name}</div>
+                <div style="font-size: 0.75rem; opacity: 0.75; margin-top: 1px; color: inherit;">${test.role}</div>
+            </div>
         </div>
     `).join('');
 }
@@ -1312,36 +1751,33 @@ async function setupTemplateGallery() {
 
     // Add custom template card at the end
     const customCardHtml = `
-        <div class="template-card ${portfolioState.selectedTemplate === 'custom' ? 'selected' : ''}" onclick="window.portfolioBuilder.selectTemplate('custom')">
-            <div class="template-thumbnail" style="background: linear-gradient(135deg, #1f1f2e 0%, #111119 100%);">
-                <span style="color:#00ffaa; font-family: monospace;">CUSTOM</span>
+        <div class="theme-card ${portfolioState.selectedTemplate === 'custom' ? 'selected' : ''}" onclick="window.portfolioBuilder.selectTemplate('custom')">
+            <div class="theme-card-preview" style="background: linear-gradient(135deg, #1f1f2e 0%, #111119 100%); color:#dc2626; font-family: monospace;">
+                CUSTOM
             </div>
-            <div class="template-info">
-                <div class="template-name">Custom Theme Builder</div>
-            </div>
+            <div class="theme-card-name">Custom Builder</div>
         </div>
     `;
 
     templatesContainer.innerHTML = allTemplates.map(template => {
-        // Build color indicators representing template palette
-        const paletteHtml = `
-            <div style="display:flex; gap:4px; margin-top: 4px;">
-                <div style="width:10px; height:10px; border-radius:50%; background:${template.colors.background}; border:1px solid rgba(255,255,255,0.2);"></div>
-                <div style="width:10px; height:10px; border-radius:50%; background:${template.colors.text}; border:1px solid rgba(255,255,255,0.2);"></div>
-                <div style="width:10px; height:10px; border-radius:50%; background:${template.colors.accent}; border:1px solid rgba(255,255,255,0.2);"></div>
-            </div>
-        `;
+        const isSelected = template.id === portfolioState.selectedTemplate;
+        const bg = template.colors.background || '#ffffff';
+        const text = template.colors.text || '#111111';
+        const accent = template.colors.accent || '#dc2626';
+
+        let cardBg = bg;
+        if (template.id === 'glass') {
+            cardBg = 'linear-gradient(135deg, #0f172a 0%, #020617 100%)';
+        } else if (template.id === 'executive') {
+            cardBg = 'linear-gradient(135deg, #1e1b4b 0%, #090514 100%)';
+        }
+
         return `
-            <div class="template-card ${template.id === portfolioState.selectedTemplate ? 'selected' : ''}" onclick="window.portfolioBuilder.selectTemplate('${template.id}')">
-                <div class="template-thumbnail" style="background: linear-gradient(135deg, ${template.colors.background} 0%, rgba(20,20,20,0.85) 100%); border-bottom:1px solid rgba(255,255,255,0.06);">
-                    <span style="color:${template.colors.text}; font-size:10px; font-family:${template.font}, sans-serif;">${template.name}</span>
+            <div class="theme-card ${isSelected ? 'selected' : ''}" onclick="window.portfolioBuilder.selectTemplate('${template.id}')">
+                <div class="theme-card-preview" style="background: ${cardBg}; color: ${text}; font-family: '${template.font}', sans-serif;">
+                    <span style="border-bottom: 2px solid ${accent}; padding-bottom: 2px;">Aa</span>
                 </div>
-                <div class="template-info">
-                    <div class="template-name" style="display:flex; justify-content:space-between; align-items:center;">
-                        <span>${template.name}</span>
-                        ${paletteHtml}
-                    </div>
-                </div>
+                <div class="theme-card-name">${template.name}</div>
             </div>
         `;
     }).join('') + customCardHtml;
@@ -1464,8 +1900,65 @@ export function loadPreset(username) {
     updateDashboard();
 }
 
+export function publishToShowcase() {
+    // 1. Get creator profile data
+    const userData = JSON.parse(localStorage.getItem('apex_user_data') || '{}');
+    const userSlug = portfolioState.name ? portfolioState.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') : 'current_user';
+
+    const entry = {
+        id: 'creator_user_' + Date.now(),
+        username: userSlug,
+        name: portfolioState.name || 'Creative Developer',
+        avatar: portfolioState.photo || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
+        banner: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+        role: portfolioState.role || 'Creative Developer',
+        bio: portfolioState.about || 'Crafting premium digital experiences.',
+        skills: portfolioState.skills.length > 0 ? portfolioState.skills : ['UI Design', 'Frontend'],
+        experience: portfolioState.experience,
+        education: portfolioState.education,
+        projects: portfolioState.projects,
+        certifications: portfolioState.certifications,
+        testimonials: portfolioState.testimonials,
+        socialLinks: portfolioState.socialLinks,
+        selectedTemplate: portfolioState.selectedTemplate,
+        customTheme: portfolioState.customTheme,
+        sectionVisibility: portfolioState.sectionVisibility,
+        tagline: portfolioState.tagline,
+        location: portfolioState.location,
+        email: portfolioState.email,
+        phone: portfolioState.phone,
+        websiteUrl: portfolioState.websiteUrl,
+        followers: 12,
+        following: 5,
+        stats: { projects: portfolioState.projects.length, likes: 24, sales: 2 }
+    };
+
+    // 2. Read existing published portfolios/creators database (fpm_creators)
+    let creators = [];
+    try {
+        creators = JSON.parse(localStorage.getItem('fpm_creators') || '[]');
+    } catch (e) {
+        creators = [];
+    }
+
+    // Prepend user entry (filter out existing custom entries to prevent duplicates)
+    creators = creators.filter(c => c.username !== userSlug);
+    creators.unshift(entry);
+
+    // Save back to client DB
+    localStorage.setItem('fpm_creators', JSON.stringify(creators));
+
+    // Also save apex-portfolio data to ensure persistent builder state
+    savePortfolioData();
+}
+
 // Export portfolio builder API
 export const portfolioBuilder = {
+    createNewPortfolio,
+    editPortfolio,
+    deletePortfolio,
+    setCurrentAndNavigate,
+
     removeSkill,
     removeExperience,
     removeEducation,
@@ -1476,6 +1969,7 @@ export const portfolioBuilder = {
     updateDashboard,
     loadPreset,
     updatePreview,
+    publishToShowcase,
 
     openExperienceModal,
     closeExperienceModal,

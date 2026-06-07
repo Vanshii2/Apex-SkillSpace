@@ -72,7 +72,7 @@ function bindProjectCardEvents(gridEl) {
 
 export function initPortfolioPage() {
     const creatorsSection = document.getElementById('portfolio-creators-list');
-    const projectsGrid    = document.getElementById('portfolio-projects-grid');
+    const projectsGrid = document.getElementById('portfolio-projects-grid');
 
     if (!creatorsSection || !projectsGrid) return;
 
@@ -126,39 +126,64 @@ export function initPortfolioPage() {
    ========================================================================== */
 
 export function openGlobalPreviewDrawer(id) {
-    const projects = getProjects();
-    const p = projects.find(item => item.id === id);
-    if (!p) return;
+    try {
+        console.log("openGlobalPreviewDrawer called for id:", id);
+        const projects = getProjects();
+        const p = projects.find(item => item.id === id);
+        if (!p) {
+            console.warn("Project not found for id:", id);
+            return;
+        }
 
-    const drawer = document.getElementById('preview-drawer');
-    if (!drawer) return;
+        const drawer = document.getElementById('preview-drawer');
+        if (!drawer) {
+            console.warn("Preview drawer element '#preview-drawer' not found");
+            return;
+        }
 
-    document.getElementById('drawer-title').textContent  = p.title;
-    document.getElementById('drawer-img').src            = p.image;
-    document.getElementById('drawer-badge').textContent  = p.status;
-    document.getElementById('drawer-price').textContent  = `₹${p.price.toFixed(2)}`;
-    document.getElementById('drawer-desc').textContent   = p.description;
-    document.getElementById('drawer-tags').innerHTML     = p.tags
-        .map(t => `<span class="project-tag">${t}</span>`).join('');
+        const titleEl = document.getElementById('drawer-title');
+        const imgEl = document.getElementById('drawer-img');
+        const badgeEl = document.getElementById('drawer-badge');
+        const priceEl = document.getElementById('drawer-price');
+        const descEl = document.getElementById('drawer-desc');
+        const tagsEl = document.getElementById('drawer-tags');
+        const buyBtn = document.getElementById('drawer-buy-btn');
 
-    document.getElementById('drawer-buy-btn').onclick = () => {
-        const isAdded = addToCart(p.id);
-        showToast(
-            isAdded ? `${p.title} added to cart!` : `${p.title} is already in your cart.`,
-            isAdded ? 'success' : 'info'
-        );
-        if (isAdded && window.updateCartDrawer) window.updateCartDrawer();
-    };
+        if (titleEl) titleEl.textContent = p.title || '';
+        if (imgEl) imgEl.src = p.image || '';
+        if (badgeEl) badgeEl.textContent = p.status || p.category || '';
+        if (priceEl) priceEl.textContent = `₹${(p.price || 0).toFixed(2)}`;
+        if (descEl) descEl.textContent = p.description || '';
+        
+        if (tagsEl) {
+            tagsEl.innerHTML = (p.tags || [])
+                .map(t => `<span class="project-tag">${t}</span>`).join('');
+        }
 
-    const wishBtn = document.getElementById('drawer-wishlist-btn');
-    if (wishBtn) {
-        wishBtn.onclick = () => {
-            showToast(`Saved ${p.title} to your wishlist!`, 'success');
-            drawer.classList.remove('show');
-        };
+        if (buyBtn) {
+            buyBtn.onclick = () => {
+                const isAdded = addToCart(p.id);
+                showToast(
+                    isAdded ? `${p.title} added to cart!` : `${p.title} is already in your cart.`,
+                    isAdded ? 'success' : 'info'
+                );
+                if (isAdded && window.updateCartDrawer) window.updateCartDrawer();
+            };
+        }
+
+        const wishBtn = document.getElementById('drawer-wishlist-btn');
+        if (wishBtn) {
+            wishBtn.onclick = () => {
+                showToast(`Saved ${p.title} to your wishlist!`, 'success');
+                drawer.classList.remove('show');
+            };
+        }
+
+        drawer.classList.add('show');
+        console.log("Preview drawer opened successfully for:", p.title);
+    } catch (error) {
+        console.error("Error in openGlobalPreviewDrawer:", error);
     }
-
-    drawer.classList.add('show');
 }
 
 export function closeGlobalPreviewDrawer() {

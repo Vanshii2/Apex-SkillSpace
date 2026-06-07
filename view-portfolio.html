@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
     <style id="fouc-preload">
         * {
@@ -9,12 +10,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DesignX</title>
-    
+
     <!-- Google Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;1,300&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;1,300&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -23,14 +26,14 @@
     <link rel="stylesheet" href="css/core.css">
     <link rel="stylesheet" href="css/utilities.css">
     <link rel="stylesheet" href="css/layout.css">
-    
+
     <style id="dynamic-template-styles">
         /* Dynamic styles will be inserted here */
     </style>
-    
+
     <!-- Immediate Theme Helper & Authentication Gate -->
     <script>
-        (function() {
+        (function () {
             // Check auth first
             if (localStorage.getItem('isLoggedIn') !== 'true') {
                 window.location.href = 'login.html';
@@ -77,16 +80,18 @@
         })();
     </script>
 </head>
+
 <body>
 
     <!-- Exit Portfolio Button (Sticky Floating) -->
-    <a href="showcase.html" class="btn btn-secondary clickable" style="position: fixed; top: 24px; left: 24px; z-index: 1000; padding: 10px 18px; font-size: 0.85rem; font-family: var(--font-mono); text-decoration: none; border-radius: 99px; box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 8px;">
+    <a href="showcase.html" class="btn btn-secondary clickable"
+        style="position: fixed; top: 24px; left: 24px; z-index: 1000; padding: 10px 18px; font-size: 0.85rem; font-family: var(--font-mono); text-decoration: none; border-radius: 99px; box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 8px;">
         <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i> Exit Portfolio
     </a>
 
     <!-- Main Dynamic Container -->
     <div id="portfolio-root" class="layout-centered">
-        
+
         <!-- Header Section -->
         <header class="portfolio-header" id="sec-photo">
             <div class="portfolio-avatar-container">
@@ -94,12 +99,16 @@
             </div>
             <h1 id="portfolio-name">Name</h1>
             <p id="portfolio-role">Role</p>
-            <p id="portfolio-tagline" style="margin-top: 10px; font-size: 1.15rem; opacity: 0.85; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.5;"></p>
-            <div id="portfolio-location" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; margin-top: 12px; margin-bottom: 8px; opacity: 0.75; font-family: var(--font-mono); padding: 4px 10px; border-radius: 99px;">
+            <p id="portfolio-tagline"
+                style="margin-top: 10px; font-size: 1.15rem; opacity: 0.85; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+            </p>
+            <div id="portfolio-location"
+                style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; margin-top: 12px; margin-bottom: 8px; opacity: 0.75; font-family: var(--font-mono); padding: 4px 10px; border-radius: 99px;">
                 <i data-lucide="map-pin" style="width: 12px; height: 12px;"></i>
                 <span id="portfolio-location-text">Location</span>
             </div>
-            <div id="portfolio-quickconnect" style="display: flex; justify-content: center; gap: 16px; font-size: 0.85rem; margin-top: 14px; opacity: 0.8;">
+            <div id="portfolio-quickconnect"
+                style="display: flex; justify-content: center; gap: 16px; font-size: 0.85rem; margin-top: 14px; opacity: 0.8;">
                 <!-- Connect row -->
             </div>
         </header>
@@ -163,14 +172,21 @@
             <h2 class="section-title">Get in Touch</h2>
             <form id="contact-form" style="display:flex; flex-direction:column; gap:14px; margin-top:8px;">
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-                    <input type="text" id="contact-name" placeholder="Your Name" required style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); color:inherit; padding:10px 14px; border-radius:8px; font-size:0.9rem; outline:none;">
-                    <input type="email" id="contact-email" placeholder="Your Email" required style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); color:inherit; padding:10px 14px; border-radius:8px; font-size:0.9rem; outline:none;">
+                    <input type="text" id="contact-name" placeholder="Your Name" required
+                        style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); color:inherit; padding:10px 14px; border-radius:8px; font-size:0.9rem; outline:none;">
+                    <input type="email" id="contact-email" placeholder="Your Email" required
+                        style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); color:inherit; padding:10px 14px; border-radius:8px; font-size:0.9rem; outline:none;">
                 </div>
-                <input type="text" id="contact-subject" placeholder="Subject" required style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); color:inherit; padding:10px 14px; border-radius:8px; font-size:0.9rem; outline:none;">
-                <textarea id="contact-message" placeholder="Write your message here..." required style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); color:inherit; padding:10px 14px; border-radius:8px; height:120px; font-size:0.9rem; resize:vertical; outline:none;"></textarea>
-                <button type="submit" id="btn-submit-message" class="btn btn-glow" style="align-self:flex-start; padding:10px 24px; border-radius:8px; cursor:pointer;">Send Message</button>
+                <input type="text" id="contact-subject" placeholder="Subject" required
+                    style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); color:inherit; padding:10px 14px; border-radius:8px; font-size:0.9rem; outline:none;">
+                <textarea id="contact-message" placeholder="Write your message here..." required
+                    style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); color:inherit; padding:10px 14px; border-radius:8px; height:120px; font-size:0.9rem; resize:vertical; outline:none;"></textarea>
+                <button type="submit" id="btn-submit-message" class="btn btn-glow"
+                    style="align-self:flex-start; padding:10px 24px; border-radius:8px; cursor:pointer;">Send
+                    Message</button>
             </form>
-            <div id="contact-success" style="display:none; color:#00ffaa; font-size:0.9rem; margin-top:12px; font-family:var(--font-mono); align-items:center; gap:6px;">
+            <div id="contact-success"
+                style="display:none; color:var(--text-primary); font-size:0.9rem; margin-top:12px; font-family:var(--font-mono); align-items:center; gap:6px;">
                 <i data-lucide="check-circle" style="width:16px; height:16px;"></i> Message sent successfully!
             </div>
         </section>
@@ -180,17 +196,23 @@
     <!-- Script to load, fetch, and style dynamic portfolios -->
     <script type="module">
         import { initDB, getCreators, getProjects } from './js/modules/db.js';
-        
+
         // Make sure DB is loaded in LocalStorage
         initDB();
 
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const username = urlParams.get('user') || 'current';
-            
+
             let data = null;
 
             if (username === 'current') {
+                const exitBtn = document.querySelector('a[href="showcase.html"]');
+                if (exitBtn) {
+                    exitBtn.href = 'portfolio.html';
+                    exitBtn.innerHTML = '<i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i> Back to Builder';
+                    if (window.lucide) window.lucide.createIcons();
+                }
                 const saved = localStorage.getItem('apex-portfolio');
                 if (saved) {
                     data = JSON.parse(saved);
@@ -223,27 +245,32 @@
                     data = {
                         name: creator.name,
                         role: creator.role || 'Creative Developer',
-                        tagline: 'Designing premium interfaces and future-proof digital spaces.',
-                        location: creator.username === 'hyper_arch' ? 'London, UK' : (creator.username === 'linear_flow' ? 'Berlin, DE' : 'San Francisco, CA'),
+                        tagline: creator.tagline || 'Designing premium interfaces and future-proof digital spaces.',
+                        location: creator.location || (creator.username === 'hyper_arch' ? 'London, UK' : (creator.username === 'linear_flow' ? 'Berlin, DE' : 'San Francisco, CA')),
                         about: creator.bio,
                         photo: creator.avatar,
                         skills: creator.skills,
                         experience: creator.experience || [],
-                        education: [
+                        education: creator.education || [
                             { school: 'Apex Design Academy', degree: 'Advanced UI Design Certification', startDate: '2022', endDate: '2023' },
                             { school: 'University of Digital Arts', degree: 'B.S. Interaction Science', startDate: '2018', endDate: '2022' }
                         ],
                         projects: creator.projects || [],
-                        certifications: [
+                        certifications: creator.certifications || [
                             { title: 'Certified Webflow Developer', issuer: 'Webflow Academy', date: '2024-05', link: '#' },
                             { title: 'Human-Computer Interaction Expert', issuer: 'Interaction Design Foundation', date: '2023-11', link: '#' }
                         ],
-                        testimonials: [
+                        testimonials: creator.testimonials || [
                             { name: 'Elena Rostova', role: 'Design Lead at Stripe', quote: `${creator.name} is a brilliant UI engineer. Their eye for detail and animations brought our project to life.` },
                             { name: 'Devon Keir', role: 'CTO at Vercel Labs', quote: `Incredibly clean HTML & Javascript structure. Delivery was flawless and ahead of schedule.` }
                         ],
+                        phone: creator.phone || '',
+                        email: creator.email || '',
+                        websiteUrl: creator.websiteUrl || '',
                         socialLinks: creator.socialLinks || {},
                         selectedTemplate: creator.selectedTemplate || 'minimal',
+                        customTheme: creator.customTheme || null,
+                        sectionVisibility: creator.sectionVisibility || null,
                         username: creator.username
                     };
                 }
@@ -264,7 +291,7 @@
             // Load Template Config
             let template = null;
             let isCustom = data.selectedTemplate === 'custom' || data.customTheme;
-            
+
             if (data.selectedTemplate !== 'custom') {
                 try {
                     const response = await fetch(`templates/${data.selectedTemplate || 'minimal'}.json`);
@@ -281,12 +308,16 @@
                 }
             } else {
                 const ct = data.customTheme || {};
+                let userAccent = ct.accent || '#111111';
+                if (userAccent === '#00ffaa' || userAccent === '#00FFAA' || userAccent === '#dc2626') {
+                    userAccent = '#111111';
+                }
                 template = {
                     font: ct.font || 'Inter',
                     colors: {
                         background: ct.backgroundType === 'solid' ? ct.backgroundSolid : ct.backgroundGradientStart,
                         text: ct.text || '#ffffff',
-                        accent: ct.accent || '#00ffaa'
+                        accent: userAccent
                     },
                     sections: data.sectionVisibility || { photo: true, about: true, skills: true, experience: true, education: true, projects: true, certifications: true, testimonials: true, contact: true },
                     cardStyle: ct.cardStyle || 'glassmorphism',
@@ -301,7 +332,7 @@
             document.title = `${data.name} // Professional Portfolio`;
             document.getElementById('portfolio-name').textContent = data.name;
             document.getElementById('portfolio-role').textContent = data.role;
-            
+
             const taglineEl = document.getElementById('portfolio-tagline');
             if (data.tagline) {
                 taglineEl.textContent = data.tagline;
@@ -353,16 +384,22 @@
                 document.getElementById('sec-skills').style.display = 'none';
             }
 
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            const accent = template.colors.accent || (isLight ? '#111111' : '#ffffff');
+
             // Experience Timeline
             const expTimeline = document.getElementById('portfolio-experience');
             if (data.experience && data.experience.length > 0) {
                 expTimeline.innerHTML = data.experience.map(e => `
                     <div class="timeline-card">
+                        <div class="card-icon-container" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: ${isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)'}; color: ${accent}; flex-shrink: 0;">
+                            <i data-lucide="briefcase" style="width: 18px; height: 18px;"></i>
+                        </div>
                         <div class="timeline-header">
                             <h4 class="timeline-title">${e.title}</h4>
                             <span class="timeline-company">${e.company}</span>
+                            <div class="timeline-date">${e.startDate} – ${e.endDate}</div>
                         </div>
-                        <div class="timeline-date">${e.startDate} – ${e.endDate}</div>
                     </div>
                 `).join('');
             } else {
@@ -374,11 +411,14 @@
             if (data.education && data.education.length > 0) {
                 eduTimeline.innerHTML = data.education.map(ed => `
                     <div class="timeline-card">
+                        <div class="card-icon-container" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: ${isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)'}; color: ${accent}; flex-shrink: 0;">
+                            <i data-lucide="graduation-cap" style="width: 18px; height: 18px;"></i>
+                        </div>
                         <div class="timeline-header">
                             <h4 class="timeline-title">${ed.degree}</h4>
                             <span class="timeline-company">${ed.school}</span>
+                            <div class="timeline-date">${ed.startDate} – ${ed.endDate}</div>
                         </div>
-                        <div class="timeline-date">${ed.startDate} – ${ed.endDate}</div>
                     </div>
                 `).join('');
             } else {
@@ -392,16 +432,16 @@
             const matchingProjects = savedProjects.length
                 ? savedProjects
                 : allProjects.filter(p => p.seller === data.username || p.seller === username || (username === 'current' && p.seller === 'apex_user'));
-            
+
             if (matchingProjects.length > 0) {
                 projectsGrid.innerHTML = matchingProjects.map(p => `
-                    <div class="port-project-card">
+                    <div class="port-project-card" style="cursor: ${p.link ? 'pointer' : 'default'};" ${p.link ? `onclick="window.open('${p.link}', '_blank')"` : ''}>
                         <img src="${p.image || 'assets/right2.jpg'}" alt="${p.title}" class="port-proj-img">
                         <div class="port-proj-content">
                             <span class="port-proj-status">${p.status || 'Demo Project'}</span>
                             <h3 class="port-proj-title">${p.title}</h3>
                             <p class="port-proj-desc">${p.description}</p>
-                            ${p.link ? `<a href="${p.link}" target="_blank" style="font-size:0.75rem; color:inherit; text-decoration:underline; display:inline-block; margin-top:8px; margin-bottom:8px;">View Link &rarr;</a>` : ''}
+                            ${p.link ? `<a href="${p.link}" target="_blank" style="font-size:0.75rem; color:inherit; text-decoration:underline; display:inline-block; margin-top:8px; margin-bottom:8px;" onclick="event.stopPropagation();">View Link &rarr;</a>` : ''}
                             <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;">
                                 ${(p.tags || []).slice(0, 3).map(t => `<span class="port-skill-badge" style="font-size:0.65rem; padding: 3px 8px;">${t}</span>`).join('')}
                             </div>
@@ -417,12 +457,15 @@
             if (data.certifications && data.certifications.length > 0) {
                 certsTimeline.innerHTML = data.certifications.map(c => `
                     <div class="timeline-card">
+                        <div class="card-icon-container" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: ${isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)'}; color: ${accent}; flex-shrink: 0;">
+                            <i data-lucide="award" style="width: 18px; height: 18px;"></i>
+                        </div>
                         <div class="timeline-header">
                             <h4 class="timeline-title">${c.title}</h4>
                             <span class="timeline-company">${c.issuer}</span>
+                            <div class="timeline-date">${c.date}</div>
+                            ${c.link ? `<a href="${c.link}" target="_blank" style="font-size:0.75rem; color:inherit; text-decoration:underline; display:inline-block; margin-top:6px;">Verify Credentials &rarr;</a>` : ''}
                         </div>
-                        <div class="timeline-date">${c.date}</div>
-                        ${c.link ? `<a href="${c.link}" target="_blank" style="font-size:0.75rem; color:inherit; text-decoration:underline; display:inline-block; margin-top:6px;">Verify Credentials &rarr;</a>` : ''}
                     </div>
                 `).join('');
             } else {
@@ -433,10 +476,15 @@
             const testimonialsTimeline = document.getElementById('portfolio-testimonials');
             if (data.testimonials && data.testimonials.length > 0) {
                 testimonialsTimeline.innerHTML = data.testimonials.map(t => `
-                    <div class="timeline-card" style="border-left:2px solid rgba(0,0,0,0.1); background:rgba(0,0,0,0.01);">
-                        <p style="font-style:italic; font-size:0.95rem; line-height:1.6; margin:0 0 12px 0;">"${t.quote}"</p>
-                        <div style="font-weight:600; font-size:0.9rem;">${t.name}</div>
-                        <div style="font-size:0.8rem; opacity:0.7; margin-top:2px;">${t.role}</div>
+                    <div class="timeline-card" style="align-items: flex-start;">
+                        <div class="card-icon-container" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: ${isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)'}; color: ${accent}; flex-shrink: 0; margin-top: 2px;">
+                            <i data-lucide="quote" style="width: 16px; height: 16px;"></i>
+                        </div>
+                        <div style="flex: 1; min-width: 0;">
+                            <p style="font-style:italic; font-size:0.95rem; line-height:1.6; margin:0 0 12px 0; color:inherit;">"${t.quote}"</p>
+                            <div style="font-weight:600; font-size:0.9rem; color:inherit;">${t.name}</div>
+                            <div style="font-size:0.8rem; opacity:0.75; margin-top:2px; color:inherit;">${t.role}</div>
+                        </div>
                     </div>
                 `).join('');
             } else {
@@ -448,7 +496,27 @@
             for (const [sec, visible] of Object.entries(visibility)) {
                 const element = document.getElementById(`sec-${sec}`);
                 if (element) {
-                    element.style.display = visible ? 'flex' : 'none';
+                    let hasContent = true;
+                    if (sec === 'skills') {
+                        hasContent = data.skills && data.skills.length > 0;
+                    } else if (sec === 'experience') {
+                        hasContent = data.experience && data.experience.length > 0;
+                    } else if (sec === 'education') {
+                        hasContent = data.education && data.education.length > 0;
+                    } else if (sec === 'projects') {
+                        hasContent = data.projects && data.projects.length > 0;
+                    } else if (sec === 'certifications') {
+                        hasContent = data.certifications && data.certifications.length > 0;
+                    } else if (sec === 'testimonials') {
+                        hasContent = data.testimonials && data.testimonials.length > 0;
+                    } else if (sec === 'about') {
+                        hasContent = data.about && data.about.trim() !== '' &&
+                            !data.about.trim().startsWith('Tell your') &&
+                            !data.about.trim().startsWith('Describe your');
+                    } else if (sec === 'photo') {
+                        hasContent = !!data.photo;
+                    }
+                    element.style.display = (visible && hasContent) ? 'flex' : 'none';
                 }
             }
 
@@ -500,11 +568,11 @@
                 cleanHex = cleanHex.split('').map(c => c + c).join('');
             }
             if (cleanHex.length !== 6) return false;
-            
+
             const r = parseInt(cleanHex.substring(0, 2), 16);
             const g = parseInt(cleanHex.substring(2, 4), 16);
             const b = parseInt(cleanHex.substring(4, 6), 16);
-            
+
             // Relative luminance formula: 0.2126 * R + 0.7152 * G + 0.0722 * B
             const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
             return luminance > 140;
@@ -513,13 +581,13 @@
         // Function to inject styles dynamically based on template config
         function injectTemplateStyles(t, isCustom = false, customTheme = null) {
             const styleTag = document.getElementById('dynamic-template-styles');
-            
+
             // Choose template settings
             const font = (isCustom && customTheme) ? customTheme.font : t.font;
             const accent = (isCustom && customTheme) ? customTheme.accent : t.colors.accent;
             const text = (isCustom && customTheme) ? customTheme.text : t.colors.text;
             const cardStyle = (isCustom && customTheme) ? customTheme.cardStyle : t.cardStyle;
-            
+
             // Resolve background
             let backgroundStyle = '';
             if (isCustom && customTheme) {
@@ -534,23 +602,23 @@
 
             const isGlass = cardStyle === 'glassmorphism';
             const isGlow = cardStyle === 'glow';
-            
+
             const bgSolid = (isCustom && customTheme) ? customTheme.backgroundSolid : t.colors.background;
             const bgGradStart = (isCustom && customTheme) ? customTheme.backgroundGradientStart : t.colors.background;
             const bgType = (isCustom && customTheme) ? customTheme.backgroundType : 'solid';
             const currentBg = bgType === 'solid' ? bgSolid : bgGradStart;
             const isLight = isColorLight(currentBg);
-            
+
             // Set global theme attribute so text and button variables adapt automatically
             document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
-            
+
             const blur = (isCustom && customTheme) ? customTheme.blurIntensity : '15px';
             const borderOp = (isCustom && customTheme) ? customTheme.borderOpacity : '0.08';
-            
+
             let cardBg = '';
             let cardBorder = '';
             let cardShadow = '';
-            
+
             if (isGlass) {
                 cardBg = isLight ? `rgba(0,0,0,0.025)` : `rgba(255,255,255,0.045)`;
                 cardBorder = `1px solid ${isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255, 255, 255, ' + borderOp + ')'}`;
@@ -569,7 +637,7 @@
                 cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1a1d35';
                 cardShadow = 'none';
             }
-            
+
             styleTag.innerHTML = `
                 body {
                     font-family: "${font}", var(--font-sans);
@@ -694,38 +762,44 @@
                 }
 
                 .timeline-card {
-                    padding: 20px;
+                    padding: 16px;
                     border-radius: 12px;
-                    background: ${isGlass ? 'rgba(255,255,255,0.025)' : (isLight ? '#f3f4f6' : '#070912')};
-                    border: 1px solid ${isGlass ? 'rgba(255,255,255,0.04)' : (isLight ? '#e5e7eb' : '#1e293b')};
-                    border-left: 3px solid ${accent};
+                    background: ${isLight ? 'rgba(255, 255, 255, 0.65)' : 'rgba(255, 255, 255, 0.035)'} !important;
+                    border: 1px solid ${isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.08)'} !important;
+                    box-shadow: ${isLight ? '0 8px 32px 0 rgba(31, 38, 135, 0.04)' : '0 8px 32px 0 rgba(0, 0, 0, 0.2)'} !important;
+                    backdrop-filter: blur(12px) !important;
+                    -webkit-backdrop-filter: blur(12px) !important;
+                    color: ${text} !important;
+                    display: flex;
+                    gap: 16px;
+                    align-items: center;
                 }
 
                 .timeline-header {
                     display: flex;
-                    justify-content: space-between;
-                    align-items: baseline;
-                    flex-wrap: wrap;
-                    gap: 8px;
-                    margin-bottom: 4px;
+                    flex-direction: column;
+                    gap: 2px;
+                    flex: 1;
+                    min-width: 0;
                 }
 
                 .timeline-title {
                     font-size: 1.05rem;
                     font-weight: 600;
                     margin: 0;
+                    color: ${text} !important;
                 }
 
                 .timeline-company {
                     font-size: 0.95rem;
-                    color: ${accent};
+                    color: ${accent} !important;
                     font-weight: 500;
                 }
 
                 .timeline-date {
                     font-size: 0.8rem;
-                    color: ${text}77;
-                    font-family: var(--font-mono);
+                    color: ${isLight ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.6)'} !important;
+                    font-family: var(--font-mono) !important;
                 }
 
                 /* Project displays */
@@ -744,24 +818,37 @@
                 .port-project-card {
                     overflow: hidden;
                     border-radius: 16px;
-                    background: ${isGlass ? 'rgba(255,255,255,0.025)' : (isLight ? '#f9fafb' : '#070912')};
-                    border: 1px solid ${isGlass ? 'rgba(255,255,255,0.04)' : (isLight ? '#e5e7eb' : '#1e293b')};
+                    background: ${isLight ? 'rgba(255, 255, 255, 0.65)' : 'rgba(255, 255, 255, 0.035)'} !important;
+                    border: 1px solid ${isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.08)'} !important;
+                    box-shadow: ${isLight ? '0 8px 32px 0 rgba(31, 38, 135, 0.04)' : '0 8px 32px 0 rgba(0, 0, 0, 0.2)'} !important;
+                    backdrop-filter: blur(12px) !important;
+                    -webkit-backdrop-filter: blur(12px) !important;
+                    color: ${text} !important;
+                    display: flex;
+                    gap: 16px;
+                    align-items: flex-start;
+                    padding: 16px;
                     transition: transform 0.2s ease, box-shadow 0.2s ease;
                 }
 
                 .port-project-card:hover {
                     transform: translateY(-3px);
-                    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+                    box-shadow: ${isLight ? '0 12px 32px rgba(31, 38, 135, 0.08)' : '0 12px 32px rgba(0,0,0,0.35)'} !important;
                 }
 
                 .port-proj-img {
-                    width: 100%;
-                    height: 160px;
+                    width: 72px;
+                    height: 72px;
                     object-fit: cover;
+                    border-radius: 8px;
+                    flex-shrink: 0;
+                    border: 1px solid rgba(0, 0, 0, 0.05);
                 }
 
                 .port-proj-content {
-                    padding: 20px;
+                    flex: 1;
+                    min-width: 0;
+                    padding: 0;
                 }
 
                 .port-proj-status {
@@ -769,7 +856,7 @@
                     font-family: var(--font-mono);
                     text-transform: uppercase;
                     letter-spacing: 0.05em;
-                    color: ${accent};
+                    color: ${accent} !important;
                     display: inline-block;
                     margin-bottom: 6px;
                     font-weight: 600;
@@ -779,12 +866,14 @@
                     font-size: 1.05rem;
                     margin: 0 0 6px 0;
                     line-height: 1.3;
+                    color: ${text} !important;
                 }
 
                 .port-proj-desc {
                     font-size: 0.85rem;
                     line-height: 1.5;
-                    color: ${text}aa;
+                    color: ${text} !important;
+                    opacity: 0.85;
                     margin: 0;
                 }
 
@@ -825,4 +914,5 @@
         }
     </script>
 </body>
+
 </html>

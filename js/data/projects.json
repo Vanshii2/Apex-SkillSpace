@@ -5,7 +5,11 @@
         "seller": "Vanshi Design",
         "category": "UI/UX Design",
         "description": "A comprehensive UI kit with built-in framer-motion like animations for modern React apps. Includes 50+ pre-built components.",
-        "tags": ["Figma", "React", "Motion"],
+        "tags": [
+            "Figma",
+            "React",
+            "Motion"
+        ],
         "price": 49.00,
         "thumbnail": "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?auto=format&fit=crop&w=800&q=80",
         "featured": true
@@ -16,7 +20,12 @@
         "seller": "Creative Labs",
         "category": "Web Development",
         "description": "Stunning interactive 3D particle landing page template built with Three.js and plain HTML/CSS.",
-        "tags": ["Three.js", "HTML", "CSS", "WebGL"],
+        "tags": [
+            "Three.js",
+            "HTML",
+            "CSS",
+            "WebGL"
+        ],
         "price": 79.00,
         "thumbnail": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80",
         "featured": true
@@ -27,7 +36,12 @@
         "seller": "CodeCrafters",
         "category": "College Projects",
         "description": "Complete student and course management dashboard. Perfect for final year computer science projects.",
-        "tags": ["Node.js", "Express", "MongoDB", "Vue"],
+        "tags": [
+            "Node.js",
+            "Express",
+            "MongoDB",
+            "Vue"
+        ],
         "price": 29.00,
         "thumbnail": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80",
         "featured": false
@@ -38,7 +52,12 @@
         "seller": "Neuralix",
         "category": "AI Projects",
         "description": "Full-stack AI image generation app with Stripe integration, authentication, and OpenAI DALL-E integration.",
-        "tags": ["Next.js", "Tailwind", "OpenAI", "Stripe"],
+        "tags": [
+            "Next.js",
+            "Tailwind",
+            "OpenAI",
+            "Stripe"
+        ],
         "price": 149.00,
         "thumbnail": "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=800&q=80",
         "featured": true
@@ -49,7 +68,11 @@
         "seller": "AppStudio",
         "category": "Mobile Apps",
         "description": "Premium dark-mode mobile banking and crypto tracking UI template for React Native and Flutter.",
-        "tags": ["React Native", "Flutter", "UI Kit"],
+        "tags": [
+            "React Native",
+            "Flutter",
+            "UI Kit"
+        ],
         "price": 59.00,
         "thumbnail": "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80",
         "featured": false
@@ -60,7 +83,11 @@
         "seller": "DevDash",
         "category": "Freelance Solutions",
         "description": "A standalone PWA that allows freelancers to create, manage, and export professional PDF invoices directly from the browser.",
-        "tags": ["Vanilla JS", "PWA", "PDF.js"],
+        "tags": [
+            "Vanilla JS",
+            "PWA",
+            "PDF.js"
+        ],
         "price": 19.00,
         "thumbnail": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
         "featured": false
@@ -71,7 +98,11 @@
         "seller": "Vanshi Design",
         "category": "Web Development",
         "description": "Headless commerce frontend tailored for boutique clothing brands. Includes animations and smooth page transitions.",
-        "tags": ["SvelteKit", "TailwindCSS", "Shopify API"],
+        "tags": [
+            "SvelteKit",
+            "TailwindCSS",
+            "Shopify API"
+        ],
         "price": 89.00,
         "thumbnail": "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=800&q=80",
         "featured": false
@@ -82,7 +113,11 @@
         "seller": "FitTech",
         "category": "Mobile Apps",
         "description": "Complete iOS and Android application source code for workout tracking and diet planning.",
-        "tags": ["Swift", "Kotlin", "Firebase"],
+        "tags": [
+            "Swift",
+            "Kotlin",
+            "Firebase"
+        ],
         "price": 120.00,
         "thumbnail": "https://images.unsplash.com/photo-1526506114811-38fb6561f221?auto=format&fit=crop&w=800&q=80",
         "featured": false

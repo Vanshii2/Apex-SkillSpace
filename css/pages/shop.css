@@ -253,6 +253,10 @@
     color: var(--text-primary);
 }
 
+/* Light mode: force dark text on card titles for visibility on light card backgrounds */
+[data-theme="light"] .project-card-title {
+    color: #111111;
+}
 .project-card-seller {
     font-size: 0.85rem;
     color: var(--text-muted);
@@ -461,4 +465,88 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* ==========================================================================
+   SHOP / MARKETPLACE — MOBILE RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+    /* Hero section */
+    .marketplace-hero {
+        padding: 60px 16px 40px;
+    }
+
+    .marketplace-hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .marketplace-hero p {
+        font-size: 1rem;
+    }
+
+    .hero-filters {
+        gap: 8px;
+    }
+
+    .category-filter-btn {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+    }
+
+    /* Grid — single column on mobile */
+    .grid.grid-3 {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Shop layout padding */
+    .shop-layout {
+        padding: 20px 16px;
+    }
+
+    .shop-toolbar {
+        padding: 12px 16px;
+    }
+
+    /* Project card */
+    .project-card-img-wrapper {
+        height: 200px;
+    }
+
+    .project-card-content {
+        padding: 16px;
+    }
+
+    /* Cart drawer full width on mobile */
+    .cart-drawer {
+        width: 100%;
+        right: -100%;
+    }
+
+    .cart-drawer.active {
+        right: 0;
+    }
+
+    /* Preview drawer full width on mobile */
+    .preview-drawer {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .marketplace-hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .project-card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .project-card-footer .btn {
+        width: 100%;
+        text-align: center;
+    }
 }

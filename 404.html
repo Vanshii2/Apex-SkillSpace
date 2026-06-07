@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
     <style id="fouc-preload">
         * {
@@ -8,7 +9,7 @@
     </style>
     <!-- Immediate Theme Helper to prevent FOUC -->
     <script>
-        (function() {
+        (function () {
             const savedTheme = localStorage.getItem('fpm_theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
         })();
@@ -16,12 +17,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DesignX // Page Not Found (404)</title>
-    
+
     <!-- Google Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
+
     <!-- CSS Dependencies -->
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/core.css">
@@ -33,6 +36,7 @@
     <link rel="stylesheet" href="css/pages/dashboard.css">
     <link rel="stylesheet" href="css/pages/profile.css">
 </head>
+
 <body>
 
     <!-- Scroll progress bar -->
@@ -53,7 +57,7 @@
             <a href="index.html" class="logo" id="nav-logo">
                 <img src="logo.png" alt="Logo" class="nav-logo-img">
             </a>
-            
+
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="showcase.html" class="nav-link">Portfolios</a></li>
@@ -63,26 +67,33 @@
 
             <div class="nav-actions">
                 <button class="nav-btn" id="nav-search" title="Search Menu (Cmd+K)">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
                 </button>
-                
+
                 <button class="nav-btn" id="nav-bell" title="Notifications">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                     </svg>
                 </button>
-                
+
                 <button class="nav-btn theme-toggle-btn" title="Toggle System Theme">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
                         <line x1="12" y1="21" x2="12" y2="23"></line>
                     </svg>
                 </button>
-                
+
                 <a href="login.html" class="nav-link" style="margin-left: 12px; font-weight: 500;">Login</a>
-                <a href="signup.html" class="btn btn-hero-solid clickable" style="padding: 10px 20px; font-size: 0.9rem; margin-left: 12px;">Get Started</a>
+                <a href="signup.html" class="btn btn-hero-solid clickable"
+                    style="padding: 10px 20px; font-size: 0.9rem; margin-left: 12px;">Get Started</a>
             </div>
 
             <!-- Dynamic Notification Dropdown Box -->
@@ -103,23 +114,28 @@
 
     <div id="app-content">
         <!-- Error Landing Page Center -->
-        <main style="min-height: calc(100vh - 120px); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding-top: 120px;">
+        <main
+            style="min-height: calc(100vh - 120px); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding-top: 120px;">
             <div class="hero-glow-mesh">
-                <div class="hero-glow-node-1" style="background:radial-gradient(circle, rgba(var(--accent-rgb),0.1) 0%, transparent 60%);"></div>
+                <div class="hero-glow-node-1"
+                    style="background:radial-gradient(circle, rgba(var(--accent-rgb),0.1) 0%, transparent 60%);"></div>
             </div>
-            
+
             <div class="container" style="text-align: center; position: relative; z-index: 10;">
                 <span class="badge badge-primary text-mono" style="margin-bottom: 20px;">ERROR COORDINATE: 404</span>
-                
-                <h1 class="gradient-text text-glow" style="font-size: clamp(6rem, 15vw, 10rem); font-family: var(--font-mono); font-weight: 800; line-height: 1;">404</h1>
+
+                <h1 class="gradient-text text-glow"
+                    style="font-size: clamp(6rem, 15vw, 10rem); font-family: var(--font-mono); font-weight: 800; line-height: 1;">
+                    404</h1>
                 <h2 style="font-size: 2.2rem; margin-top: 16px;">Lost in digital orbits.</h2>
                 <p style="color: var(--text-secondary); max-width: 480px; margin: 16px auto 32px; font-size: 1.05rem;">
                     The portfolio page or project showcase you are seeking is not available in this demo.
                 </p>
-                
+
                 <div style="display: flex; align-items: center; justify-content: center; gap: 16px;">
                     <a href="index.html" class="btn btn-glow clickable">Return to DesignX</a>
-                    <button class="btn btn-secondary clickable" onclick="document.getElementById('nav-search').click();">Trigger Command Palette</button>
+                    <button class="btn btn-secondary clickable"
+                        onclick="document.getElementById('nav-search').click();">Trigger Command Palette</button>
                 </div>
             </div>
         </main>
@@ -130,9 +146,11 @@
         <div class="cmd-box">
             <div class="cmd-input-container">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
-                <input type="text" class="cmd-input" id="cmd-input" placeholder="Type a search query or navigation command...">
+                <input type="text" class="cmd-input" id="cmd-input"
+                    placeholder="Type a search query or navigation command...">
             </div>
             <ul class="cmd-results" id="cmd-results">
                 <!-- Hydrated dynamically -->
@@ -149,26 +167,35 @@
     <div class="floating-dock-container">
         <div class="floating-dock">
             <a href="index.html" class="dock-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
                 </svg>
                 <span class="dock-tooltip">Home</span>
             </a>
             <a href="showcase.html" class="dock-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                 </svg>
                 <span class="dock-tooltip">Portfolios</span>
             </a>
             <a href="marketplace.html" class="dock-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
                 </svg>
                 <span class="dock-tooltip">Marketplace</span>
             </a>
             <a href="sell.html" class="dock-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                    <line x1="8" y1="12" x2="16" y2="12"></line>
                 </svg>
                 <span class="dock-tooltip">Sell Asset</span>
             </a>
@@ -183,7 +210,8 @@
                 <div class="footer-brand">
                     <a href="index.html" class="logo">
                     </a>
-                    <p class="footer-desc">Trading aesthetic visual codes, layouts, and immersive elements designed for elite designers.</p>
+                    <p class="footer-desc">Trading aesthetic visual codes, layouts, and immersive elements designed for
+                        elite designers.</p>
                 </div>
                 <div>
                     <h4 class="footer-title">Platform</h4>
@@ -202,7 +230,7 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
                 <span>&copy; 2026 DesignX. Demo data synced in localStorage.</span>
                 <span>Workspace: fpm-local://localstorage</span>
@@ -213,4 +241,5 @@
     <!-- Coordinator Module -->
     <script type="module" src="js/index.js"></script>
 </body>
+
 </html>

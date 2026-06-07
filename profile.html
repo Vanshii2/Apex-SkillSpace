@@ -20,7 +20,7 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&display=swap"
         rel="stylesheet">
 
-        <link
+    <link
         href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap"
         rel="stylesheet">
 
@@ -28,6 +28,7 @@
 
     <link rel="stylesheet" href="css/core.css">
     <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/pages/shop.css">
 
     <script>
         (function () {
@@ -122,13 +123,6 @@
                 <div class="minimal-card">
                     <h3 class="card-title">Biography</h3>
                     <p class="bio-text" id="prof-bio-text">Enter a short professional biography here.</p>
-
-                    <div class="profile-bio-editor" id="prof-bio-editor-box">
-                        <textarea class="form-textarea" id="prof-bio-input" rows="4"
-                            placeholder="Draft your professional summary details..."></textarea>
-                        <button class="pill-btn solid clickable mt-3" id="prof-save-bio-btn" style="width: 100%;">Save
-                            Revisions</button>
-                    </div>
                 </div>
 
                 <div class="minimal-card">
@@ -168,7 +162,44 @@
         </div>
     </div>
 
-    <script type="module" src="js/profile.js"></script>
+    <!-- PROFILE EDIT MODAL -->
+    <div class="modal-overlay" id="profileEditModal">
+        <div class="modal-container" style="background: var(--bg-base); border: 1px solid var(--border-color);">
+            <div class="modal-header" style="border-bottom: 1px solid var(--border-color);">
+                <h3 style="margin:0; font-family:var(--font-display); font-weight:700; font-size:1.1rem; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+                    <i data-lucide="user" style="color:#ffffff; width:16px; height:16px;"></i> Edit Profile Details
+                </h3>
+                <button type="button" class="clickable" id="btn-close-profile-modal"
+                    style="background:none; border:none; color:var(--text-secondary); cursor:pointer; font-size:1.4rem; line-height:1;">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 24px;">
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label class="form-label">Profile Photo</label>
+                    <div class="profile-upload-zone" id="prof-upload-zone">
+                        <i data-lucide="image" style="width: 24px; height: 24px; margin-bottom: 8px; color: var(--text-secondary);"></i>
+                        <p style="margin: 0; font-size: 0.85rem; color: var(--text-secondary);">Drag &amp; drop or click to upload</p>
+                        <span id="prof-upload-filename" style="display: block; font-size: 0.8rem; color: var(--text-primary); margin-top: 6px; font-weight: 500;"></span>
+                        <input type="file" id="prof-avatar-file-input" accept="image/*" style="display: none;">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" id="prof-name-input" placeholder="Your Name">
+                </div>
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label class="form-label">Biography</label>
+                    <textarea class="form-textarea" id="prof-bio-input" rows="4"
+                        placeholder="Draft your professional summary details..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding: 20px 24px; border-top:1px solid var(--border-color); display:flex; justify-content:flex-end; gap:12px;">
+                <button type="button" class="pill-btn outline clickable" id="btn-cancel-profile" style="padding: 10px 20px; font-size: 0.85rem;">Cancel</button>
+                <button type="button" class="pill-btn solid clickable" id="prof-save-bio-btn" style="padding: 10px 20px; font-size: 0.85rem;">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/index.js"></script>
 </body>
 
 </html>

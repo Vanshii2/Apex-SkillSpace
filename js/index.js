@@ -65,38 +65,154 @@ function updateNavbarAuthButtons() {
     const navActions = document.querySelector('.nav-actions');
     if (!navActions) return;
 
-    const loginLink = navActions.querySelector('a[href="login.html"]');
-    const signupLink = navActions.querySelector('a[href="signup.html"]');
-
     if (isLoggedIn) {
-        if (loginLink) {
-            loginLink.style.display = 'none';
+        // Hide guest buttons
+        const loginLink = navActions.querySelector('a[href="login.html"]');
+        const signupLink = navActions.querySelector('a[href="signup.html"]');
+        if (loginLink) loginLink.style.display = 'none';
+        if (signupLink) signupLink.style.display = 'none';
+
+        // Inject cart icon button (if not already injected)
+        if (!document.getElementById('nav-cart-btn')) {
+            const cartBtn = document.createElement('button');
+            cartBtn.id = 'nav-cart-btn';
+            cartBtn.className = 'nav-btn cart-toggle-btn';
+            cartBtn.title = 'Cart';
+            cartBtn.innerHTML = `
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+                <span id="cart-count-badge" class="cart-count-badge" style="display:none;">0</span>`;
+            navActions.insertBefore(cartBtn, navActions.firstChild);
         }
-        if (signupLink) {
-            signupLink.textContent = 'Logout';
-            signupLink.href = '#';
-            signupLink.className = 'btn btn-secondary clickable';
-            signupLink.addEventListener('click', (e) => {
-                e.preventDefault();
+
+        // Inject profile avatar circle + dropdown (if not already injected)
+        if (!document.getElementById('nav-profile-wrap')) {
+            const userData = JSON.parse(localStorage.getItem('apex_user_data') || '{}');
+            const initials = (userData.name || 'U').charAt(0).toUpperCase();
+
+            const wrap = document.createElement('div');
+            wrap.id = 'nav-profile-wrap';
+            wrap.style.cssText = 'position:relative; display:inline-flex; align-items:center;';
+            wrap.innerHTML = `
+                <button id="nav-profile-btn" title="Profile" style="
+                    width:36px; height:36px; border-radius:50%;
+                    background:linear-gradient(135deg,var(--primary,#00f2fe),var(--accent,#8b5cf6));
+                    border:2px solid rgba(255,255,255,0.2);
+                    color:#fff; font-weight:700; font-size:0.85rem;
+                    display:flex; align-items:center; justify-content:center;
+                    cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;
+                ">${initials}</button>
+                <div id="nav-profile-dropdown" style="
+                    display:none; position:absolute; top:calc(100% + 10px); right:0;
+                    min-width:160px; background:var(--bg-surface); border:1px solid var(--border-color);
+                    border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.25);
+                    padding:8px; z-index:1100; flex-direction:column; gap:4px;
+                ">
+                    <button class="nav-dropdown-item cart-toggle-btn" style="
+                        width:100%; padding:10px 14px; background:transparent; border:none;
+                        color:var(--text-primary); font-size:0.9rem; text-align:left; border-radius:8px;
+                        cursor:pointer; display:flex; align-items:center; gap:10px;
+                        transition:background 0.15s;
+                    ">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                        Cart
+                    </button>
+                    <button id="nav-logout-btn" class="nav-dropdown-item" style="
+                        width:100%; padding:10px 14px; background:transparent; border:none;
+                        color:var(--danger,#ef4444); font-size:0.9rem; text-align:left; border-radius:8px;
+                        cursor:pointer; display:flex; align-items:center; gap:10px;
+                        transition:background 0.15s;
+                    ">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                        Logout
+                    </button>
+                </div>`;
+            navActions.appendChild(wrap);
+
+            // Toggle dropdown on profile click
+            const profileBtn = wrap.querySelector('#nav-profile-btn');
+            const dropdown = wrap.querySelector('#nav-profile-dropdown');
+            profileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isOpen = dropdown.style.display === 'flex';
+                dropdown.style.display = isOpen ? 'none' : 'flex';
+            });
+            profileBtn.addEventListener('mouseenter', () => {
+                profileBtn.style.transform = 'scale(1.08)';
+                profileBtn.style.boxShadow = '0 0 14px rgba(0,242,254,0.35)';
+            });
+            profileBtn.addEventListener('mouseleave', () => {
+                profileBtn.style.transform = '';
+                profileBtn.style.boxShadow = '';
+            });
+
+            // Hover state on dropdown items
+            wrap.querySelectorAll('.nav-dropdown-item').forEach(item => {
+                item.addEventListener('mouseenter', () => item.style.background = 'rgba(255,255,255,0.06)');
+                item.addEventListener('mouseleave', () => item.style.background = 'transparent');
+            });
+
+            // Logout action
+            wrap.querySelector('#nav-logout-btn').addEventListener('click', () => {
                 logoutUser();
             });
-        }
 
-        // Add Profile link to navbar menu dynamically
-        // const navMenu = document.querySelector('.nav-menu');
-        // if (navMenu && !navMenu.querySelector('a[href="profile.html"]')) {
-        //     const li = document.createElement('li');
-        //     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-        //     const isActive = currentPath === 'profile.html';
-        //     li.innerHTML = `<a href="profile.html" class="nav-link ${isActive ? 'active' : ''}">Profile</a>`;
-        //     navMenu.appendChild(li);
-        // }
+            // Close dropdown on outside click
+            document.addEventListener('click', () => {
+                dropdown.style.display = 'none';
+            });
+        }
+    }
+}
+
+function injectCartDrawer() {
+    if (document.getElementById('cart-drawer')) return;
+    if (!document.querySelector('.nav-actions')) return;
+
+    const backdrop = document.createElement('div');
+    backdrop.id = 'cart-backdrop';
+    backdrop.className = 'cart-backdrop';
+    document.body.appendChild(backdrop);
+
+    const drawer = document.createElement('div');
+    drawer.id = 'cart-drawer';
+    drawer.className = 'cart-drawer';
+    drawer.innerHTML = `
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="cart-close-btn" id="cart-close">✕</button>
+        </div>
+        <div class="cart-items-container" id="cart-items"></div>
+        <div class="cart-footer">
+            <div class="cart-total-row">
+                <span>Total:</span>
+                <span id="cart-total-amount" style="color:var(--primary);">₹0.00</span>
+            </div>
+            <div class="cart-actions">
+                <button class="btn btn-primary clickable" style="width:100%;" id="checkout-btn-global">Checkout Securely</button>
+                <button class="btn btn-secondary clickable" style="width:100%;" id="cart-continue-shopping">Continue Shopping</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(drawer);
+
+    const contBtn = drawer.querySelector('#cart-continue-shopping');
+    if (contBtn) {
+        contBtn.addEventListener('click', () => window.toggleCart());
     }
 }
 
 function initGlobalCart() {
     window.addToCart = addToCart;
     window.removeFromCart = removeFromCart;
+
+    injectCartDrawer();
+
+    const cartBackdrop = document.getElementById('cart-backdrop');
+    const cartDrawer = document.getElementById('cart-drawer');
+    const cartCloseBtn = document.getElementById('cart-close');
 
     window.updateCartDrawer = () => {
         const cartIds = getCart();
@@ -147,11 +263,12 @@ function initGlobalCart() {
                 });
             }
         }
+        
+        // Re-render shop projects if we are on shop page
+        if (typeof window.filterAndRenderProjects === 'function') {
+            window.filterAndRenderProjects();
+        }
     };
-
-    const cartBackdrop = document.getElementById('cart-backdrop');
-    const cartDrawer = document.getElementById('cart-drawer');
-    const cartCloseBtn = document.getElementById('cart-close');
 
     window.toggleCart = () => {
         if (cartDrawer && cartBackdrop) {
@@ -161,8 +278,16 @@ function initGlobalCart() {
     };
 
     document.addEventListener('click', (e) => {
-        if (e.target.closest('.cart-toggle-btn') || e.target === cartCloseBtn || e.target === cartBackdrop) {
+        if (e.target.closest('.cart-toggle-btn') || e.target === cartCloseBtn || e.target.id === 'cart-close' || e.target === cartBackdrop) {
             window.toggleCart();
+        }
+
+        // Handle checkout button clicks securely to avoid inline handler restrictions
+        const checkoutBtn = e.target.closest('#checkout-btn-marketplace') || e.target.closest('#checkout-btn-global') || (e.target.textContent && e.target.textContent.trim() === 'Checkout Securely');
+        if (checkoutBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.location.href = 'checkout.html';
         }
     });
 

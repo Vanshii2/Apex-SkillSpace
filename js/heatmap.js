@@ -44,8 +44,8 @@ export function createActivityHeatmap(elementId) {
             
             if (activityLevel > 0) {
                 cell.classList.add('active');
-                // Use the level to adjust opacity of primary accent color (#00ffaa)
-                cell.style.background = '#00ffaa';
+                // Use the level to adjust opacity of primary accent color (var(--primary))
+                cell.style.background = 'var(--primary)';
                 cell.style.opacity = 0.2 + (activityLevel * 0.2);
             }
             
@@ -66,7 +66,7 @@ export function updateHeatmapCell(week, day, activityLevel) {
     if (cells[cellIndex]) {
         cells[cellIndex].classList.toggle('active', activityLevel > 0);
         if (activityLevel > 0) {
-            cells[cellIndex].style.background = '#00ffaa';
+            cells[cellIndex].style.background = 'var(--primary)';
             cells[cellIndex].style.opacity = 0.2 + (activityLevel * 0.2);
         } else {
             cells[cellIndex].style.background = '';

@@ -13,16 +13,16 @@ import { showToast } from './global.js';
 export function initNavbarScroll() {
 
     const navbar =
-    document.querySelector('.navbar');
+        document.querySelector('.navbar');
 
-    if(!navbar) return;
+    if (!navbar) return;
 
-    function handleScroll(){
+    function handleScroll() {
 
         const currentPath =
-        window.location.pathname
-        .split('/')
-        .pop();
+            window.location.pathname
+                .split('/')
+                .pop();
 
         const forceScrolled =
 
@@ -30,7 +30,7 @@ export function initNavbarScroll() {
 
             currentPath === 'profile.html';
 
-        if(forceScrolled){
+        if (forceScrolled) {
 
             navbar.classList.add('scrolled');
 
@@ -55,12 +55,12 @@ export function initNavbarScroll() {
 export function initFloatingDock() {
     const dockContainer = document.querySelector('.floating-dock-container');
     if (!dockContainer) return;
-    
+
     // Smooth fade-in shortly after load
     setTimeout(() => {
         dockContainer.classList.add('visible');
     }, 800);
-    
+
     // Highlight active dock item matching current URL
     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
     const dockItems = document.querySelectorAll('.dock-item');
@@ -79,9 +79,9 @@ export function initNotifications() {
     const bellBtn = document.getElementById('nav-bell');
     const dropdown = document.getElementById('notification-dropdown');
     if (!bellBtn || !dropdown) return;
-    
+
     const bellDot = bellBtn.querySelector('.notification-dot');
-    
+
     // Dynamic bell dot toggler based on unread counts
     const updateBellState = () => {
         const notifs = getNotifications();
@@ -96,17 +96,17 @@ export function initNotifications() {
             bellDot.remove();
         }
     };
-    
+
     const renderNotificationsList = () => {
         const notifs = getNotifications();
         const listContainer = dropdown.querySelector('.notification-list');
         if (!listContainer) return;
-        
+
         if (notifs.length === 0) {
             listContainer.innerHTML = `<li class="notification-item" style="text-align:center;color:var(--text-muted);">No notifications</li>`;
             return;
         }
-        
+
         listContainer.innerHTML = notifs.map(notif => `
             <li class="notification-item ${notif.unread ? 'unread' : ''}">
                 <p style="font-size:0.85rem;color:var(--text-primary);">${notif.text}</p>
@@ -114,14 +114,14 @@ export function initNotifications() {
             </li>
         `).join('');
     };
-    
+
     bellBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         const isOpen = dropdown.classList.contains('show');
-        
+
         // Close other dropdowns
         document.querySelectorAll('.notification-dropdown').forEach(d => d.classList.remove('show'));
-        
+
         if (!isOpen) {
             renderNotificationsList();
             dropdown.classList.add('show');
@@ -132,15 +132,15 @@ export function initNotifications() {
             dropdown.classList.remove('show');
         }
     });
-    
+
     document.addEventListener('click', () => {
         dropdown.classList.remove('show');
     });
-    
+
     dropdown.addEventListener('click', (e) => {
         e.stopPropagation();
     });
-    
+
     updateBellState();
 }
 
@@ -150,20 +150,20 @@ export function initCommandPalette() {
     const searchBtn = document.getElementById('nav-search');
     const cmdInput = document.getElementById('cmd-input');
     const resultsList = document.getElementById('cmd-results');
-    
+
     if (!cmdOverlay || !cmdInput || !resultsList) return;
-    
+
     const openPalette = () => {
         cmdOverlay.classList.add('show');
         cmdInput.value = '';
         renderCommandPaletteDefaults();
         setTimeout(() => cmdInput.focus(), 150);
     };
-    
+
     const closePalette = () => {
         cmdOverlay.classList.remove('show');
     };
-    
+
     // Toggle via button click
     if (searchBtn) {
         searchBtn.addEventListener('click', (e) => {
@@ -171,12 +171,12 @@ export function initCommandPalette() {
             openPalette();
         });
     }
-    
+
     // Close overlay triggers
     cmdOverlay.addEventListener('click', (e) => {
         if (e.target === cmdOverlay) closePalette();
     });
-    
+
     // Global Keyboard Shortcuts (Cmd+K or Ctrl+K)
     window.addEventListener('keydown', (e) => {
         if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -188,7 +188,7 @@ export function initCommandPalette() {
             closePalette();
         }
     });
-    
+
     // Live typing query filter
     cmdInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase().trim();
@@ -196,10 +196,10 @@ export function initCommandPalette() {
             renderCommandPaletteDefaults();
             return;
         }
-        
+
         performGlobalSearch(query);
     });
-    
+
     // Default commands rendering
     const renderCommandPaletteDefaults = () => {
         resultsList.innerHTML = `
@@ -241,24 +241,24 @@ export function initCommandPalette() {
                 <span class="cmd-shortcut">✕</span>
             </li>
         `;
-        
+
         bindResultItemListeners();
     };
-    
+
     // Global Search indexing project titles and tags
     const performGlobalSearch = (query) => {
         const projects = getProjects();
-        const matches = projects.filter(p => 
-            p.title.toLowerCase().includes(query) || 
+        const matches = projects.filter(p =>
+            p.title.toLowerCase().includes(query) ||
             p.tags.some(t => t.toLowerCase().includes(query)) ||
             p.seller.toLowerCase().includes(query)
         );
-        
+
         if (matches.length === 0) {
             resultsList.innerHTML = `<div class="cmd-group-title" style="text-align:center;padding:24px 0;text-transform:none;">No matching projects found</div>`;
             return;
         }
-        
+
         resultsList.innerHTML = `
             <div class="cmd-group-title">Matching Digital Products (${matches.length})</div>
             ${matches.map(m => `
@@ -271,17 +271,17 @@ export function initCommandPalette() {
                 </li>
             `).join('')}
         `;
-        
+
         bindResultItemListeners();
     };
-    
+
     // Bind click handlers to search outputs
     const bindResultItemListeners = () => {
         const items = resultsList.querySelectorAll('.cmd-item');
         items.forEach((item, index) => {
             item.addEventListener('click', () => {
                 const action = item.dataset.action;
-                
+
                 if (action === 'nav') {
                     const href = item.dataset.href;
                     closePalette();
@@ -307,7 +307,7 @@ export function initCommandPalette() {
                     }
                 }
             });
-            
+
             // Mouse track highlight
             item.addEventListener('mouseenter', () => {
                 items.forEach(i => i.classList.remove('selected'));

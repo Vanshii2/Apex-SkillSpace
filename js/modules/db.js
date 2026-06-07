@@ -255,7 +255,7 @@ export function initDB() {
         localStorage.setItem(DB_KEY_PREFIX + 'bookmarked', JSON.stringify([]));
         localStorage.setItem(DB_KEY_PREFIX + 'liked', JSON.stringify([]));
         localStorage.setItem(DB_KEY_PREFIX + 'following', JSON.stringify([]));
-        
+
         // Seed active user session
         const activeUser = {
             username: 'apex_user',
@@ -279,7 +279,7 @@ export function initDB() {
         for (let i = 0; i < 365; i++) {
             const tempDate = new Date(today);
             tempDate.setDate(today.getDate() - i);
-            
+
             // Randomly seed visits based on date spacing (more visits recently)
             const probability = i < 30 ? 0.75 : (i < 90 ? 0.45 : 0.2);
             if (Math.random() < probability) {
@@ -289,7 +289,7 @@ export function initDB() {
             }
         }
         localStorage.setItem(DB_KEY_PREFIX + 'activity_log', JSON.stringify(activityLog));
-        
+
         localStorage.setItem(DB_KEY_PREFIX + 'initialized', 'true');
         localStorage.setItem(DB_KEY_PREFIX + 'seed_version', DB_SEED_VERSION);
         console.log('Futuristic Data Engine Initialized successfully.');
@@ -325,10 +325,10 @@ export function saveProject(project) {
     };
     projects.unshift(newProj);
     setData('projects', projects);
-    
+
     // Log user upload activity
     logActivity(3); // Upload yields 3 contributions
-    
+
     // Increment active user projects counter
     const user = getCurrentUser();
     user.stats.projects += 1;
@@ -351,7 +351,7 @@ export function likeProject(id) {
     const idx = liked.indexOf(id);
     const projects = getProjects();
     const p = projects.find(item => item.id === id);
-    
+
     let isLikedNow = false;
     if (idx === -1) {
         liked.push(id);
@@ -362,7 +362,7 @@ export function likeProject(id) {
         liked.splice(idx, 1);
         if (p) p.likes = Math.max(0, p.likes - 1);
     }
-    
+
     setData('liked', liked);
     setData('projects', projects);
     return { isLiked: isLikedNow, count: p ? p.likes : 0 };
@@ -378,7 +378,7 @@ export function bookmarkProject(id) {
     const idx = bookmarked.indexOf(id);
     const projects = getProjects();
     const p = projects.find(item => item.id === id);
-    
+
     let isBookmarked = false;
     if (idx === -1) {
         bookmarked.push(id);
@@ -389,7 +389,7 @@ export function bookmarkProject(id) {
         bookmarked.splice(idx, 1);
         if (p) p.bookmarks = Math.max(0, p.bookmarks - 1);
     }
-    
+
     setData('bookmarked', bookmarked);
     setData('projects', projects);
     return { isBookmarked, count: p ? p.bookmarks : 0 };
@@ -413,7 +413,7 @@ export function toggleFollowCreator(id) {
     const idx = following.indexOf(id);
     const creators = getCreators();
     const c = creators.find(item => item.id === id);
-    
+
     let isFollowing = false;
     if (idx === -1) {
         following.push(id);
@@ -424,15 +424,15 @@ export function toggleFollowCreator(id) {
         following.splice(idx, 1);
         if (c) c.followers = Math.max(0, c.followers - 1);
     }
-    
+
     setData('following', following);
     setData('creators', creators);
-    
+
     // Update user session following count
     const session = getCurrentUser();
     session.following = following.length;
     updateCurrentUser(session);
-    
+
     return { isFollowing, count: c ? c.followers : 0 };
 }
 
@@ -534,13 +534,13 @@ export function getActivityLog() {
 export function logActivity(weight = 1) {
     const log = getActivityLog();
     const todayStr = new Date().toISOString().split('T')[0];
-    
+
     const idx = log.findIndex(item => item.date === todayStr);
     if (idx !== -1) {
         log[idx].count += weight;
     } else {
         log.push({ date: todayStr, count: weight });
-        
+
         // Check / Update daily streak!
         const user = getCurrentUser();
         if (user) {

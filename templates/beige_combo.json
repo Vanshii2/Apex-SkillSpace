@@ -1,0 +1,21 @@
+{
+  "id": "beige_combo",
+  "name": "Beige, Brown & Black",
+  "description": "Premium earthy beige canvas with warm brown accents and deep black details",
+  "font": "Bricolage Grotesque",
+  "colors": {
+    "background": "#f5efe6",
+    "text": "#1a1510",
+    "accent": "#27272a"
+  },
+  "sections": {
+    "photo": true,
+    "about": true,
+    "skills": true,
+    "experience": true,
+    "projects": true,
+    "contact": true
+  },
+  "cardStyle": "shadow",
+  "layout": "centered"
+}
