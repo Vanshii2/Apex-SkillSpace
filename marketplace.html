@@ -35,14 +35,11 @@
     <link rel="stylesheet" href="css/pages/home.css">
     <link rel="stylesheet" href="css/pages/shop.css">
 
-    <!-- Immediate Theme Helper & Authentication Gate -->
+    <!-- Immediate Theme Helper -->
     <script>
         (function () {
             const savedTheme = localStorage.getItem('fpm_theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
-            if (localStorage.getItem('isLoggedIn') !== 'true') {
-                window.location.href = 'login.html';
-            }
         })();
     </script>
 </head>

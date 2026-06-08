@@ -31,14 +31,9 @@
         /* Dynamic styles will be inserted here */
     </style>
 
-    <!-- Immediate Theme Helper & Authentication Gate -->
+    <!-- Immediate Theme Helper -->
     <script>
         (function () {
-            // Check auth first
-            if (localStorage.getItem('isLoggedIn') !== 'true') {
-                window.location.href = 'login.html';
-                return;
-            }
             // Determine username from URL
             const params = new URLSearchParams(window.location.search);
             const userParam = params.get('user') || 'current';

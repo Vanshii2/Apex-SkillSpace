@@ -271,6 +271,11 @@ export function initDB() {
             profileProgress: 85
         };
         localStorage.setItem(DB_KEY_PREFIX + 'user_session', JSON.stringify(activeUser));
+        localStorage.setItem('apex_user_data', JSON.stringify({
+            name: 'Nova Stark',
+            email: 'nova@stark.com',
+            password: 'password123'
+        }));
 
         // Seed 365-day activity records (past year visit logs to fill heatmap immediately!)
         const activityLog = [];
@@ -455,7 +460,7 @@ export function addToCart(id) {
     if (!isLoggedIn) {
         alert('Please log in to add items to your cart.');
         window.location.href = 'login.html';
-        return false;
+        return null;
     }
     const cart = getCart();
     if (!cart.includes(id)) {

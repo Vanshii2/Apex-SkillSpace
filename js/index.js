@@ -44,10 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initCommandPalette();
 
     // 4. Bind Global Modal/Drawer Closers
-    const drawerClose = document.getElementById('drawer-close');
-    if (drawerClose) {
-        drawerClose.addEventListener('click', closeGlobalPreviewDrawer);
-    }
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('#drawer-close')) {
+            closeGlobalPreviewDrawer();
+        }
+    });
 
     // 5. Page-Specific Coordinators
     window.detectPageAndLoadModule = detectPageAndLoadModule;
@@ -338,17 +339,21 @@ function detectPageAndLoadModule() {
 
     // E. PUBLIC PROFILE PAGE
     if (document.getElementById('prof-avatar')) {
-        initProfilePage();
+        if (requireAuth()) {
+            initProfilePage();
+        }
     }
 
     // F. PORTFOLIO BUILDER PAGE
     if (document.querySelector('.portfolio-builder-container')) {
-        initPortfolioBuilder().then(() => {
-            console.log('Portfolio Builder initialized');
-            if (window.lucide) {
-                window.lucide.createIcons();
-            }
-        });
+        if (requireAuth()) {
+            initPortfolioBuilder().then(() => {
+                console.log('Portfolio Builder initialized');
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            });
+        }
     }
 }
 

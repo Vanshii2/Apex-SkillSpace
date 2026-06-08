@@ -34,6 +34,9 @@
         (function () {
             const savedTheme = localStorage.getItem('fpm_theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'login.html';
+            }
         })();
     </script>
 </head>

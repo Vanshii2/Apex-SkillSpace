@@ -161,6 +161,7 @@ export function initShopPage() {
                 const id = card.dataset.id;
                 
                 const isAdded = addToCart(id);
+                if (isAdded === null) return;
                 if (isAdded) {
                     btn.textContent = 'Added ✓';
                     btn.style.background = 'rgba(16, 185, 129, 0.15)';

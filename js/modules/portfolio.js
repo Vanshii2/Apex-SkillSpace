@@ -163,6 +163,7 @@ export function openGlobalPreviewDrawer(id) {
         if (buyBtn) {
             buyBtn.onclick = () => {
                 const isAdded = addToCart(p.id);
+                if (isAdded === null) return;
                 showToast(
                     isAdded ? `${p.title} added to cart!` : `${p.title} is already in your cart.`,
                     isAdded ? 'success' : 'info'

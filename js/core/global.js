@@ -366,7 +366,7 @@ export function initPageTransitions() {
 
     // Preload internal pages at startup to ensure 0ms network latency on swaps
     pagesToPreload.forEach(page => {
-        fetch(page)
+        fetch(page + '?_t=' + Date.now())
             .then(res => {
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 return res.text();
@@ -407,6 +407,16 @@ export function initPageTransitions() {
     // Central dynamic navigator swap controller
     const navigateTo = (url, pushToHistory = true) => {
         const key = getNormalizedPath(url);
+        
+        // Gate profile.html and portfolio.html for unlogged-in users
+        if (key === 'profile.html' || key === 'portfolio.html') {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (!isLoggedIn) {
+                window.location.href = 'login.html';
+                return;
+            }
+        }
+
         const cachedPage = pageCache[key];
 
         // 1. Fade out current content smoothly
@@ -453,7 +463,7 @@ export function initPageTransitions() {
                 }
             } else {
                 // FALLBACK: If page not preloaded, fetch dynamically or hard load
-                fetch(url)
+                fetch(url + (url.includes('?') ? '&' : '?') + '_t=' + Date.now())
                     .then(res => {
                         if (!res.ok) throw new Error('Failed to load dynamic shell');
                         return res.text();
@@ -528,6 +538,17 @@ export function initPageTransitions() {
         // Route bypass checks: external links, anchors, void actions, email/tel, target="_blank", or explicitly excluded classes
         if (href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || href === 'javascript:void(0)' || link.getAttribute('target') === '_blank' || link.classList.contains('no-transition')) {
             return;
+        }
+
+        // Auth gate check for profile.html and portfolio.html
+        const normalizedHref = href.split('?')[0].split('/').pop();
+        if (normalizedHref === 'profile.html' || normalizedHref === 'portfolio.html') {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (!isLoggedIn) {
+                e.preventDefault();
+                window.location.href = 'login.html';
+                return;
+            }
         }
 
         e.preventDefault();

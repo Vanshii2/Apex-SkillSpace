@@ -94,8 +94,11 @@ window.viewProjectDetails = (id) => {
     const buyBtn = document.getElementById('drawer-buy-btn');
 
     if (buyBtn) {
-        buyBtn.onclick = () => addToCart(p.id);
+        buyBtn.onclick = () => {
+            const isAdded = addToCart(p.id);
+            if (isAdded === null) return;
+        };
     }
 
-    document.getElementById('preview-drawer')?.classList.add('active');
+    document.getElementById('preview-drawer')?.classList.add('show');
 };
