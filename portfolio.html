@@ -69,9 +69,14 @@
                             <i data-lucide="plus"></i> Create New
                         </button>
                     </div>
-                    <select id="portfolioSelect" class="form-select select-compact">
-                        <!-- Populated dynamically -->
-                    </select>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <select id="portfolioSelect" class="form-select select-compact" style="flex:1;">
+                            <!-- Populated dynamically -->
+                        </select>
+                        <button type="button" id="btnDeleteCurrentPortfolio" class="btn btn-secondary clickable" style="padding: 0 10px; height: 38px; border-color: rgba(239, 68, 68, 0.4); color: #ef4444;" title="Delete Current Portfolio">
+                            <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- ACCORDION SECTION 1: PROFILE -->

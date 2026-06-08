@@ -264,7 +264,7 @@ function initGlobalCart() {
                 });
             }
         }
-        
+
         // Re-render shop projects if we are on shop page
         if (typeof window.filterAndRenderProjects === 'function') {
             window.filterAndRenderProjects();

@@ -3,39 +3,70 @@
    FUTURISTIC PORTFOLIO - PROFILE PAGE LOGIC (RE-ENGINEERED)
    ==========================================================================
 */
-
+import { storeImage } from './images.js';
 // --- LOCAL STORAGE DATA LAYER ---
 export function getUser() {
     let u = localStorage.getItem('dx_user');
     if (u) {
         try {
-            return JSON.parse(u);
-        } catch(e) {
+            const parsed = JSON.parse(u);
+            // Check if this is a real user (not the seeded placeholder)
+            if (parsed && parsed.name && parsed.name !== 'Nova Stark') {
+                return parsed;
+            }
+        } catch (e) {
             console.error('Error parsing dx_user:', e);
         }
     }
-    
-    // Migration fallback
+
+    // Try to get the real user from apex_user_data (set by auth.js on signup/login)
+    let authData = localStorage.getItem('apex_user_data');
+    if (authData) {
+        try {
+            const authUser = JSON.parse(authData);
+            if (authUser && authUser.name) {
+                const username = authUser.name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+                // Check if we have an existing dx_user with extra fields (bio, avatar, etc)
+                let existingDx = null;
+                try { existingDx = JSON.parse(localStorage.getItem('dx_user')); } catch (_) { }
+                const userObj = {
+                    name: authUser.name,
+                    username: existingDx && existingDx.username && existingDx.username !== 'apex_user' ? existingDx.username : username,
+                    bio: (existingDx && existingDx.bio) || '',
+                    avatar: (existingDx && existingDx.avatar) || '',
+                    skills: (existingDx && existingDx.skills) || [],
+                    followers: (existingDx && existingDx.followers) || 0,
+                    availability: (existingDx && existingDx.availability) || 'Available for Work'
+                };
+                saveUser(userObj);
+                return userObj;
+            }
+        } catch (e) {
+            console.error('Error parsing apex_user_data:', e);
+        }
+    }
+
+    // Migration fallback: use fpm_user_session if present
     let fpmSession = localStorage.getItem('fpm_user_session');
     let userObj = fpmSession ? JSON.parse(fpmSession) : null;
     if (!userObj) {
         userObj = {
-            name: 'Nova Stark',
-            username: 'apex_user',
-            bio: 'Creative design engineer, assembling future-proof digital spaces and experimental UI templates using HTML, CSS, and clean JS logic.',
-            avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
-            skills: ['Vanilla JS', 'Sleek CSS', 'SVG Graphics', 'Aesthetics'],
-            followers: 48,
+            name: 'Creator',
+            username: 'user',
+            bio: '',
+            avatar: '',
+            skills: [],
+            followers: 0,
             availability: 'Available for Work'
         };
     } else {
         userObj = {
-            name: userObj.name || 'Nova Stark',
-            username: userObj.username || 'apex_user',
-            bio: userObj.bio || 'Creative design engineer...',
+            name: userObj.name || 'Creator',
+            username: userObj.username || 'user',
+            bio: userObj.bio || '',
             avatar: userObj.avatar || '',
-            skills: userObj.skills || ['Vanilla JS', 'Sleek CSS'],
-            followers: userObj.followers || 48,
+            skills: userObj.skills || [],
+            followers: userObj.followers || 0,
             availability: userObj.availability || 'Available for Work'
         };
     }
@@ -52,11 +83,11 @@ export function getProjects() {
     if (p) {
         try {
             return JSON.parse(p);
-        } catch(e) {
+        } catch (e) {
             console.error('Error parsing dx_projects:', e);
         }
     }
-    
+
     // Migration fallback
     let fpmProjects = localStorage.getItem('fpm_projects');
     let projectsArray = fpmProjects ? JSON.parse(fpmProjects) : null;
@@ -107,6 +138,26 @@ export function getProjects() {
 
 export function saveProjects(projects) {
     localStorage.setItem('dx_projects', JSON.stringify(projects));
+    // Also sync to fpm_projects so marketplace (shop.js via db.js) sees the new projects
+    const fpmProjects = projects.map(p => ({
+        id: p.id,
+        title: p.title,
+        description: p.description,
+        seller: p.seller,
+        price: p.price,
+        tags: p.tags || [],
+        category: p.category || 'Dashboard',
+        status: p.status || 'New',
+        likes: p.likes || 0,
+        bookmarks: p.bookmarks || 0,
+        views: p.views || 1,
+        image: p.thumbnail || p.image || 'assets/project1.png',
+        demoUrl: p.demoUrl || '#',
+        liveDemo: p.demoUrl || '#',
+        github: '#',
+        createdAt: p.createdAt || new Date().toISOString()
+    }));
+    localStorage.setItem('fpm_projects', JSON.stringify(fpmProjects));
 }
 
 // Helper to split full name into first name (solid) and last name (outline)
@@ -114,11 +165,11 @@ export function updateDisplayNameUI(name) {
     const solidEl = document.getElementById('prof-name-solid');
     const outlineEl = document.getElementById('prof-name-outline');
     if (!solidEl || !outlineEl) return;
-    
+
     const parts = (name || '').trim().split(/\s+/);
     const first = parts[0] || 'Creator';
     const last = parts.slice(1).join(' ') || 'Name';
-    
+
     solidEl.textContent = first;
     outlineEl.textContent = last;
 }
@@ -139,7 +190,7 @@ export function initProfilePage() {
 
     const handleEl = document.getElementById('prof-handle');
     if (handleEl) handleEl.textContent = '@' + user.username;
-    
+
     // Bio
     const bioText = document.getElementById('prof-bio-text');
     if (bioText) {
@@ -177,7 +228,7 @@ function updateAvatarUI(user) {
     const avatarImg = document.getElementById('prof-avatar');
     const initialsSpan = document.getElementById('prof-avatar-initials');
     const avatarContainer = document.getElementById('prof-avatar-container');
-    
+
     if (!avatarContainer) return;
 
     if (user.avatar) {
@@ -218,7 +269,7 @@ function updateAvailabilityUI(user) {
 
     // Reset classes
     dot.className = 'pulsing-dot';
-    
+
     if (status === 'Available for Work' || status === 'Open to Freelance') {
         dot.classList.add('available');
     } else if (status === 'Busy') {
@@ -231,30 +282,30 @@ function updateAvailabilityUI(user) {
 function updateStatsAndSummary() {
     const user = getUser();
     const projects = getProjects().filter(p => p.seller === user.username);
-    
+
     // Update main metrics safely
     const followersEl = document.getElementById('prof-followers-count');
     const projectsEl = document.getElementById('prof-projects-count');
     const revenueEl = document.getElementById('prof-revenue-amount');
-    
+
     if (followersEl) followersEl.textContent = user.followers || 0;
     if (projectsEl) projectsEl.textContent = projects.length;
-    
+
     const revenueSum = projects.reduce((sum, p) => sum + (p.price || 0), 0);
     if (revenueEl) revenueEl.textContent = `₹${revenueSum.toFixed(2)}`;
-    
+
     // Update Seller Summary card
     const summaryPublished = document.getElementById('summary-published-count');
     const summaryRevenue = document.getElementById('summary-revenue-amount');
     const summaryAvgPrice = document.getElementById('summary-avg-price');
     const summaryCategories = document.getElementById('summary-categories');
-    
+
     if (summaryPublished) summaryPublished.textContent = `${projects.length} project${projects.length === 1 ? '' : 's'}`;
     if (summaryRevenue) summaryRevenue.textContent = `₹${revenueSum.toFixed(2)}`;
-    
+
     const avg = projects.length > 0 ? (revenueSum / projects.length) : 0;
     if (summaryAvgPrice) summaryAvgPrice.textContent = `₹${avg.toFixed(2)}`;
-    
+
     const uniqueCats = [...new Set(projects.map(p => p.category).filter(Boolean))];
     if (summaryCategories) {
         summaryCategories.textContent = uniqueCats.length > 0 ? uniqueCats.join(', ') : 'None';
@@ -267,7 +318,7 @@ function initTabs() {
     const contents = document.querySelectorAll('.profile-tab-content');
     const indicator = document.querySelector('.tab-indicator');
     const nav = document.querySelector('.profile-tabs-nav');
-    
+
     if (!tabs.length || !indicator || !nav) return;
 
     const updateIndicator = (activeBtn) => {
@@ -281,7 +332,7 @@ function initTabs() {
         tab.addEventListener('click', () => {
             tabs.forEach(t => t.classList.remove('active'));
             contents.forEach(c => c.classList.remove('active'));
-            
+
             tab.classList.add('active');
             const targetId = `tab-${tab.dataset.tab}`;
             const targetContent = document.getElementById(targetId);
@@ -289,7 +340,7 @@ function initTabs() {
                 targetContent.classList.add('active');
             }
             updateIndicator(tab);
-            
+
             if (tab.dataset.tab === 'published') {
                 renderPublishedTab();
             } else if (tab.dataset.tab === 'portfolios') {
@@ -302,7 +353,7 @@ function initTabs() {
     if (activeTab) {
         setTimeout(() => updateIndicator(activeTab), 100);
     }
-    
+
     window.addEventListener('resize', () => {
         const currentActive = document.querySelector('.profile-tab-btn.active');
         if (currentActive) {
@@ -368,7 +419,7 @@ function deletePortfolioItem(portId) {
         if (savedList) {
             try {
                 list = JSON.parse(savedList);
-            } catch(e) {
+            } catch (e) {
                 console.error(e);
             }
         }
@@ -389,7 +440,7 @@ function renderPortfoliosTab() {
     if (savedList) {
         try {
             list = JSON.parse(savedList);
-        } catch(e) {
+        } catch (e) {
             console.error(e);
         }
     }
@@ -451,7 +502,7 @@ function renderPortfoliosTab() {
 }
 
 // --- UPLOAD FORM CONTROLLER ---
-let selectedThumbBase64 = null;
+let selectedThumbId = null;
 
 function setupUploadForm() {
     const thumbZone = document.getElementById('thumb-drop-zone');
@@ -493,9 +544,9 @@ function setupUploadForm() {
         }
         const reader = new FileReader();
         reader.onload = (e) => {
-            selectedThumbBase64 = e.target.result;
+            selectedThumbId = storeImage(e.target.result);
             if (thumbPreview) {
-                thumbPreview.src = selectedThumbBase64;
+                thumbPreview.src = e.target.result; // show the raw base64 only for preview
                 thumbPreview.style.display = 'block';
             }
             if (placeholder) placeholder.style.display = 'none';
@@ -552,7 +603,7 @@ function setupUploadForm() {
             }
 
             // Validate Thumbnail
-            if (!selectedThumbBase64) {
+            if (!selectedThumbId) {
                 document.getElementById('thumb-drop-zone').parentElement.classList.add('invalid');
                 isValid = false;
             } else {
@@ -599,7 +650,7 @@ function setupUploadForm() {
                 price: price,
                 tags: tagsRaw.split(',').map(t => t.trim()).filter(Boolean),
                 demoUrl,
-                thumbnail: selectedThumbBase64,
+                thumbnail: selectedThumbId,
                 seller: userObj.username,
                 createdAt: new Date().toISOString()
             };
@@ -628,8 +679,8 @@ function clearUploadForm() {
     document.getElementById('upload-price').value = '';
     document.getElementById('upload-tags').value = '';
     document.getElementById('upload-demo-url').value = '';
-    
-    selectedThumbBase64 = null;
+
+    selectedThumbId = null;
     const thumbPreview = document.getElementById('thumb-preview-img');
     const placeholder = document.querySelector('.drop-zone-placeholder');
     if (thumbPreview) {
@@ -639,7 +690,7 @@ function clearUploadForm() {
     if (placeholder) {
         placeholder.style.display = 'block';
     }
-    
+
     document.querySelectorAll('#tab-upload .form-group').forEach(group => {
         group.classList.remove('invalid');
         const err = group.querySelector('.error-msg');
@@ -664,7 +715,7 @@ function setupDetailDrawerHandlers() {
                 let projects = getProjects();
                 projects = projects.filter(p => p.id !== currentDetailProjectId);
                 saveProjects(projects);
-                
+
                 closeProjectDetailDrawer();
                 renderPublishedTab();
                 updateStatsAndSummary();
@@ -692,7 +743,7 @@ function openProjectDetailDrawer(id) {
     document.getElementById('drawer-project-category').textContent = project.category || 'Dashboard';
     document.getElementById('drawer-project-price').textContent = `₹${(project.price || 0).toFixed(2)}`;
     document.getElementById('drawer-project-desc').textContent = project.description || 'No description provided.';
-    
+
     const demoLink = document.getElementById('drawer-project-demo-link');
     if (demoLink) {
         if (project.demoUrl) {
@@ -712,12 +763,12 @@ function openProjectDetailDrawer(id) {
         backdrop.className = 'drawer-backdrop';
         document.body.appendChild(backdrop);
     }
-    
+
     drawer.classList.add('show');
     backdrop.classList.add('show');
-    
+
     backdrop.onclick = closeProjectDetailDrawer;
-    
+
     if (window.lucide) window.lucide.createIcons();
 }
 
@@ -742,7 +793,7 @@ function setupEditProfileModal() {
     const bioInput = document.getElementById('prof-bio-input');
     const skillsInput = document.getElementById('prof-skills-input');
     const availabilitySelect = document.getElementById('prof-availability-select');
-    
+
     const uploadZone = document.getElementById('prof-upload-zone');
     const fileInput = document.getElementById('prof-avatar-file-input');
     const filenameSpan = document.getElementById('prof-upload-filename');
@@ -843,7 +894,7 @@ function setupEditProfileModal() {
                 user.availability = newAvailability;
 
                 if (tempAvatarBase64) {
-                    user.avatar = tempAvatarBase64;
+                    user.avatar = storeImage(tempAvatarBase64);
                 }
 
                 saveUser(user);
@@ -852,10 +903,10 @@ function setupEditProfileModal() {
                 const inlineName = document.getElementById('prof-name-inline');
                 if (inlineName) inlineName.textContent = newName;
                 updateDisplayNameUI(newName);
-                
+
                 const handleEl = document.getElementById('prof-handle');
                 if (handleEl) handleEl.textContent = '@' + newUsername;
-                
+
                 const bioText = document.getElementById('prof-bio-text');
                 if (bioText) {
                     bioText.textContent = newBio || 'Enter a short professional biography here.';
@@ -879,7 +930,7 @@ function setupEditProfileModal() {
                 updateAvatarUI(user);
                 updateAvailabilityUI(user);
                 updateStatsAndSummary();
-                
+
                 // Re-render tabs list if seller changed
                 renderPublishedTab();
 
@@ -902,7 +953,7 @@ export function showToast(message, type = 'info') {
     toast.className = `custom-toast ${type}`;
     toast.textContent = message;
     container.appendChild(toast);
-    
+
     setTimeout(() => {
         toast.style.opacity = '0';
         toast.style.transform = 'translateY(15px)';

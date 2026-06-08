@@ -48,7 +48,8 @@
     backdrop-filter: var(--glass-blur);
 }
 
-.category-filter-btn:hover, .category-filter-btn.active {
+.category-filter-btn:hover,
+.category-filter-btn.active {
     background: var(--primary);
     color: var(--bg-base);
     border-color: var(--primary);
@@ -115,6 +116,7 @@
     .featured-card {
         grid-template-columns: 1fr;
     }
+
     .featured-card-img {
         height: 250px;
     }
@@ -140,16 +142,12 @@
 /* Only Light Mode */
 [data-theme="light"] .shop-layout {
     background:
-        radial-gradient(
-            circle at top right,
+        radial-gradient(circle at top right,
             rgba(147, 197, 253, 0.18),
-            transparent 35%
-        ),
-        linear-gradient(
-            135deg,
+            transparent 35%),
+        linear-gradient(135deg,
             #f8fafc,
-            #eef6ff
-        );
+            #eef6ff);
 }
 
 .shop-toolbar {
@@ -179,6 +177,7 @@
     outline: none;
     color: var(--text-primary);
     font-size: 1rem;
+    cursor: text;
     width: 100%;
 }
 
@@ -220,7 +219,8 @@
 .project-card-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.5); /* Keep dark overlay on images for contrast */
+    background: rgba(0, 0, 0, 0.5);
+    /* Keep dark overlay on images for contrast */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -236,7 +236,7 @@
     padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 6px;
     flex-grow: 1;
 }
 
@@ -257,6 +257,7 @@
 [data-theme="light"] .project-card-title {
     color: #111111;
 }
+
 .project-card-seller {
     font-size: 0.85rem;
     color: var(--text-muted);
@@ -285,7 +286,7 @@
     justify-content: space-between;
     margin-top: auto;
     padding-top: 16px;
-    border-top: 1px solid var(--border-color);
+
 }
 
 .project-card-price {
@@ -298,7 +299,7 @@
 .cart-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(4px);
     z-index: 999;
     opacity: 0;

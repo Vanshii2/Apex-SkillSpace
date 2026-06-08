@@ -22,17 +22,12 @@ function createProjectCard(p) {
                     <span class="project-card-seller">by ${p.seller}</span>
                 </div>
 
-                <p class="project-card-desc">${p.description}</p>
 
-                <div class="project-card-tags">
-                    ${tagsHtml}
-                </div>
+                
 
                 <div class="project-card-footer">
                     <span class="project-card-price">$${Number(p.price).toFixed(2)}</span>
-
-                    <button class="btn btn-glow clickable"
-                        onclick="addToCart('${p.id}')">
+                    <button class="btn btn-glow clickable" onclick="addToCart('${p.id}')">
                         Add to Cart
                     </button>
                 </div>

@@ -4,21 +4,20 @@
 */
 
 import { initParticles } from './particles.js';
-import { createActivityHeatmap } from './heatmap.js';
 import { loadTemplates, applyTemplate, getAllTemplates, getTemplate } from './templates.js';
 import { initDB, getCreators } from './modules/db.js';
 import { showToast } from './core/global.js';
 
 // Portfolio Data Structure
 const portfolioState = {
-    name: 'Your Name',
-    role: 'Your Professional Role',
-    tagline: 'Crafting beautiful and functional digital experiences.',
-    location: 'San Francisco, CA',
-    email: 'hello@yourdomain.com',
-    phone: '+1 (555) 000-0000',
-    websiteUrl: 'https://yourwebsite.com',
-    about: 'Tell your professional story...',
+    name: '',
+    role: '',
+    tagline: '',
+    location: '',
+    email: '',
+    phone: '',
+    websiteUrl: '',
+    about: '',
     photo: null,
     skills: [],
     experience: [],
@@ -212,51 +211,90 @@ function savePortfoliosList(list) {
 }
 
 // Create new blank portfolio object with placeholder values
-const createPlaceholderPortfolio = (id) => ({
-    id: id || 'port_' + Date.now(),
-    name: 'Your Name',
-    role: 'Your Professional Role',
-    tagline: 'Crafting beautiful and functional digital experiences.',
-    location: 'San Francisco, CA',
-    email: 'hello@yourdomain.com',
-    phone: '+1 (555) 000-0000',
-    websiteUrl: '',
-    about: 'Describe your professional summary and background story in detail here...',
-    photo: '',
-    skills: ['HTML', 'CSS', 'JavaScript'],
-    experience: [],
-    education: [],
-    projects: [],
-    certifications: [],
-    testimonials: [],
-    socialLinks: {},
-    selectedTemplate: 'minimal',
-    theme: 'dark',
-    customTheme: {
-        backgroundType: 'solid',
-        backgroundSolid: '#ffffff',
-        backgroundGradientStart: '#0f1220',
-        backgroundGradientEnd: '#060814',
-        text: '#111111',
-        accent: '#111111',
-        font: 'Inter',
-        cardStyle: 'flat',
-        blurIntensity: '15px',
-        borderOpacity: '0.08'
-    },
-    sectionVisibility: {
-        photo: true,
-        about: true,
-        skills: true,
-        experience: true,
-        education: true,
-        projects: true,
-        certifications: true,
-        testimonials: true,
-        contact: true
-    },
-    updatedAt: Date.now()
-});
+const createPlaceholderPortfolio = (id) => {
+    // Try to seed real user name from auth
+    let realName = '';
+    let realEmail = '';
+    try {
+        const authData = localStorage.getItem('apex_user_data');
+        if (authData) {
+            const authUser = JSON.parse(authData);
+            realName = authUser.name || '';
+            realEmail = authUser.email || '';
+        }
+    } catch(_) {}
+
+    return {
+        id: id || 'port_' + Date.now(),
+        name: realName,
+        role: '',
+        tagline: '',
+        location: '',
+        email: realEmail,
+        phone: '',
+        websiteUrl: '',
+        about: '',
+        photo: '',
+        skills: ['JavaScript', 'React', 'CSS'],
+        experience: [
+            {
+                id: 'exp_' + Date.now(),
+                title: 'Software Engineer',
+                company: 'Tech Corp',
+                startDate: '2023-01-01',
+                endDate: ''
+            }
+        ],
+        education: [
+            {
+                id: 'edu_' + Date.now(),
+                degree: 'B.S. Computer Science',
+                school: 'University of Technology',
+                startDate: '2019-09-01',
+                endDate: '2023-05-01'
+            }
+        ],
+        projects: [
+            {
+                id: 'proj_' + Date.now(),
+                title: 'E-commerce Platform',
+                description: 'A full-stack e-commerce application built with React and Node.js.',
+                tags: 'React, Node, MongoDB',
+                link: '#',
+                status: 'Featured'
+            }
+        ],
+        certifications: [],
+        testimonials: [],
+        socialLinks: {},
+        selectedTemplate: 'minimal',
+        theme: 'dark',
+        customTheme: {
+            backgroundType: 'solid',
+            backgroundSolid: '#ffffff',
+            backgroundGradientStart: '#0f1220',
+            backgroundGradientEnd: '#060814',
+            text: '#111111',
+            accent: '#111111',
+            font: 'Inter',
+            cardStyle: 'flat',
+            blurIntensity: '15px',
+            borderOpacity: '0.08'
+        },
+        sectionVisibility: {
+            photo: true,
+            about: true,
+            skills: true,
+            experience: true,
+            education: true,
+            projects: true,
+            certifications: true,
+            testimonials: true,
+            contact: true
+        },
+        updatedAt: Date.now()
+    };
+};
 
 // Load data from localStorage
 function loadPortfolioData() {
@@ -364,6 +402,16 @@ function setupPortfolioSwitcher() {
             }
         });
     }
+
+    const btnDelete = document.getElementById('btnDeleteCurrentPortfolio');
+    if (btnDelete) {
+        btnDelete.addEventListener('click', () => {
+            const activeId = localStorage.getItem('apex-current-portfolio-id');
+            if (activeId) {
+                deletePortfolio(activeId);
+            }
+        });
+    }
 }
 
 // Populate the Switcher Dropdown in the Sidebar
@@ -394,6 +442,11 @@ export function createNewPortfolio() {
 
     loadPortfolioData();
     populatePortfolioSelect();
+    populateEditorForm();
+    renderSkills();
+    renderExperience();
+    renderEducation();
+    renderProjects();
     updatePreview();
 }
 
@@ -402,6 +455,11 @@ export function editPortfolio(id) {
     localStorage.setItem('apex-current-portfolio-id', id);
     loadPortfolioData();
     populatePortfolioSelect();
+    populateEditorForm();
+    renderSkills();
+    renderExperience();
+    renderEducation();
+    renderProjects();
     updatePreview();
 }
 
@@ -428,6 +486,11 @@ export function deletePortfolio(id) {
         }
         loadPortfolioData();
         populatePortfolioSelect();
+        populateEditorForm();
+        renderSkills();
+        renderExperience();
+        renderEducation();
+        renderProjects();
         updatePreview();
     }
 }
@@ -636,6 +699,25 @@ function setupEditorListeners() {
             });
         }
     };
+
+    const fullNameInput = document.getElementById('fullName');
+    if (fullNameInput) {
+        fullNameInput.addEventListener('focus', function() {
+            // If the name is exactly the seeded user's name or a default placeholder, clear it once on first focus
+            let authName = '';
+            try {
+                const authData = localStorage.getItem('apex_user_data');
+                if (authData) authName = JSON.parse(authData).name || '';
+            } catch(e){}
+            
+            if (this.value === authName || this.value === 'Your Name' || this.value === 'Nova Stark') {
+                this.value = '';
+                portfolioState.name = '';
+                savePortfolioData();
+                updatePreview();
+            }
+        });
+    }
 
     bindInputToState('fullName', 'name');
     bindInputToState('role', 'role');
@@ -865,25 +947,60 @@ function bindSocialInput(inputId, key) {
     });
 }
 
-// Handle photo upload
+// Handle photo upload with compression to make it fast and smooth
 function handlePhotoUpload(file) {
+    if (!file.type.match(/image.*/)) {
+        showToast('Please select a valid image file.', 'error');
+        return;
+    }
+
     const reader = new FileReader();
     reader.onload = (e) => {
-        portfolioState.photo = e.target.result;
-        savePortfolioData();
+        const img = new Image();
+        img.onload = () => {
+            // Compress the image using canvas
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 400;
+            const MAX_HEIGHT = 400;
+            let width = img.width;
+            let height = img.height;
 
-        const photoArea = document.getElementById('photoUploadArea');
-        if (photoArea) {
-            photoArea.innerHTML = `<img src="${e.target.result}" class="photo-upload-preview">`;
-            photoArea.classList.add('has-image');
-        }
+            if (width > height) {
+                if (width > MAX_WIDTH) {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH;
+                }
+            } else {
+                if (height > MAX_HEIGHT) {
+                    width *= MAX_HEIGHT / height;
+                    height = MAX_HEIGHT;
+                }
+            }
 
-        const photoUrlInput = document.getElementById('profilePhotoUrl');
-        if (photoUrlInput) {
-            photoUrlInput.value = e.target.result;
-        }
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
 
-        updatePreview();
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+
+            portfolioState.photo = compressedDataUrl;
+            savePortfolioData();
+
+            const photoArea = document.getElementById('photoUploadArea');
+            if (photoArea) {
+                photoArea.innerHTML = `<img src="${compressedDataUrl}" class="photo-upload-preview">`;
+                photoArea.classList.add('has-image');
+            }
+
+            const photoUrlInput = document.getElementById('profilePhotoUrl');
+            if (photoUrlInput) {
+                photoUrlInput.value = compressedDataUrl;
+            }
+
+            updatePreview();
+        };
+        img.src = e.target.result;
     };
     reader.readAsDataURL(file);
 }

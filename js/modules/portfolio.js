@@ -99,7 +99,7 @@ export function initPortfolioPage() {
 
     // ── Render project cards ──────────────────────────────────────────────────
     const renderProjects = () => {
-        const projects = getProjects();
+        const projects = getProjects().slice(0, 6);
 
         if (projects.length === 0) {
             projectsGrid.innerHTML = `
@@ -142,46 +142,70 @@ export function openGlobalPreviewDrawer(id, cartSet, syncCartSet) {
         }
 
         const titleEl = document.getElementById('drawer-title');
-        const imgEl   = document.getElementById('drawer-img');
+        const imgEl = document.getElementById('drawer-img');
         const badgeEl = document.getElementById('drawer-badge');
         const priceEl = document.getElementById('drawer-price');
-        const descEl  = document.getElementById('drawer-desc');
-        const tagsEl  = document.getElementById('drawer-tags');
-        const buyBtn  = document.getElementById('drawer-buy-btn');
+        const descEl = document.getElementById('drawer-desc');
+        const tagsEl = document.getElementById('drawer-tags');
+        const buyBtn = document.getElementById('drawer-buy-btn');
 
         if (titleEl) titleEl.textContent = p.title || '';
-        if (imgEl)   imgEl.src           = p.image  || '';
+        if (imgEl) imgEl.src = p.image || '';
         if (badgeEl) badgeEl.textContent = p.status || p.category || '';
         if (priceEl) priceEl.textContent = `₹${(p.price || 0).toFixed(2)}`;
-        if (descEl)  descEl.textContent  = p.description || '';
+        if (descEl) descEl.textContent = p.description || '';
 
         if (tagsEl) {
             tagsEl.innerHTML = (p.tags || [])
                 .map(t => `<span class="project-tag">${t}</span>`).join('');
         }
 
-        // ── Live Demo link inside drawer ──────────────────────────────────────
-        const existingDemoLink = drawer.querySelector('.drawer-demo-link');
-        if (existingDemoLink) existingDemoLink.remove();
+        // ── Live Demo & GitHub links inside drawer ────────────────────────────
+        // Remove any previously injected link rows
+        drawer.querySelectorAll('.drawer-link-row').forEach(el => el.remove());
 
-        if (p.demoUrl && p.demoUrl !== '#') {
-            const demoLink = document.createElement('a');
-            demoLink.href        = p.demoUrl;
-            demoLink.target      = '_blank';
-            demoLink.rel         = 'noopener noreferrer';
-            demoLink.className   = 'btn btn-secondary clickable drawer-demo-link';
-            demoLink.style.cssText = 'flex-grow:1;text-align:center;text-decoration:none;';
-            demoLink.textContent = 'View Live Demo →';
-            const drawerFooter = drawer.querySelector('[style*="padding:20px 24px;border-top"]');
-            if (drawerFooter) drawerFooter.appendChild(demoLink);
+        const drawerBody = drawer.querySelector('.drawer-body') || drawer.querySelector('[style*="overflow-y:auto"]');
+        if (drawerBody) {
+            const hasDemo = p.demoUrl && p.demoUrl !== '#';
+            const hasGithub = p.github && p.github !== '#';
+
+            if (hasDemo || hasGithub) {
+                const linkRow = document.createElement('div');
+                linkRow.className = 'drawer-link-row';
+                linkRow.style.cssText = 'display:flex; gap:10px; flex-wrap:wrap;';
+
+                if (hasDemo) {
+                    const demoLink = document.createElement('a');
+                    demoLink.href = p.demoUrl;
+                    demoLink.target = '_blank';
+                    demoLink.rel = 'noopener noreferrer';
+                    demoLink.className = 'btn btn-secondary clickable drawer-demo-link';
+                    demoLink.style.cssText = 'flex:1; text-align:center; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:6px; font-size:0.85rem; padding:10px 16px; border-radius:10px;';
+                    demoLink.innerHTML = 'View Live Demo';
+                    linkRow.appendChild(demoLink);
+                }
+
+                if (hasGithub) {
+                    const ghLink = document.createElement('a');
+                    ghLink.href = p.github;
+                    ghLink.target = '_blank';
+                    ghLink.rel = 'noopener noreferrer';
+                    ghLink.className = 'btn btn-secondary clickable drawer-github-link';
+                    ghLink.style.cssText = 'flex:1; text-align:center; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:6px; font-size:0.85rem; padding:10px 16px; border-radius:10px;';
+                    ghLink.innerHTML = '⌥ View on GitHub';
+                    linkRow.appendChild(ghLink);
+                }
+
+                drawerBody.appendChild(linkRow);
+            }
         }
 
         // ── Buy / Cart button: reflects cartSet state ─────────────────────────
         if (buyBtn) {
             const alreadyInCart = cartSet ? cartSet.has(p.id) : false;
-            buyBtn.textContent       = alreadyInCart ? 'Added ✓' : 'Add to Cart';
-            buyBtn.style.background  = alreadyInCart ? 'rgba(16,185,129,0.15)' : '';
-            buyBtn.style.color       = alreadyInCart ? '#10b981' : '';
+            buyBtn.textContent = alreadyInCart ? 'Added ✓' : 'Add to Cart';
+            buyBtn.style.background = alreadyInCart ? 'rgba(16,185,129,0.15)' : '';
+            buyBtn.style.color = alreadyInCart ? '#10b981' : '';
             buyBtn.style.borderColor = alreadyInCart ? '#10b981' : '';
 
             // Clone to remove any stale listeners
@@ -193,14 +217,14 @@ export function openGlobalPreviewDrawer(id, cartSet, syncCartSet) {
 
                 if (isInCart) {
                     // Remove from cart
-                    const { removeFromCart: remove } = { removeFromCart: () => {} }; // handled via db import
+                    const { removeFromCart: remove } = { removeFromCart: () => { } }; // handled via db import
                     import('./db.js').then(({ removeFromCart }) => {
                         removeFromCart(p.id);
                         if (cartSet) cartSet.delete(p.id);
                         if (syncCartSet) syncCartSet();
-                        newBtn.textContent       = 'Add to Cart';
-                        newBtn.style.background  = '';
-                        newBtn.style.color       = '';
+                        newBtn.textContent = 'Add to Cart';
+                        newBtn.style.background = '';
+                        newBtn.style.color = '';
                         newBtn.style.borderColor = '';
                         showToast('Removed from your cart.', 'info');
                         if (window.updateCartDrawer) window.updateCartDrawer();
@@ -212,9 +236,9 @@ export function openGlobalPreviewDrawer(id, cartSet, syncCartSet) {
                     if (result) {
                         if (cartSet) cartSet.add(p.id);
                         if (syncCartSet) syncCartSet();
-                        newBtn.textContent       = 'Added ✓';
-                        newBtn.style.background  = 'rgba(16,185,129,0.15)';
-                        newBtn.style.color       = '#10b981';
+                        newBtn.textContent = 'Added ✓';
+                        newBtn.style.background = 'rgba(16,185,129,0.15)';
+                        newBtn.style.color = '#10b981';
                         newBtn.style.borderColor = '#10b981';
                         showToast(`${p.title} added to cart!`, 'success');
                         if (window.updateCartDrawer) window.updateCartDrawer();

@@ -12,10 +12,10 @@ import { openGlobalPreviewDrawer } from './portfolio.js';
 
 export function initShopPage() {
     const projectsGrid = document.getElementById('shop-projects-grid');
-    const searchInput  = document.getElementById('shop-search-field');
-    const sortSelect   = document.getElementById('shop-sort-select');
+    const searchInput = document.getElementById('shop-search-field');
+    const sortSelect = document.getElementById('shop-sort-select');
     const categoryBtns = document.querySelectorAll('.category-filter-btn');
-    const priceSlider  = document.getElementById('shop-price-slider');
+    const priceSlider = document.getElementById('shop-price-slider');
     const priceDisplay = document.getElementById('shop-price-limit');
 
     if (!projectsGrid) return;
@@ -24,16 +24,16 @@ export function initShopPage() {
     const cartSet = new Set(getCart());
 
     // ── Parse preset URL search parameter ────────────────────────────────────
-    const urlParams   = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search);
     const searchParam = urlParams.get('search');
     if (searchParam && searchInput) searchInput.value = decodeURIComponent(searchParam);
 
     // ── Core filter state ─────────────────────────────────────────────────────
     let state = {
-        query:      searchInput  ? searchInput.value.toLowerCase().trim() : '',
-        sort:       sortSelect   ? sortSelect.value                        : 'trending',
+        query: searchInput ? searchInput.value.toLowerCase().trim() : '',
+        sort: sortSelect ? sortSelect.value : 'trending',
         categories: [],
-        maxPrice:   priceSlider  ? parseFloat(priceSlider.value)           : 9999
+        maxPrice: priceSlider ? parseFloat(priceSlider.value) : 9999
     };
 
     const updateCategoriesState = () => {
@@ -48,19 +48,19 @@ export function initShopPage() {
         const projects = getProjects();
 
         let filtered = projects.filter(p => {
-            const matchesQuery    = p.title.toLowerCase().includes(state.query)       ||
-                                    p.description.toLowerCase().includes(state.query) ||
-                                    p.seller.toLowerCase().includes(state.query);
+            const matchesQuery = p.title.toLowerCase().includes(state.query) ||
+                p.description.toLowerCase().includes(state.query) ||
+                p.seller.toLowerCase().includes(state.query);
             const matchesCategory = state.categories.length === 0 ||
-                                    p.tags.some(t => state.categories.includes(t.toLowerCase()));
-            const matchesPrice    = state.maxPrice >= 9999 || p.price <= state.maxPrice;
+                p.tags.some(t => state.categories.includes(t.toLowerCase()));
+            const matchesPrice = state.maxPrice >= 9999 || p.price <= state.maxPrice;
             return matchesQuery && matchesCategory && matchesPrice;
         });
 
-        if (state.sort === 'price-asc')  filtered.sort((a, b) => a.price  - b.price);
-        else if (state.sort === 'price-desc') filtered.sort((a, b) => b.price  - a.price);
-        else if (state.sort === 'newest')     filtered.sort((a, b) => b.id.localeCompare(a.id));
-        else                                  filtered.sort((a, b) => b.likes  - a.likes); // trending
+        if (state.sort === 'price-asc') filtered.sort((a, b) => a.price - b.price);
+        else if (state.sort === 'price-desc') filtered.sort((a, b) => b.price - a.price);
+        else if (state.sort === 'newest') filtered.sort((a, b) => b.id.localeCompare(a.id));
+        else filtered.sort((a, b) => b.likes - a.likes); // trending
 
         renderShopProjects(filtered);
     };
@@ -100,20 +100,17 @@ export function initShopPage() {
                     </div>
                     <div class="project-card-content">
                         <div class="project-card-header">
-                            <div style="display:flex; justify-content:space-between; align-items:center;">
-                                <span class="badge badge-primary" style="font-size:0.7rem;">${p.tags[0] || p.status}</span>
-                                <button
-                                    class="btn btn-secondary wishlist-action-btn clickable"
-                                    data-id="${p.id}"
-                                    style="width:28px;height:28px;padding:0;font-size:0.7rem;border-radius:50%;
-                                           color:${inWish ? 'var(--danger)' : ''};
-                                           border-color:${inWish ? 'var(--danger)' : ''};"
-                                    title="Add to Wishlist">♥</button>
-                            </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
                             <h3 class="project-card-title">${p.title}</h3>
-                            <span class="project-card-seller">by @${p.seller}</span>
+                            <button
+                                class="btn btn-secondary wishlist-action-btn clickable"
+                                data-id="${p.id}"
+                                style="width:28px;height:28px;padding:0;font-size:0.8rem;border-radius:50%;flex-shrink:0;
+                                    color:${inWish ? 'var(--danger)' : ''};
+                                    border-color:${inWish ? 'var(--danger)' : ''};"
+                                title="Wishlist">♥</button>
                         </div>
-                        <p class="project-card-desc">${p.description}</p>
+                    </div>
                         <div class="project-card-tags">
                             ${p.tags.slice(0, 3).map(t => `<span class="badge badge-outline" style="font-size:0.65rem;">${t}</span>`).join('')}
                         </div>
@@ -123,16 +120,11 @@ export function initShopPage() {
                                 class="btn btn-glow cart-action-btn clickable"
                                 data-id="${p.id}"
                                 style="background:${inCart ? 'rgba(16,185,129,0.15)' : ''};
-                                       color:${inCart ? '#10b981' : ''};
-                                       border-color:${inCart ? '#10b981' : ''};">
+                                       color:${inCart ? '#217157ff' : ''};
+                                       border-color:${inCart ? '#1a392eff' : ''};">
                                 ${inCart ? 'Added ✓' : 'Add to Cart'}
                             </button>
                         </div>
-                        ${hasDemo ? `<a href="${p.demoUrl}" target="_blank" rel="noopener noreferrer"
-                            class="btn btn-secondary clickable"
-                            style="display:block;width:100%;margin-top:8px;font-size:0.75rem;text-align:center;text-decoration:none;">
-                            View Live Demo →
-                        </a>` : ''}
                     </div>
                 </div>
             `;
@@ -165,8 +157,8 @@ export function initShopPage() {
                     removeFromCart(id);
                     cartSet.delete(id);
                     btn.textContent = 'Add to Cart';
-                    btn.style.background  = '';
-                    btn.style.color       = '';
+                    btn.style.background = '';
+                    btn.style.color = '';
                     btn.style.borderColor = '';
                     showToast('Removed from your cart.', 'info');
                 } else {
@@ -175,8 +167,8 @@ export function initShopPage() {
                     if (result) {
                         cartSet.add(id);
                         btn.textContent = 'Added ✓';
-                        btn.style.background  = 'rgba(16,185,129,0.15)';
-                        btn.style.color       = '#10b981';
+                        btn.style.background = 'rgba(16,185,129,0.15)';
+                        btn.style.color = '#10b981';
                         btn.style.borderColor = '#10b981';
                         showToast('Project added to cart!', 'success');
                     } else {
@@ -196,15 +188,15 @@ export function initShopPage() {
 
                 if (currentlyWishlisted) {
                     removeFromWishlist(id);
-                    btn.style.color       = '';
+                    btn.style.color = '';
                     btn.style.borderColor = '';
-                    btn.style.background  = '';
+                    btn.style.background = '';
                     showToast('Removed from your wishlist.', 'info');
                 } else {
                     addToWishlist(id);
-                    btn.style.color       = 'var(--danger)';
+                    btn.style.color = 'var(--danger)';
                     btn.style.borderColor = 'var(--danger)';
-                    btn.style.background  = 'rgba(239,68,68,0.1)';
+                    btn.style.background = 'rgba(239,68,68,0.1)';
                     showToast('Added to your wishlist!', 'success');
                 }
             });
