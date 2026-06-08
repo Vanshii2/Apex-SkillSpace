@@ -1,8 +1,8 @@
 /*
    ==========================================================================
    FUTURISTIC PORTFOLIO MARKETPLACE - SHOP / MARKETPLACE SCRIPT
-   Dynamically processes multi-category filters, sorting, search ranges,
-   wishlist logs, and simulated purchase checkout states.
+   Fixed: no inline onclick handlers, event delegation via querySelectorAll,
+   cartSet sync, "View Live Demo" links in drawer and featured hero card.
    ==========================================================================
 */
 
@@ -12,78 +12,64 @@ import { openGlobalPreviewDrawer } from './portfolio.js';
 
 export function initShopPage() {
     const projectsGrid = document.getElementById('shop-projects-grid');
-    const searchInput = document.getElementById('shop-search-field');
-    const sortSelect = document.getElementById('shop-sort-select');
+    const searchInput  = document.getElementById('shop-search-field');
+    const sortSelect   = document.getElementById('shop-sort-select');
     const categoryBtns = document.querySelectorAll('.category-filter-btn');
-    const priceSlider = document.getElementById('shop-price-slider');
+    const priceSlider  = document.getElementById('shop-price-slider');
     const priceDisplay = document.getElementById('shop-price-limit');
-    
+
     if (!projectsGrid) return;
-    
-    // Parse preset parameters (useful for queries incoming from Command Palette)
-    const urlParams = new URLSearchParams(window.location.search);
+
+    // ── cartSet: in-memory mirror of getCart() for instant toggle reads ──────
+    const cartSet = new Set(getCart());
+
+    // ── Parse preset URL search parameter ────────────────────────────────────
+    const urlParams   = new URLSearchParams(window.location.search);
     const searchParam = urlParams.get('search');
-    if (searchParam && searchInput) {
-        searchInput.value = decodeURIComponent(searchParam);
-    }
-    
-    // Core filter state
+    if (searchParam && searchInput) searchInput.value = decodeURIComponent(searchParam);
+
+    // ── Core filter state ─────────────────────────────────────────────────────
     let state = {
-        query: searchInput ? searchInput.value.toLowerCase().trim() : '',
-        sort: sortSelect ? sortSelect.value : 'trending',
+        query:      searchInput  ? searchInput.value.toLowerCase().trim() : '',
+        sort:       sortSelect   ? sortSelect.value                        : 'trending',
         categories: [],
-        maxPrice: priceSlider ? parseFloat(priceSlider.value) : 100
+        maxPrice:   priceSlider  ? parseFloat(priceSlider.value)           : 9999
     };
-    
-    // Categories active values
+
     const updateCategoriesState = () => {
         state.categories = Array.from(categoryBtns)
             .filter(btn => btn.classList.contains('active') && btn.dataset.category !== 'all')
             .map(btn => btn.dataset.category.toLowerCase());
     };
     updateCategoriesState();
-    
-    // Trigger render matching state
+
+    // ── Main render+filter pipeline ───────────────────────────────────────────
     const filterAndRenderProjects = () => {
         const projects = getProjects();
-        
+
         let filtered = projects.filter(p => {
-            // Text query
-            const matchesQuery = p.title.toLowerCase().includes(state.query) || 
-                                 p.description.toLowerCase().includes(state.query) ||
-                                 p.seller.toLowerCase().includes(state.query);
-            
-            // Categories
-            const matchesCategory = state.categories.length === 0 || 
+            const matchesQuery    = p.title.toLowerCase().includes(state.query)       ||
+                                    p.description.toLowerCase().includes(state.query) ||
+                                    p.seller.toLowerCase().includes(state.query);
+            const matchesCategory = state.categories.length === 0 ||
                                     p.tags.some(t => state.categories.includes(t.toLowerCase()));
-            
-            // Max Price
-            const matchesPrice = p.price <= state.maxPrice;
-            
+            const matchesPrice    = state.maxPrice >= 9999 || p.price <= state.maxPrice;
             return matchesQuery && matchesCategory && matchesPrice;
         });
-        
-        // Sorting index
-        if (state.sort === 'price-asc') {
-            filtered.sort((a, b) => a.price - b.price);
-        } else if (state.sort === 'price-desc') {
-            filtered.sort((a, b) => b.price - a.price);
-        } else if (state.sort === 'newest') {
-            // Mock ID sorting representing chronologies
-            filtered.sort((a, b) => b.id.localeCompare(a.id));
-        } else { // 'trending'
-            filtered.sort((a, b) => b.likes - a.likes);
-        }
-        
+
+        if (state.sort === 'price-asc')  filtered.sort((a, b) => a.price  - b.price);
+        else if (state.sort === 'price-desc') filtered.sort((a, b) => b.price  - a.price);
+        else if (state.sort === 'newest')     filtered.sort((a, b) => b.id.localeCompare(a.id));
+        else                                  filtered.sort((a, b) => b.likes  - a.likes); // trending
+
         renderShopProjects(filtered);
     };
-    
-    // Expose for global cart logic
-    window.filterAndRenderProjects = filterAndRenderProjects;
-    
-    // Render list outputs
-    const renderShopProjects = (items) => {
 
+    // Expose for external cart-drawer refresh
+    window.filterAndRenderProjects = filterAndRenderProjects;
+
+    // ── Render grid ───────────────────────────────────────────────────────────
+    const renderShopProjects = (items) => {
         if (items.length === 0) {
             projectsGrid.innerHTML = `
                 <div class="premium-empty-state glass" style="grid-column: 1/-1;">
@@ -94,25 +80,35 @@ export function initShopPage() {
             `;
             return;
         }
-        
+
         projectsGrid.innerHTML = items.map(p => {
-            const inCart = getCart().includes(p.id);
+            const inCart = cartSet.has(p.id);
             const inWish = getWishlist().includes(p.id);
-            const isEditorial = p.tags.includes('Editorial');
-            
+            const hasDemo = p.demoUrl && p.demoUrl !== '#';
+
             return `
                 <div class="project-card shop-product-card" data-id="${p.id}">
                     <div class="project-card-img-wrapper">
                         <img src="${p.image}" alt="${p.title}" loading="lazy">
                         <div class="project-card-overlay">
-                            ${isEditorial ? `<a href="${p.liveDemo || '#'}" target="_blank" class="btn btn-primary clickable">Live Portfolio</a>` : `<button class="btn btn-primary preview-trigger-btn clickable">View Details</button>`}
+                            <button
+                                class="btn btn-primary preview-trigger-btn clickable"
+                                data-id="${p.id}">
+                                View Details
+                            </button>
                         </div>
                     </div>
                     <div class="project-card-content">
                         <div class="project-card-header">
                             <div style="display:flex; justify-content:space-between; align-items:center;">
                                 <span class="badge badge-primary" style="font-size:0.7rem;">${p.tags[0] || p.status}</span>
-                                <button class="btn btn-secondary wishlist-action-btn clickable" style="width:28px;height:28px;padding:0;font-size:0.7rem;border-radius:50%;color:${inWish ? 'var(--danger)' : ''};border-color:${inWish ? 'var(--danger)' : ''};" title="Add to Wishlist">♥</button>
+                                <button
+                                    class="btn btn-secondary wishlist-action-btn clickable"
+                                    data-id="${p.id}"
+                                    style="width:28px;height:28px;padding:0;font-size:0.7rem;border-radius:50%;
+                                           color:${inWish ? 'var(--danger)' : ''};
+                                           border-color:${inWish ? 'var(--danger)' : ''};"
+                                    title="Add to Wishlist">♥</button>
                             </div>
                             <h3 class="project-card-title">${p.title}</h3>
                             <span class="project-card-seller">by @${p.seller}</span>
@@ -122,112 +118,128 @@ export function initShopPage() {
                             ${p.tags.slice(0, 3).map(t => `<span class="badge badge-outline" style="font-size:0.65rem;">${t}</span>`).join('')}
                         </div>
                         <div class="project-card-footer">
-                            ${isEditorial ? `
-                                <span style="font-weight:600; color:var(--text-secondary);">Live Portfolio</span>
-                                <a href="${p.liveDemo || '#'}" target="_blank" class="btn btn-glow clickable">Visit</a>
-                            ` : `
-                                <span class="project-card-price">₹${p.price.toFixed(2)}</span>
-                                <button class="btn btn-glow cart-action-btn clickable" style="background:${inCart ? 'rgba(16, 185, 129, 0.15)' : ''};color:${inCart ? '#10b981' : ''};border-color:${inCart ? '#10b981' : ''};">
-                                    ${inCart ? 'Added ✓' : 'Add to Cart'}
-                                </button>
-                            `}
+                            <span class="project-card-price">₹${p.price.toFixed(2)}</span>
+                            <button
+                                class="btn btn-glow cart-action-btn clickable"
+                                data-id="${p.id}"
+                                style="background:${inCart ? 'rgba(16,185,129,0.15)' : ''};
+                                       color:${inCart ? '#10b981' : ''};
+                                       border-color:${inCart ? '#10b981' : ''};">
+                                ${inCart ? 'Added ✓' : 'Add to Cart'}
+                            </button>
                         </div>
+                        ${hasDemo ? `<a href="${p.demoUrl}" target="_blank" rel="noopener noreferrer"
+                            class="btn btn-secondary clickable"
+                            style="display:block;width:100%;margin-top:8px;font-size:0.75rem;text-align:center;text-decoration:none;">
+                            View Live Demo →
+                        </a>` : ''}
                     </div>
                 </div>
             `;
         }).join('');
-        
+
+        // Bind events AFTER HTML is injected — never inline onclick
         bindProductActions();
     };
-    
-    // Bind interaction buttons
+
+    // ── Event delegation — all bound via querySelectorAll, no onclick attr ────
     const bindProductActions = () => {
-        // Preview modal drawer
+
+        // "View Details" overlay button
         projectsGrid.querySelectorAll('.preview-trigger-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                const card = btn.closest('.shop-product-card');
-                const id = card.dataset.id;
-                console.log("View Details button clicked for id:", id);
-                openGlobalPreviewDrawer(id);
+                openGlobalPreviewDrawer(btn.dataset.id, cartSet, syncCartSet);
             });
         });
-        
-        // Cart simulator clicker
+
+        // "Add to Cart" / "Added ✓" toggle
         projectsGrid.querySelectorAll('.cart-action-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const card = btn.closest('.shop-product-card');
-                const id = card.dataset.id;
-                
-                const isAdded = addToCart(id);
-                if (isAdded === null) return;
-                if (isAdded) {
-                    btn.textContent = 'Added ✓';
-                    btn.style.background = 'rgba(16, 185, 129, 0.15)';
-                    btn.style.color = '#10b981';
-                    btn.style.borderColor = '#10b981';
-                    showToast('Project added to shopping cart!', 'success');
-                    if (window.updateCartDrawer) window.updateCartDrawer();
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = btn.dataset.id;
+
+                if (cartSet.has(id)) {
+                    // Already in cart — toggle removal
+                    removeFromCart(id);
+                    cartSet.delete(id);
+                    btn.textContent = 'Add to Cart';
+                    btn.style.background  = '';
+                    btn.style.color       = '';
+                    btn.style.borderColor = '';
+                    showToast('Removed from your cart.', 'info');
                 } else {
-                    showToast('Project is already in shopping cart.', 'info');
+                    const result = addToCart(id);
+                    if (result === null) return; // login redirect
+                    if (result) {
+                        cartSet.add(id);
+                        btn.textContent = 'Added ✓';
+                        btn.style.background  = 'rgba(16,185,129,0.15)';
+                        btn.style.color       = '#10b981';
+                        btn.style.borderColor = '#10b981';
+                        showToast('Project added to cart!', 'success');
+                    } else {
+                        showToast('Already in your cart.', 'info');
+                    }
                 }
+                if (window.updateCartDrawer) window.updateCartDrawer();
             });
         });
-        
-        // Wishlist simulated fav button — toggles red ↔ white
+
+        // Wishlist heart toggle
         projectsGrid.querySelectorAll('.wishlist-action-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const card = btn.closest('.shop-product-card');
-                const id = card.dataset.id;
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = btn.dataset.id;
                 const currentlyWishlisted = getWishlist().includes(id);
 
                 if (currentlyWishlisted) {
-                    // Remove from wishlist — reset to white/default
                     removeFromWishlist(id);
-                    btn.style.color = '';
+                    btn.style.color       = '';
                     btn.style.borderColor = '';
-                    btn.style.background = '';
+                    btn.style.background  = '';
                     showToast('Removed from your wishlist.', 'info');
                 } else {
-                    // Add to wishlist — turn red
                     addToWishlist(id);
-                    btn.style.color = 'var(--danger)';
+                    btn.style.color       = 'var(--danger)';
                     btn.style.borderColor = 'var(--danger)';
-                    btn.style.background = 'rgba(239, 68, 68, 0.1)';
-                    showToast('Added to your favorite wishlist!', 'success');
+                    btn.style.background  = 'rgba(239,68,68,0.1)';
+                    showToast('Added to your wishlist!', 'success');
                 }
             });
         });
     };
-    
-    // Connect input listeners
+
+    // Keep cartSet in sync when drawer's "Add to Cart" button is used externally
+    const syncCartSet = () => {
+        getCart().forEach(id => cartSet.add(id));
+    };
+
+    // ── Input listeners ───────────────────────────────────────────────────────
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             state.query = e.target.value.toLowerCase().trim();
             filterAndRenderProjects();
         });
     }
-    
+
     if (sortSelect) {
         sortSelect.addEventListener('change', (e) => {
             state.sort = e.target.value;
             filterAndRenderProjects();
         });
     }
-    
+
     categoryBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Remove active from all
             categoryBtns.forEach(b => b.classList.remove('active'));
-            // Add active to clicked
             btn.classList.add('active');
-            
             updateCategoriesState();
             filterAndRenderProjects();
         });
     });
-    
+
     if (priceSlider) {
         priceSlider.addEventListener('input', (e) => {
             const limit = parseFloat(e.target.value);
@@ -236,8 +248,8 @@ export function initShopPage() {
             filterAndRenderProjects();
         });
     }
-    
-    // Initial Hydration
+
+    // ── Initial render ────────────────────────────────────────────────────────
     if (window.updateCartDrawer) window.updateCartDrawer();
     filterAndRenderProjects();
 }

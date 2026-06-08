@@ -525,6 +525,7 @@
     margin-bottom: 16px;
     overflow: hidden;
     position: relative;
+    flex-shrink: 0;
 }
 
 .photo-upload-area:hover {
@@ -1314,4 +1315,39 @@
 .switcher-create-btn i {
     width: 12px;
     height: 12px;
+}
+
+/* ───────────────────────────────────────────────────
+   VALIDATION STYLES
+   ─────────────────────────────────────────────────── */
+.required-asterisk {
+    color: rgba(255, 255, 255, 0.4);
+    margin-left: 3px;
+    font-weight: 700;
+    transition: color 0.2s ease;
+}
+
+.form-group.invalid .required-asterisk {
+    color: #ff6b6b !important;
+}
+
+.form-group.invalid .form-input,
+.form-group.invalid .form-textarea,
+.form-group.invalid .form-select {
+    border-color: #ff6b6b !important;
+    background: rgba(255, 107, 107, 0.02) !important;
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.15) !important;
+}
+
+.form-group .error-msg {
+    display: none;
+    color: #ff6b6b;
+    font-size: 10px;
+    font-weight: 500;
+    margin-top: 5px;
+    letter-spacing: 0.2px;
+}
+
+.form-group.invalid .error-msg {
+    display: block;
 }

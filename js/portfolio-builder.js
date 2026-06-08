@@ -7,6 +7,7 @@ import { initParticles } from './particles.js';
 import { createActivityHeatmap } from './heatmap.js';
 import { loadTemplates, applyTemplate, getAllTemplates, getTemplate } from './templates.js';
 import { initDB, getCreators } from './modules/db.js';
+import { showToast } from './core/global.js';
 
 // Portfolio Data Structure
 const portfolioState = {
@@ -99,6 +100,7 @@ export async function initPortfolioBuilder() {
     loadPortfolioData();
     populatePortfolioSelect();
     updatePreview();
+    setupValidationListeners();
 
     console.log('Portfolio Builder Ready');
 }
@@ -607,6 +609,11 @@ function setupEditorListeners() {
     const btnPublish = document.getElementById('btnPublishPortfolio');
     if (btnPublish) {
         btnPublish.addEventListener('click', () => {
+            if (!validateSidebarForm()) {
+                showToast('Please fix validation errors before publishing.', 'danger');
+                return;
+            }
+
             btnPublish.innerHTML = '<i data-lucide="loader" style="width:14px;height:14px;animation:spin 1s linear infinite"></i> Publishing...';
             btnPublish.disabled = true;
             btnPublish.style.opacity = '0.7';
@@ -917,7 +924,7 @@ function renderExperience() {
                 <div>
                     <div class="exp-item-title" style="font-size: 13px;">${exp.title}</div>
                     <div class="exp-item-sub" style="font-size: 12px; margin-top: 2px;">${exp.company}</div>
-                    <div class="exp-item-date" style="font-size: 11px; margin-top: 2px;">${exp.startDate} – ${exp.endDate}</div>
+                    <div class="exp-item-date" style="font-size: 11px; margin-top: 2px;">${formatDateString(exp.startDate)} – ${formatDateString(exp.endDate)}</div>
                 </div>
                 <button onclick="window.portfolioBuilder.removeExperience(${idx})" style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px;">&times;</button>
             </div>
@@ -945,7 +952,7 @@ function renderEducation() {
                 <div>
                     <div class="exp-item-title" style="font-size: 13px;">${edu.degree}</div>
                     <div class="exp-item-sub" style="font-size: 12px; margin-top: 2px;">${edu.school}</div>
-                    <div class="exp-item-date" style="font-size: 11px; margin-top: 2px;">${edu.startDate} – ${edu.endDate}</div>
+                    <div class="exp-item-date" style="font-size: 11px; margin-top: 2px;">${formatDateString(edu.startDate)} – ${formatDateString(edu.endDate)}</div>
                 </div>
                 <button onclick="window.portfolioBuilder.removeEducation(${idx})" style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px;">&times;</button>
             </div>
@@ -1057,23 +1064,71 @@ function toggleModal(modalId, action) {
 export function openExperienceModal() { toggleModal('experienceModal', 'open'); }
 export function closeExperienceModal() {
     toggleModal('experienceModal', 'close');
-    document.getElementById('expTitle').value = '';
-    document.getElementById('expCompany').value = '';
-    document.getElementById('expStartDate').value = '';
-    document.getElementById('expEndDate').value = '';
+    const ids = ['expTitle', 'expCompany', 'expStartDate', 'expEndDate'];
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.value = '';
+            el.closest('.form-group')?.classList.remove('invalid');
+        }
+    });
 }
 export function saveExperience() {
-    const title = document.getElementById('expTitle').value.trim();
-    const company = document.getElementById('expCompany').value.trim();
-    const startDate = document.getElementById('expStartDate').value.trim();
-    const endDate = document.getElementById('expEndDate').value.trim() || 'Present';
+    const titleEl = document.getElementById('expTitle');
+    const companyEl = document.getElementById('expCompany');
+    const startDateEl = document.getElementById('expStartDate');
+    const endDateEl = document.getElementById('expEndDate');
 
-    if (!title || !company || !startDate) {
-        alert('Title, Company, and Start Date are required.');
+    const title = titleEl.value.trim();
+    const company = companyEl.value.trim();
+    const startDate = startDateEl.value.trim();
+    const endDate = endDateEl.value.trim();
+
+    let modalValid = true;
+
+    // Validate Job Title
+    if (!title) {
+        titleEl.closest('.form-group').classList.add('invalid');
+        modalValid = false;
+    } else {
+        titleEl.closest('.form-group').classList.remove('invalid');
+    }
+
+    // Validate Company Name
+    if (!company) {
+        companyEl.closest('.form-group').classList.add('invalid');
+        modalValid = false;
+    } else {
+        companyEl.closest('.form-group').classList.remove('invalid');
+    }
+
+    // Validate Start Date
+    if (!startDate) {
+        startDateEl.closest('.form-group').classList.add('invalid');
+        modalValid = false;
+    } else {
+        startDateEl.closest('.form-group').classList.remove('invalid');
+    }
+
+    // Validate End Date > Start Date
+    if (startDate && endDate) {
+        if (new Date(startDate) >= new Date(endDate)) {
+            endDateEl.closest('.form-group').classList.add('invalid');
+            const errorEl = endDateEl.closest('.form-group').querySelector('.error-msg');
+            if (errorEl) errorEl.textContent = 'Must be after Start Date.';
+            modalValid = false;
+        } else {
+            endDateEl.closest('.form-group').classList.remove('invalid');
+        }
+    } else {
+        endDateEl.closest('.form-group').classList.remove('invalid');
+    }
+
+    if (!modalValid) {
         return;
     }
 
-    portfolioState.experience.push({ title, company, startDate, endDate });
+    portfolioState.experience.push({ title, company, startDate, endDate: endDate || 'Present' });
     savePortfolioData();
     renderExperience();
     updatePreview();
@@ -1085,23 +1140,71 @@ export function saveExperience() {
 export function openEducationModal() { toggleModal('educationModal', 'open'); }
 export function closeEducationModal() {
     toggleModal('educationModal', 'close');
-    document.getElementById('eduSchool').value = '';
-    document.getElementById('eduDegree').value = '';
-    document.getElementById('eduStartDate').value = '';
-    document.getElementById('eduEndDate').value = '';
+    const ids = ['eduSchool', 'eduDegree', 'eduStartDate', 'eduEndDate'];
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.value = '';
+            el.closest('.form-group')?.classList.remove('invalid');
+        }
+    });
 }
 export function saveEducation() {
-    const school = document.getElementById('eduSchool').value.trim();
-    const degree = document.getElementById('eduDegree').value.trim();
-    const startDate = document.getElementById('eduStartDate').value.trim();
-    const endDate = document.getElementById('eduEndDate').value.trim() || 'Present';
+    const schoolEl = document.getElementById('eduSchool');
+    const degreeEl = document.getElementById('eduDegree');
+    const startDateEl = document.getElementById('eduStartDate');
+    const endDateEl = document.getElementById('eduEndDate');
 
-    if (!school || !degree || !startDate) {
-        alert('School, Degree, and Start Date are required.');
+    const school = schoolEl.value.trim();
+    const degree = degreeEl.value.trim();
+    const startDate = startDateEl.value.trim();
+    const endDate = endDateEl.value.trim();
+
+    let modalValid = true;
+
+    // Validate School
+    if (!school) {
+        schoolEl.closest('.form-group').classList.add('invalid');
+        modalValid = false;
+    } else {
+        schoolEl.closest('.form-group').classList.remove('invalid');
+    }
+
+    // Validate Degree
+    if (!degree) {
+        degreeEl.closest('.form-group').classList.add('invalid');
+        modalValid = false;
+    } else {
+        degreeEl.closest('.form-group').classList.remove('invalid');
+    }
+
+    // Validate Start Date
+    if (!startDate) {
+        startDateEl.closest('.form-group').classList.add('invalid');
+        modalValid = false;
+    } else {
+        startDateEl.closest('.form-group').classList.remove('invalid');
+    }
+
+    // Validate End Date > Start Date
+    if (startDate && endDate) {
+        if (new Date(startDate) >= new Date(endDate)) {
+            endDateEl.closest('.form-group').classList.add('invalid');
+            const errorEl = endDateEl.closest('.form-group').querySelector('.error-msg');
+            if (errorEl) errorEl.textContent = 'Must be after Start Date.';
+            modalValid = false;
+        } else {
+            endDateEl.closest('.form-group').classList.remove('invalid');
+        }
+    } else {
+        endDateEl.closest('.form-group').classList.remove('invalid');
+    }
+
+    if (!modalValid) {
         return;
     }
 
-    portfolioState.education.push({ school, degree, startDate, endDate });
+    portfolioState.education.push({ school, degree, startDate, endDate: endDate || 'Present' });
     savePortfolioData();
     renderEducation();
     updatePreview();
@@ -1112,24 +1215,64 @@ export function saveEducation() {
 export function openProjectModal() { toggleModal('projectModal', 'open'); }
 export function closeProjectModal() {
     toggleModal('projectModal', 'close');
-    document.getElementById('projTitle').value = '';
-    document.getElementById('projDesc').value = '';
-    document.getElementById('projTags').value = '';
-    document.getElementById('projLink').value = '';
+    const ids = ['projTitle', 'projDesc', 'projTags', 'projLink'];
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.value = '';
+            el.closest('.form-group')?.classList.remove('invalid');
+        }
+    });
     document.getElementById('projStatus').value = 'Featured';
 }
 export function saveProjectItem() {
-    const title = document.getElementById('projTitle').value.trim();
-    const description = document.getElementById('projDesc').value.trim();
-    const tagsVal = document.getElementById('projTags').value.trim();
-    let link = document.getElementById('projLink').value.trim();
-    if (link && !/^https?:\/\//i.test(link)) {
-        link = 'https://' + link;
-    }
-    const status = document.getElementById('projStatus').value;
+    const titleEl = document.getElementById('projTitle');
+    const descEl = document.getElementById('projDesc');
+    const tagsEl = document.getElementById('projTags');
+    const linkEl = document.getElementById('projLink');
+    const statusEl = document.getElementById('projStatus');
 
-    if (!title || !description) {
-        alert('Project Title and Description are required.');
+    const title = titleEl.value.trim();
+    const description = descEl.value.trim();
+    const tagsVal = tagsEl.value.trim();
+    let link = linkEl.value.trim();
+    const status = statusEl.value;
+
+    let modalValid = true;
+
+    // Validate Title
+    if (!title) {
+        titleEl.closest('.form-group').classList.add('invalid');
+        modalValid = false;
+    } else {
+        titleEl.closest('.form-group').classList.remove('invalid');
+    }
+
+    // Validate Description
+    if (!description) {
+        descEl.closest('.form-group').classList.add('invalid');
+        modalValid = false;
+    } else {
+        descEl.closest('.form-group').classList.remove('invalid');
+    }
+
+    // Validate URL (if provided)
+    if (link) {
+        const urlPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9\-._~:\/?#\[\]@!$&'()*+,;=]*)?$/i;
+        if (!urlPattern.test(link)) {
+            linkEl.closest('.form-group').classList.add('invalid');
+            modalValid = false;
+        } else {
+            linkEl.closest('.form-group').classList.remove('invalid');
+            if (!/^https?:\/\//i.test(link)) {
+                link = 'https://' + link;
+            }
+        }
+    } else {
+        linkEl.closest('.form-group').classList.remove('invalid');
+    }
+
+    if (!modalValid) {
         return;
     }
 
@@ -1603,7 +1746,7 @@ function updatePreviewExperience() {
             <div style="flex: 1; min-width: 0;">
                 <div class="preview-exp-title" style="font-weight:600; font-size:1rem;">${exp.title}</div>
                 <div class="preview-exp-company" style="font-weight:500; font-size:0.85rem; margin-top: 2px;">${exp.company}</div>
-                <div class="preview-exp-period" style="font-size:0.75rem; margin-top: 4px;">${exp.startDate} – ${exp.endDate}</div>
+                <div class="preview-exp-period" style="font-size:0.75rem; margin-top: 4px;">${formatDateString(exp.startDate)} – ${formatDateString(exp.endDate)}</div>
             </div>
         </div>
     `).join('');
@@ -1637,7 +1780,7 @@ function updatePreviewEducation() {
             <div style="flex: 1; min-width: 0;">
                 <div class="preview-exp-title" style="font-weight:600; font-size:1rem;">${edu.degree}</div>
                 <div class="preview-exp-company" style="font-weight:500; font-size:0.85rem; margin-top: 2px;">${edu.school}</div>
-                <div class="preview-exp-period" style="font-size:0.75rem; margin-top: 4px;">${edu.startDate} – ${edu.endDate}</div>
+                <div class="preview-exp-period" style="font-size:0.75rem; margin-top: 4px;">${formatDateString(edu.startDate)} – ${formatDateString(edu.endDate)}</div>
             </div>
         </div>
     `).join('');
@@ -1998,3 +2141,201 @@ export const portfolioBuilder = {
 
 // Make available globally
 window.portfolioBuilder = portfolioBuilder;
+
+// Validation helpers & Event setup
+function setFieldError(input, message) {
+    const group = input.closest('.form-group');
+    if (group) {
+        group.classList.add('invalid');
+        const errorEl = group.querySelector('.error-msg');
+        if (errorEl) {
+            errorEl.textContent = message;
+        }
+    }
+}
+
+function clearFieldError(input) {
+    const group = input.closest('.form-group');
+    if (group) {
+        group.classList.remove('invalid');
+    }
+}
+
+function validateField(input) {
+    if (!input) return true;
+    const value = input.value.trim();
+    const id = input.id;
+    let isValid = true;
+    let errorMsg = '';
+
+    const isValidUrl = (str) => {
+        const urlPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9\-._~:\/?#\[\]@!$&'()*+,;=]*)?$/i;
+        return urlPattern.test(str);
+    };
+
+    if (id === 'fullName') {
+        if (value === '') {
+            isValid = false;
+            errorMsg = 'Full Name is required.';
+        }
+    } else if (id === 'role') {
+        if (value === '') {
+            isValid = false;
+            errorMsg = 'Professional Role is required.';
+        }
+    } else if (id === 'phone') {
+        if (value === '') {
+            isValid = false;
+            errorMsg = 'Phone Number is required.';
+        } else if (!/^\+?[0-9\s\-()]{7,20}$/.test(value)) {
+            isValid = false;
+            errorMsg = 'Please enter a valid phone number.';
+        }
+    } else if (id === 'email') {
+        if (value === '') {
+            isValid = false;
+            errorMsg = 'Email is required.';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+            isValid = false;
+            errorMsg = 'Please enter a valid email address.';
+        }
+    } else if (id === 'websiteUrl') {
+        if (value !== '' && !isValidUrl(value)) {
+            isValid = false;
+            errorMsg = 'Please enter a valid URL.';
+        }
+    } else if (id === 'githubLink') {
+        if (value !== '') {
+            if (value.includes('/') || value.includes('github.com')) {
+                isValid = /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9\-]+(\/)?$/i.test(value);
+            } else {
+                isValid = /^[a-zA-Z0-9\-]{1,39}$/.test(value);
+            }
+            if (!isValid) {
+                errorMsg = 'Please enter a valid GitHub username or URL.';
+            }
+        }
+    } else if (id === 'linkedinLink') {
+        if (value !== '') {
+            if (value.includes('/') || value.includes('linkedin.com')) {
+                isValid = /^(https?:\/\/)?(www\.)?linkedin\.com\/(in|pub|company)\/[a-zA-Z0-9\-_]+(\/)?$/i.test(value);
+            } else {
+                isValid = /^[a-zA-Z0-9\-_]{3,100}$/.test(value);
+            }
+            if (!isValid) {
+                errorMsg = 'Please enter a valid LinkedIn username or URL.';
+            }
+        }
+    } else if (id === 'twitterLink') {
+        if (value !== '') {
+            if (value.includes('/') || value.includes('twitter.com') || value.includes('x.com')) {
+                isValid = /^(https?:\/\/)?(www\.)?(twitter|x)\.com\/[a-zA-Z0-9_]{1,15}(\/)?$/i.test(value);
+            } else {
+                isValid = /^[a-zA-Z0-9_]{1,15}$/.test(value);
+            }
+            if (!isValid) {
+                errorMsg = 'Please enter a valid Twitter/X username or URL.';
+            }
+        }
+    }
+
+    if (isValid) {
+        clearFieldError(input);
+    } else {
+        setFieldError(input, errorMsg);
+    }
+
+    return isValid;
+}
+
+function validateSidebarForm() {
+    const fields = [
+        'fullName',
+        'role',
+        'phone',
+        'email',
+        'websiteUrl',
+        'githubLink',
+        'linkedinLink',
+        'twitterLink'
+    ];
+    let firstInvalid = null;
+    let allValid = true;
+
+    fields.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            const isValid = validateField(input);
+            if (!isValid) {
+                allValid = false;
+                if (!firstInvalid) {
+                    firstInvalid = input;
+                }
+            }
+        }
+    });
+
+    if (!allValid && firstInvalid) {
+        const section = firstInvalid.closest('.accordion-section');
+        if (section) {
+            document.querySelectorAll('.accordion-section').forEach(s => {
+                s.classList.remove('open');
+            });
+            section.classList.add('open');
+        }
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+            firstInvalid.focus();
+        }, 300);
+    }
+
+    return allValid;
+}
+
+function setupValidationListeners() {
+    const fields = [
+        'fullName',
+        'role',
+        'phone',
+        'email',
+        'websiteUrl',
+        'githubLink',
+        'linkedinLink',
+        'twitterLink'
+    ];
+    fields.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('input', () => {
+                validateField(input);
+            });
+            input.addEventListener('blur', () => {
+                validateField(input);
+            });
+        }
+    });
+}
+
+function formatDateString(dateStr) {
+    if (!dateStr) return '';
+    if (dateStr.toLowerCase() === 'present') return 'Present';
+    
+    const parts = dateStr.split('-');
+    if (parts.length === 1) {
+        return dateStr;
+    }
+    
+    const year = parts[0];
+    const monthIndex = parseInt(parts[1], 10) - 1;
+    
+    const monthNames = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    
+    const monthName = monthNames[monthIndex];
+    if (monthName) {
+        return `${monthName} ${year}`;
+    }
+    return dateStr;
+}

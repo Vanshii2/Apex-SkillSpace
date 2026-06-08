@@ -393,7 +393,7 @@
                         <div class="timeline-header">
                             <h4 class="timeline-title">${e.title}</h4>
                             <span class="timeline-company">${e.company}</span>
-                            <div class="timeline-date">${e.startDate} – ${e.endDate}</div>
+                            <div class="timeline-date">${formatDateString(e.startDate)} – ${formatDateString(e.endDate)}</div>
                         </div>
                     </div>
                 `).join('');
@@ -412,7 +412,7 @@
                         <div class="timeline-header">
                             <h4 class="timeline-title">${ed.degree}</h4>
                             <span class="timeline-company">${ed.school}</span>
-                            <div class="timeline-date">${ed.startDate} – ${ed.endDate}</div>
+                            <div class="timeline-date">${formatDateString(ed.startDate)} – ${formatDateString(ed.endDate)}</div>
                         </div>
                     </div>
                 `).join('');
@@ -553,6 +553,30 @@
                 twitter: 'https://twitter.com/'
             };
             return `${bases[platform]}${handle}`;
+        }
+
+        function formatDateString(dateStr) {
+            if (!dateStr) return '';
+            if (dateStr.toLowerCase() === 'present') return 'Present';
+            
+            const parts = dateStr.split('-');
+            if (parts.length === 1) {
+                return dateStr;
+            }
+            
+            const year = parts[0];
+            const monthIndex = parseInt(parts[1], 10) - 1;
+            
+            const monthNames = [
+                'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+            ];
+            
+            const monthName = monthNames[monthIndex];
+            if (monthName) {
+                return `${monthName} ${year}`;
+            }
+            return dateStr;
         }
 
         // Helper to calculate relative luminance of a hex color

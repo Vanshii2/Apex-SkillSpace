@@ -125,7 +125,7 @@ export function initPortfolioPage() {
    GLOBAL PREVIEW DRAWER
    ========================================================================== */
 
-export function openGlobalPreviewDrawer(id) {
+export function openGlobalPreviewDrawer(id, cartSet, syncCartSet) {
     try {
         console.log("openGlobalPreviewDrawer called for id:", id);
         const projects = getProjects();
@@ -142,34 +142,88 @@ export function openGlobalPreviewDrawer(id) {
         }
 
         const titleEl = document.getElementById('drawer-title');
-        const imgEl = document.getElementById('drawer-img');
+        const imgEl   = document.getElementById('drawer-img');
         const badgeEl = document.getElementById('drawer-badge');
         const priceEl = document.getElementById('drawer-price');
-        const descEl = document.getElementById('drawer-desc');
-        const tagsEl = document.getElementById('drawer-tags');
-        const buyBtn = document.getElementById('drawer-buy-btn');
+        const descEl  = document.getElementById('drawer-desc');
+        const tagsEl  = document.getElementById('drawer-tags');
+        const buyBtn  = document.getElementById('drawer-buy-btn');
 
         if (titleEl) titleEl.textContent = p.title || '';
-        if (imgEl) imgEl.src = p.image || '';
+        if (imgEl)   imgEl.src           = p.image  || '';
         if (badgeEl) badgeEl.textContent = p.status || p.category || '';
         if (priceEl) priceEl.textContent = `₹${(p.price || 0).toFixed(2)}`;
-        if (descEl) descEl.textContent = p.description || '';
-        
+        if (descEl)  descEl.textContent  = p.description || '';
+
         if (tagsEl) {
             tagsEl.innerHTML = (p.tags || [])
                 .map(t => `<span class="project-tag">${t}</span>`).join('');
         }
 
+        // ── Live Demo link inside drawer ──────────────────────────────────────
+        const existingDemoLink = drawer.querySelector('.drawer-demo-link');
+        if (existingDemoLink) existingDemoLink.remove();
+
+        if (p.demoUrl && p.demoUrl !== '#') {
+            const demoLink = document.createElement('a');
+            demoLink.href        = p.demoUrl;
+            demoLink.target      = '_blank';
+            demoLink.rel         = 'noopener noreferrer';
+            demoLink.className   = 'btn btn-secondary clickable drawer-demo-link';
+            demoLink.style.cssText = 'flex-grow:1;text-align:center;text-decoration:none;';
+            demoLink.textContent = 'View Live Demo →';
+            const drawerFooter = drawer.querySelector('[style*="padding:20px 24px;border-top"]');
+            if (drawerFooter) drawerFooter.appendChild(demoLink);
+        }
+
+        // ── Buy / Cart button: reflects cartSet state ─────────────────────────
         if (buyBtn) {
-            buyBtn.onclick = () => {
-                const isAdded = addToCart(p.id);
-                if (isAdded === null) return;
-                showToast(
-                    isAdded ? `${p.title} added to cart!` : `${p.title} is already in your cart.`,
-                    isAdded ? 'success' : 'info'
-                );
-                if (isAdded && window.updateCartDrawer) window.updateCartDrawer();
-            };
+            const alreadyInCart = cartSet ? cartSet.has(p.id) : false;
+            buyBtn.textContent       = alreadyInCart ? 'Added ✓' : 'Add to Cart';
+            buyBtn.style.background  = alreadyInCart ? 'rgba(16,185,129,0.15)' : '';
+            buyBtn.style.color       = alreadyInCart ? '#10b981' : '';
+            buyBtn.style.borderColor = alreadyInCart ? '#10b981' : '';
+
+            // Clone to remove any stale listeners
+            const newBtn = buyBtn.cloneNode(true);
+            buyBtn.parentNode.replaceChild(newBtn, buyBtn);
+
+            newBtn.addEventListener('click', () => {
+                const isInCart = cartSet ? cartSet.has(p.id) : false;
+
+                if (isInCart) {
+                    // Remove from cart
+                    const { removeFromCart: remove } = { removeFromCart: () => {} }; // handled via db import
+                    import('./db.js').then(({ removeFromCart }) => {
+                        removeFromCart(p.id);
+                        if (cartSet) cartSet.delete(p.id);
+                        if (syncCartSet) syncCartSet();
+                        newBtn.textContent       = 'Add to Cart';
+                        newBtn.style.background  = '';
+                        newBtn.style.color       = '';
+                        newBtn.style.borderColor = '';
+                        showToast('Removed from your cart.', 'info');
+                        if (window.updateCartDrawer) window.updateCartDrawer();
+                        if (window.filterAndRenderProjects) window.filterAndRenderProjects();
+                    });
+                } else {
+                    const result = addToCart(p.id);
+                    if (result === null) return;
+                    if (result) {
+                        if (cartSet) cartSet.add(p.id);
+                        if (syncCartSet) syncCartSet();
+                        newBtn.textContent       = 'Added ✓';
+                        newBtn.style.background  = 'rgba(16,185,129,0.15)';
+                        newBtn.style.color       = '#10b981';
+                        newBtn.style.borderColor = '#10b981';
+                        showToast(`${p.title} added to cart!`, 'success');
+                        if (window.updateCartDrawer) window.updateCartDrawer();
+                        if (window.filterAndRenderProjects) window.filterAndRenderProjects();
+                    } else {
+                        showToast(`${p.title} is already in your cart.`, 'info');
+                    }
+                }
+            });
         }
 
         const wishBtn = document.getElementById('drawer-wishlist-btn');

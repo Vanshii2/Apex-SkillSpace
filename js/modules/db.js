@@ -6,7 +6,7 @@
 */
 
 const DB_KEY_PREFIX = 'fpm_';
-const DB_SEED_VERSION = 'apex-skillspace-demo-v2';
+const DB_SEED_VERSION = 'apex-skillspace-demo-v4';
 
 // --- MOCK INITIAL DATA ---
 const MOCK_CREATORS = [
@@ -104,14 +104,15 @@ const MOCK_PROJECTS = [
         title: 'AI Face Recognition Project',
         description: 'This sophisticated software uses artificial intelligence algorithms to quickly and accurately detect and identify faces within photos or live video feeds.',
         seller: 'hyper_arch',
-        price: 99.00,
+        price: 349.00,
         tags: ['AI', 'Python', 'Security'],
-        status: 'Active',
-        likes: 312,
-        bookmarks: 84,
-        views: 1240,
+        status: 'Featured',
+        likes: 550,
+        bookmarks: 200,
+        views: 3200,
         image: 'assets/project1.png',
-        liveDemo: '#',
+        demoUrl: 'https://designx-ai-project.vercel.app',
+        liveDemo: 'https://designx-ai-project.vercel.app',
         github: '#'
     },
     {
@@ -119,14 +120,15 @@ const MOCK_PROJECTS = [
         title: 'Heart Disease Tracking',
         description: 'A helpful digital tool designed to let users easily log and track important heart health indicators like blood pressure and heart rate over time.',
         seller: 'nothing_core',
-        price: 79.00,
+        price: 149.00,
         tags: ['Health', 'Dashboard'],
         status: 'Trending',
         likes: 489,
         bookmarks: 128,
         views: 2310,
         image: 'assets/project2.png',
-        liveDemo: '#',
+        demoUrl: 'https://designx-demo-dashboard.vercel.app',
+        liveDemo: 'https://designx-demo-dashboard.vercel.app',
         github: '#'
     },
     {
@@ -134,14 +136,15 @@ const MOCK_PROJECTS = [
         title: 'Expense Tracker',
         description: 'This user-friendly application makes it simple to keep a close watch on your spending habits by easily logging every single purchase you make.',
         seller: 'linear_flow',
-        price: 39.00,
+        price: 49.00,
         tags: ['Finance', 'Web App'],
         status: 'Active',
         likes: 245,
         bookmarks: 72,
         views: 980,
         image: 'assets/project6.png',
-        liveDemo: '#',
+        demoUrl: 'https://designx-analytics.vercel.app',
+        liveDemo: 'https://designx-analytics.vercel.app',
         github: '#'
     },
     {
@@ -149,14 +152,15 @@ const MOCK_PROJECTS = [
         title: 'Nutrition Website',
         description: 'An informative website created to assist you in planning healthy meals and learning important facts about nutrition and maintaining a balanced, well-rounded diet.',
         seller: 'hyper_arch',
-        price: 49.00,
+        price: 79.00,
         tags: ['Wellness', 'Website'],
         status: 'Active',
         likes: 198,
         bookmarks: 41,
         views: 740,
         image: 'assets/project4.png',
-        liveDemo: '#',
+        demoUrl: 'https://designx-minimalist.vercel.app',
+        liveDemo: 'https://designx-minimalist.vercel.app',
         github: '#'
     },
     {
@@ -164,14 +168,15 @@ const MOCK_PROJECTS = [
         title: 'Entertainment Website',
         description: 'A fun online destination that allows you to easily search for and discover a vast array of movies and TV shows to enjoy watching.',
         seller: 'linear_flow',
-        price: 59.00,
+        price: 129.00,
         tags: ['Cinematic', 'Movies'],
         status: 'Featured',
         likes: 310,
         bookmarks: 92,
         views: 1450,
         image: 'assets/project5.png',
-        liveDemo: '#',
+        demoUrl: 'https://designx-editorial.framer.website',
+        liveDemo: 'https://designx-editorial.framer.website',
         github: '#'
     },
     {
@@ -179,14 +184,15 @@ const MOCK_PROJECTS = [
         title: 'Live Streaming Website',
         description: 'This platform enables users to effortlessly create and host their own live video broadcasts or explore and watch live streams from other creators in real-time.',
         seller: 'hyper_arch',
-        price: 129.00,
+        price: 249.00,
         tags: ['Video', 'Streaming'],
         status: 'Active',
         likes: 120,
         bookmarks: 45,
         views: 890,
         image: 'assets/project1.jpeg',
-        liveDemo: '#',
+        demoUrl: 'https://designx-premium-landing.webflow.io',
+        liveDemo: 'https://designx-premium-landing.webflow.io',
         github: '#'
     },
     {
@@ -201,7 +207,8 @@ const MOCK_PROJECTS = [
         bookmarks: 110,
         views: 1560,
         image: 'assets/project8.png',
-        liveDemo: '#',
+        demoUrl: 'https://designx-uikit-preview.vercel.app',
+        liveDemo: 'https://designx-uikit-preview.vercel.app',
         github: '#'
     },
     {
@@ -209,14 +216,15 @@ const MOCK_PROJECTS = [
         title: 'Shoe Mark Recognition',
         description: 'This innovative tool leverages advanced artificial intelligence technology to quickly analyze and identify specific patterns from shoe print marks in an efficient manner.',
         seller: 'nothing_core',
-        price: 149.00,
+        price: 199.00,
         tags: ['AI', 'Python'],
         status: 'Featured',
-        likes: 550,
-        bookmarks: 200,
-        views: 3200,
+        likes: 420,
+        bookmarks: 180,
+        views: 2800,
         image: 'assets/project3.png',
-        liveDemo: '#',
+        demoUrl: 'https://designx-motion-kit.framer.website',
+        liveDemo: 'https://designx-motion-kit.framer.website',
         github: '#'
     },
     {
@@ -224,19 +232,68 @@ const MOCK_PROJECTS = [
         title: 'Make Presentation AI Tool',
         description: 'An intelligent presentation tool that automatically generates complete slide shows and content, significantly reducing the time and effort needed to create professional presentations.',
         seller: 'hyper_arch',
-        price: 89.00,
+        price: 99.00,
         tags: ['AI', 'Presentations'],
         status: 'Featured',
-        likes: 420,
-        bookmarks: 180,
-        views: 2800,
+        likes: 312,
+        bookmarks: 84,
+        views: 1240,
         image: 'assets/project9.png',
-        liveDemo: '#',
+        demoUrl: 'https://designx-ai-project.vercel.app',
+        liveDemo: 'https://designx-ai-project.vercel.app',
+        github: '#'
+    },
+    {
+        id: 'proj_10',
+        title: 'Analytics Dashboard Pro',
+        description: 'A sleek, data-rich analytics dashboard template with real-time chart components, KPI cards, and dark/light mode support. Perfect for SaaS and enterprise apps.',
+        seller: 'nothing_core',
+        price: 299.00,
+        tags: ['Dashboard', 'Analytics'],
+        status: 'Featured',
+        likes: 620,
+        bookmarks: 240,
+        views: 4100,
+        image: 'assets/project2.png',
+        demoUrl: 'https://designx-demo-dashboard.vercel.app',
+        liveDemo: 'https://designx-demo-dashboard.vercel.app',
+        github: '#'
+    },
+    {
+        id: 'proj_11',
+        title: 'UI Component Kit',
+        description: 'A comprehensive set of 60+ hand-crafted UI components — buttons, modals, cards, inputs — delivered as pure HTML/CSS/JS, ready to drop into any project.',
+        seller: 'linear_flow',
+        price: 19.00,
+        tags: ['UI Kit', 'Components'],
+        status: 'Active',
+        likes: 180,
+        bookmarks: 55,
+        views: 760,
+        image: 'assets/project4.png',
+        demoUrl: 'https://designx-uikit-preview.vercel.app',
+        liveDemo: 'https://designx-uikit-preview.vercel.app',
+        github: '#'
+    },
+    {
+        id: 'proj_12',
+        title: 'Premium Landing Page System',
+        description: 'A full landing page design system with hero sections, testimonials, pricing grids, and CTAs. Optimized for conversion and built with clean semantic HTML.',
+        seller: 'hyper_arch',
+        price: 399.00,
+        tags: ['Landing Page', 'Premium'],
+        status: 'Featured',
+        likes: 710,
+        bookmarks: 310,
+        views: 5200,
+        image: 'assets/project5.png',
+        demoUrl: 'https://designx-premium-landing.webflow.io',
+        liveDemo: 'https://designx-premium-landing.webflow.io',
         github: '#'
     }
 ];
-// Force reset so new mock projects load in localStorage
-localStorage.removeItem('fpm_initialized');
+
+
 
 const MOCK_NOTIFICATIONS = [
     { id: 'notif_1', text: 'Welcome to your futuristic dashboard. Get started by exploring the Shop.', time: 'Just now', unread: true },
