@@ -744,18 +744,18 @@ function setupEditorListeners() {
     if (btnSaveProj) btnSaveProj.addEventListener('click', saveProjectItem);
 
     // Certification triggers
-    const addCertBtn = document.getElementById('addCertBtn');
-    if (addCertBtn) addCertBtn.addEventListener('click', openCertificationModal);
+    // const addCertBtn = document.getElementById('addCertBtn');
+    // if (addCertBtn) addCertBtn.addEventListener('click', openCertificationModal);
 
-    const btnSaveCert = document.getElementById('btnSaveCertification');
-    if (btnSaveCert) btnSaveCert.addEventListener('click', saveCertification);
+    // const btnSaveCert = document.getElementById('btnSaveCertification');
+    // if (btnSaveCert) btnSaveCert.addEventListener('click', saveCertification);
 
     // Testimonial triggers
-    const addTestimonialBtn = document.getElementById('addTestimonialBtn');
-    if (addTestimonialBtn) addTestimonialBtn.addEventListener('click', openTestimonialModal);
+    // const addTestimonialBtn = document.getElementById('addTestimonialBtn');
+    // if (addTestimonialBtn) addTestimonialBtn.addEventListener('click', openTestimonialModal);
 
-    const btnSaveTest = document.getElementById('btnSaveTestimonial');
-    if (btnSaveTest) btnSaveTest.addEventListener('click', saveTestimonial);
+    // const btnSaveTest = document.getElementById('btnSaveTestimonial');
+    // if (btnSaveTest) btnSaveTest.addEventListener('click', saveTestimonial);
 
     // Theme Customizer event bindings
     const bgTypeRadios = document.querySelectorAll('input[name="bgType"]');
@@ -1155,56 +1155,56 @@ export function saveProjectItem() {
 }
 
 // Certification Modal actions
-export function openCertificationModal() { toggleModal('certificationModal', 'open'); }
-export function closeCertificationModal() {
-    toggleModal('certificationModal', 'close');
-    document.getElementById('certTitle').value = '';
-    document.getElementById('certIssuer').value = '';
-    document.getElementById('certDate').value = '';
-    document.getElementById('certLink').value = '';
-}
-export function saveCertification() {
-    const title = document.getElementById('certTitle').value.trim();
-    const issuer = document.getElementById('certIssuer').value.trim();
-    const date = document.getElementById('certDate').value.trim();
-    const link = document.getElementById('certLink').value.trim();
+// export function openCertificationModal() { toggleModal('certificationModal', 'open'); }
+// export function closeCertificationModal() {
+//     toggleModal('certificationModal', 'close');
+//     document.getElementById('certTitle').value = '';
+//     document.getElementById('certIssuer').value = '';
+//     document.getElementById('certDate').value = '';
+//     document.getElementById('certLink').value = '';
+// }
+// export function saveCertification() {
+//     const title = document.getElementById('certTitle').value.trim();
+//     const issuer = document.getElementById('certIssuer').value.trim();
+//     const date = document.getElementById('certDate').value.trim();
+//     const link = document.getElementById('certLink').value.trim();
 
-    if (!title || !issuer || !date) {
-        alert('Title, Issuer, and Date are required.');
-        return;
-    }
+//     if (!title || !issuer || !date) {
+//         alert('Title, Issuer, and Date are required.');
+//         return;
+//     }
 
-    portfolioState.certifications.push({ title, issuer, date, link });
-    savePortfolioData();
-    renderCertifications();
-    updatePreview();
-    closeCertificationModal();
-}
+//     portfolioState.certifications.push({ title, issuer, date, link });
+//     savePortfolioData();
+//     renderCertifications();
+//     updatePreview();
+//     closeCertificationModal();
+// }
 
 // Testimonial Modal actions
-export function openTestimonialModal() { toggleModal('testimonialModal', 'open'); }
-export function closeTestimonialModal() {
-    toggleModal('testimonialModal', 'close');
-    document.getElementById('testName').value = '';
-    document.getElementById('testRole').value = '';
-    document.getElementById('testQuote').value = '';
-}
-export function saveTestimonial() {
-    const name = document.getElementById('testName').value.trim();
-    const role = document.getElementById('testRole').value.trim();
-    const quote = document.getElementById('testQuote').value.trim();
+// export function openTestimonialModal() { toggleModal('testimonialModal', 'open'); }
+// export function closeTestimonialModal() {
+//     toggleModal('testimonialModal', 'close');
+//     document.getElementById('testName').value = '';
+//     document.getElementById('testRole').value = '';
+//     document.getElementById('testQuote').value = '';
+// }
+// export function saveTestimonial() {
+//     const name = document.getElementById('testName').value.trim();
+//     const role = document.getElementById('testRole').value.trim();
+//     const quote = document.getElementById('testQuote').value.trim();
 
-    if (!name || !role || !quote) {
-        alert('Name, Title/Company, and Quote are required.');
-        return;
-    }
+//     if (!name || !role || !quote) {
+//         alert('Name, Title/Company, and Quote are required.');
+//         return;
+//     }
 
-    portfolioState.testimonials.push({ name, role, quote });
-    savePortfolioData();
-    renderTestimonials();
-    updatePreview();
-    closeTestimonialModal();
-}
+//     portfolioState.testimonials.push({ name, role, quote });
+//     savePortfolioData();
+//     renderTestimonials();
+//     updatePreview();
+//     closeTestimonialModal();
+// }
 
 // Helper to calculate relative luminance of a hex color
 function isColorLight(hex) {
@@ -1983,13 +1983,13 @@ export const portfolioBuilder = {
     closeProjectModal,
     saveProjectItem,
 
-    openCertificationModal,
-    closeCertificationModal,
-    saveCertification,
+    // openCertificationModal,
+    // closeCertificationModal,
+    // saveCertification,
 
-    openTestimonialModal,
-    closeTestimonialModal,
-    saveTestimonial,
+    // openTestimonialModal,
+    // closeTestimonialModal,
+    // saveTestimonial,
 
     getState: () => portfolioState,
     saveData: savePortfolioData,

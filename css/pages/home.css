@@ -1070,7 +1070,7 @@
 
 .fp-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 24px 56px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 10px 15px rgba(123, 121, 121, 0.45);
     border-color: rgba(255, 255, 255, 0.14);
 }
 

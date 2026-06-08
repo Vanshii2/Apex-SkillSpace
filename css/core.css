@@ -218,7 +218,7 @@ img {
 
 /* --- Global Browser Pointer Restore Safeguard --- */
 *, *::before, *::after {
-    cursor: auto !important;
+    cursor: cursor !important;
 }
 
 a, button, select, input, textarea, [role="button"], .clickable, .btn, .dock-item, .sidebar-link, .nav-btn, .theme-toggle-btn {
