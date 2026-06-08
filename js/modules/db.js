@@ -451,6 +451,12 @@ export function getCart() {
 }
 
 export function addToCart(id) {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+        alert('Please log in to add items to your cart.');
+        window.location.href = 'login.html';
+        return false;
+    }
     const cart = getCart();
     if (!cart.includes(id)) {
         cart.push(id);
