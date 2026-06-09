@@ -880,15 +880,15 @@
 
 /* Color variants — swap these hex values in EDS */
 .hiw-card--purple {
-    background: #6d28d9;
+    background: #222123;
 }
 
 .hiw-card--green {
-    background: #15803d;
+    background:  #222123;
 }
 
 .hiw-card--orange {
-    background: #c2410c;
+    background: #222123;
 }
 
 /* ── Inner white content card — shrinks to content ── */
@@ -913,15 +913,15 @@
 }
 
 .hiw-card--purple .hiw-step {
-    color: #6d28d9;
+    color:  #222123
 }
 
 .hiw-card--green .hiw-step {
-    color: #15803d;
+    color:  #222123
 }
 
 .hiw-card--orange .hiw-step {
-    color: #c2410c;
+    color: #222123
 }
 
 /* ── Title ── */
@@ -1356,7 +1356,7 @@
     border-radius: 8px;
     background: #f4eeee;
     /* Dark Grey in dark mode */
-    color: #ffffff;
+    color: #0c0c0c;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
