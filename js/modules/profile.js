@@ -102,7 +102,7 @@ export function getProjects() {
                 tags: ['AI', 'Python', 'Security'],
                 category: 'AI Projects',
                 demoUrl: 'https://github.com',
-                thumbnail: 'assets/project1.png',
+                thumbnail: 'assets/project1.webp',
                 createdAt: new Date().toISOString()
             },
             {
@@ -114,7 +114,7 @@ export function getProjects() {
                 tags: ['Health', 'Dashboard'],
                 category: 'Dashboard',
                 demoUrl: 'https://github.com',
-                thumbnail: 'assets/project2.png',
+                thumbnail: 'assets/project2.webp',
                 createdAt: new Date().toISOString()
             }
         ];
@@ -127,7 +127,7 @@ export function getProjects() {
             price: parseFloat(item.price) || 0,
             tags: item.tags || [],
             demoUrl: item.liveDemo || item.demoUrl || '',
-            thumbnail: item.image || item.thumbnail || 'assets/project1.png',
+            thumbnail: item.image || item.thumbnail || 'assets/project1.webp',
             seller: item.seller || 'apex_user',
             createdAt: item.createdAt || new Date().toISOString()
         }));
@@ -151,7 +151,7 @@ export function saveProjects(projects) {
         likes: p.likes || 0,
         bookmarks: p.bookmarks || 0,
         views: p.views || 1,
-        image: p.thumbnail || p.image || 'assets/project1.png',
+        image: p.thumbnail || p.image || 'assets/project1.webp',
         demoUrl: p.demoUrl || '#',
         liveDemo: p.demoUrl || '#',
         github: '#',
@@ -391,7 +391,7 @@ function renderPublishedTab() {
 
     grid.innerHTML = owned.map(p => `
         <div class="project-card clickable" data-id="${p.id}">
-            <img src="${p.thumbnail || 'assets/project1.png'}" alt="${p.title}" class="project-img">
+            <img src="${p.thumbnail || 'assets/project1.webp'}" alt="${p.title}" class="project-img">
             <div class="project-info">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 8px; gap: 8px;">
                     <h3 class="project-title" style="font-size: 1rem; margin:0; line-height:1.3; font-weight:600; font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.02em;">${p.title}</h3>
@@ -739,7 +739,7 @@ function openProjectDetailDrawer(id) {
     currentDetailProjectId = id;
 
     document.getElementById('drawer-project-title').textContent = project.title;
-    document.getElementById('drawer-project-img').src = project.thumbnail || 'assets/project1.png';
+    document.getElementById('drawer-project-img').src = project.thumbnail || 'assets/project1.webp';
     document.getElementById('drawer-project-category').textContent = project.category || 'Dashboard';
     document.getElementById('drawer-project-price').textContent = `₹${(project.price || 0).toFixed(2)}`;
     document.getElementById('drawer-project-desc').textContent = project.description || 'No description provided.';

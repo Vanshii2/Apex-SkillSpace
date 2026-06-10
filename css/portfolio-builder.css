@@ -375,6 +375,11 @@
     transition: all 0.2s ease;
 }
 
+.form-select option {
+    background-color: #242428;
+    color: #ffffff;
+}
+
 .form-input::placeholder,
 .form-textarea::placeholder {
     color: rgba(255, 255, 255, 0.3);
@@ -1350,4 +1355,27 @@
 
 .form-group.invalid .error-msg {
     display: block;
+}
+
+/* Switcher Delete Button style */
+.switcher-delete-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.4);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.switcher-delete-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #ef4444;
 }

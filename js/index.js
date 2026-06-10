@@ -288,7 +288,12 @@ function initGlobalCart() {
         if (checkoutBtn) {
             e.preventDefault();
             e.stopPropagation();
-            window.location.href = 'checkout.html';
+            const cart = getCart();
+            if (!cart || cart.length === 0) {
+                showToast('Your cart is empty. Please add items to your cart before checking out.', 'error');
+            } else {
+                window.location.href = 'checkout.html';
+            }
         }
     });
 
