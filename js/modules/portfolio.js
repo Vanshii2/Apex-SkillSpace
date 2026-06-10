@@ -17,7 +17,7 @@ function renderProjectCard(project) {
         <div class="project-card" data-id="${project.id}">
 
             <div class="project-img-wrap">
-                <img src="${project.image}" alt="${project.title}" loading="lazy">
+                <img src="${project.image}" alt="${project.title}" width="500" height="288" loading="lazy" decoding="async">
 
                
 
@@ -83,7 +83,7 @@ export function initPortfolioPage() {
             <div class="creator-banner" style="background-image: url('${creator.banner}');"></div>
             <div class="creator-body">
                 <div class="creator-avatar">
-                    <img src="${creator.avatar}" alt="${creator.name}">
+                    <img src="${creator.avatar}" alt="${creator.name}" width="64" height="64" loading="lazy" decoding="async">
                 </div>
                 <p class="creator-name">${creator.name}</p>
                 <p class="creator-handle">@${creator.username}</p>

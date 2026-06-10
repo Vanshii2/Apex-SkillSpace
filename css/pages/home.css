@@ -1,3 +1,108 @@
+
+/* 
+   ==========================================================================
+   FUTURISTIC PORTFOLIO MARKETPLACE - DESIGN SYSTEM & VARIABLES
+   Inspirations: Apple, Stripe, Linear, Vercel, Framer, Nothing Tech
+   ========================================================================== 
+*/
+
+:root {
+    /* --- Modern Typography Scale (Google Fonts Loaded in HTML) --- */
+--font-sans: 'Inter', sans-serif;
+    
+    /* Updated: Ab aapke saare bade headings me Bricolage Grotesque dikhega */
+    --font-display: 'Bricolage Grotesque', sans-serif;
+    
+    --font-mono: 'Space Grotesk', monospace;
+    --font-serif: 'Merriweather', Georgia, serif;
+
+    /* --- Default Dark Theme Tokens (Sleek, High-contrast, Cinematic) --- */
+    --bg-base: #030303;
+    --bg-surface: #0a0a0c;
+    --bg-card: rgba(14, 14, 18, 0.45);
+    --bg-card-hover: rgba(20, 20, 26, 0.7);
+
+    --border-color: rgba(255, 255, 255, 0.06);
+    --border-color-hover: rgba(255, 255, 255, 0.12);
+
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1a6;
+    --text-muted: #6e6e73;
+
+    --primary: #ffffff;
+    --primary-rgb: 255, 255, 255;
+    --accent: #eaeaea;
+    --accent-rgb: 234, 234, 234;
+    --warning: #f5a623;
+    --success: #171717;
+    /* Monochromatic */
+    --danger: #e3342f;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
+    --glow-primary: none;
+    --glow-accent: none;
+    --glow-card-hover: none;
+
+    /* Glassmorphism */
+    --glass-blur: blur(24px);
+    --glass-bg: rgba(14, 14, 18, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.08);
+
+    /* Layout & Structure */
+    --header-height: 52px;
+    --dock-height: 64px;
+    --sidebar-width: 260px;
+    --max-width: 1440px;
+
+    /* Timings & Transitions */
+    --ease-standard: cubic-bezier(0.25, 0.8, 0.25, 1);
+    --transition-fast: 0.15s var(--ease-standard);
+    --transition-normal: 0.3s var(--ease-standard);
+    --transition-slow: 0.6s var(--ease-standard);
+
+    /* Hover Glow Offset variables (driven dynamically by JS spotlight) */
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+}
+
+/* --- Light Theme Overwrite (Apple-like Pure Minimalist Aesthetic) --- */
+[data-theme="light"] {
+    --bg-base: #fafafa;
+    --bg-surface: #ffffff;
+    --bg-card: rgba(255, 255, 255, 0.7);
+    --bg-card-hover: rgba(245, 245, 247, 0.9);
+
+    --border-color: rgba(0, 0, 0, 0.06);
+    --border-color-hover: rgba(0, 0, 0, 0.12);
+
+    --text-primary: #000000;
+    --text-secondary: #6e6e73;
+    --text-muted: #a1a1a6;
+
+    --primary: #000000;
+    --primary-rgb: 0, 0, 0;
+    --accent: #1d1d1f;
+    --accent-rgb: 29, 29, 31;
+    --warning: #f5a623;
+    --success: #f5f5f7;
+    --danger: #d92d20;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.08);
+    --glow-primary: none;
+    --glow-accent: none;
+    --glow-card-hover: none;
+
+    /* Glassmorphism */
+    --glass-blur: blur(24px);
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.08);
+}
 /*
    ==========================================================================
    FUTURISTIC PORTFOLIO MARKETPLACE - HOME PAGE STYLES
@@ -5,10 +110,253 @@
 */
 
 
+
+/*
+   ==========================================================================
+   FUTURISTIC PORTFOLIO MARKETPLACE - CORE STYLES & RESET
+   ==========================================================================
+*/
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+    height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scrollbar-gutter: stable;
+}
+
+body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    min-height: 100%;
+    overflow-x: hidden;
+    transition: background-color var(--transition-normal), color var(--transition-normal);
+    line-height: 1.6;
+}
+
+/* --- Premium Custom Scrollbar --- */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-base);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    transition: background var(--transition-fast);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+/* --- Typography System --- */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+}
+
+p {
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* --- Custom Futuristic Cursor --- */
+.custom-cursor, .custom-cursor-dot {
+    display: none !important;
+}
+
+/* --- SPA Page Transitions System --- */
+#app-content {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#app-content.spa-fade-out {
+    opacity: 0;
+    transform: translateY(12px);
+}
+
+.page-transition-overlay {
+    display: none !important;
+}
+
+/* --- Centered Toast Notifications Drawer --- */
+.toast-container {
+    position: fixed;
+    bottom: 96px;
+    right: 24px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.toast {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 14px 20px;
+    color: var(--text-primary);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    pointer-events: auto;
+    font-size: 0.9rem;
+    min-width: 280px;
+    max-width: 380px;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: transform var(--transition-normal), opacity var(--transition-normal);
+}
+
+.toast.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.toast-success .toast-icon {
+    background: rgba(0, 230, 118, 0.15);
+    color: var(--success);
+}
+
+.toast-info .toast-icon {
+    background: rgba(0, 242, 254, 0.15);
+    color: var(--primary);
+}
+
+.toast-warning .toast-icon {
+    background: rgba(255, 182, 0, 0.15);
+    color: var(--warning);
+}
+
+.toast-danger .toast-icon {
+    background: rgba(255, 23, 68, 0.15);
+    color: var(--danger);
+}
+
+/* --- Reusable Skeleton Loader System --- */
+.skeleton {
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0.03) 25%, 
+        rgba(255, 255, 255, 0.08) 50%, 
+        rgba(255, 255, 255, 0.03) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.6s infinite linear;
+    border-radius: 4px;
+    display: inline-block;
+    width: 100%;
+}
+
+[data-theme="light"] .skeleton {
+    background: linear-gradient(90deg, 
+        rgba(0, 0, 0, 0.03) 25%, 
+        rgba(0, 0, 0, 0.06) 50%, 
+        rgba(0, 0, 0, 0.03) 75%
+    );
+    background-size: 200% 100%;
+}
+
+@keyframes skeleton-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* --- Scroll Progress Bar Indicator --- */
+.scroll-progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 1001;
+    background: transparent;
+    pointer-events: none;
+}
+
+.scroll-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transition: width 0.1s ease-out;
+}
+
+/* --- Global Browser Pointer Restore Safeguard --- */
+*, *::before, *::after {
+    cursor: cursor !important;
+}
+
+a, button, select, input, textarea, [role="button"], .clickable, .btn, .dock-item, .sidebar-link, .nav-btn, .theme-toggle-btn {
+    cursor: pointer !important;
+}
+
+/* --- Theme-based Logo Toggles --- */
+[data-theme="dark"] .light-logo {
+    display: none !important;
+}
+[data-theme="dark"] .dark-logo {
+    display: block !important;
+}
+[data-theme="light"] .light-logo {
+    display: block !important;
+}
+[data-theme="light"] .dark-logo {
+    display: none !important;
+}
+
+
 /* ---- NAVBAR ---- */
 .navbar {
     position: sticky;
-    top: 6px;
+    top: 0;
     z-index: 200;
     width: calc(100% - 48px);
     max-width: 1300px;
@@ -113,15 +461,17 @@
 
 
 
-.nav-menu {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    /* reduced from 32px — matches Creato's tight spacing */
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    flex: 1;
+@media (min-width: 901px) {
+    .nav-menu {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        /* reduced from 32px — matches Creato's tight spacing */
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        flex: 1;
+    }
 }
 
 .nav-actions {
@@ -251,6 +601,7 @@
     text-align: center;
     margin: 0 auto;
     max-width: 800px;
+    min-height: 119px;
     transition: color var(--transition-normal);
 }
 
@@ -288,15 +639,6 @@
 }
 
 
-@keyframes cursor-blink {
-    0% {
-        opacity: 0.25;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
 
 /* Subtitle and button reveals with transform + opacity transitions */
 .fade-in-up-delay,
@@ -727,21 +1069,10 @@
     width: 100%;
     height: 460px;
     overflow: hidden;
+    background: transparent;
 }
 
-.marquee-track {
-    position: absolute;
-    bottom: 0;
-    /* anchor to bottom */
-    left: 0;
-    height: 100%;
-    display: flex;
-    align-items: flex-end;
-    /* shared bottom baseline */
-    gap: 16px;
-    will-change: transform;
-}
-
+/* In home.css — marquee section */
 .marquee-card {
     position: relative;
     flex-shrink: 0;
@@ -749,7 +1080,29 @@
     overflow: hidden;
     background: #111;
     width: 420px;
-    /* height is driven by JS only */
+    height: 180px; /* ← minimum height BEFORE js runs, prevents CLS */
+    transform-origin: bottom center;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+}
+
+/* Hide cards until JS initialises to prevent flash */
+.marquee-track {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    will-change: transform;
+    background: transparent;
+    opacity: 0; /* hidden until JS sets initial position */
+    transition: opacity 0.3s ease;
+}
+
+.marquee-track.ready {
+    opacity: 1;
 }
 
 .marquee-card img {
@@ -1408,6 +1761,7 @@
     .antigravity-hero {
         font-size: 28px !important;
         padding: 0 16px;
+        min-height: 76px;
     }
 
     .hero-subtitle {
@@ -1470,6 +1824,7 @@
 @media (max-width: 480px) {
     .antigravity-hero {
         font-size: 22px !important;
+        min-height: 60px;
     }
 
     .stats-grid {

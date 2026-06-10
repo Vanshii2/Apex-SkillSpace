@@ -113,6 +113,8 @@ export function initParticles() {
 
     // Animation Loop
     function animate() {
+        if (!document.getElementById('particle-container')) return; // Self-clean: Stop animation loop if container is removed
+
         if (isMouseActive) {
             particles.forEach(p => {
                 // 1. Wander freely in local space (4D effect)

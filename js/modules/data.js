@@ -14,7 +14,7 @@ export const PROJECTS = [
         likes: 550,
         bookmarks: 200,
         views: 3200,
-        image: 'assets/project1.png',
+        image: 'assets/project1.webp',
         demoUrl: 'https://designx-ai-project.vercel.app',
         liveDemo: 'https://designx-ai-project.vercel.app',
         github: 'https://github.com/apex-skillspace/ai-face-recognition'
@@ -30,7 +30,7 @@ export const PROJECTS = [
         likes: 489,
         bookmarks: 128,
         views: 2310,
-        image: 'assets/project7.png',
+        image: 'assets/project7.webp',
         demoUrl: 'https://designx-demo-dashboard.vercel.app',
         liveDemo: 'https://designx-demo-dashboard.vercel.app',
         github: 'https://github.com/apex-skillspace/heart-tracker'
@@ -46,7 +46,7 @@ export const PROJECTS = [
         likes: 245,
         bookmarks: 72,
         views: 980,
-        image: 'assets/project6.png',
+        image: 'assets/project6.webp',
         demoUrl: 'https://designx-analytics.vercel.app',
         liveDemo: 'https://designx-analytics.vercel.app',
         github: 'https://github.com/apex-skillspace/expense-tracker'
@@ -62,7 +62,7 @@ export const PROJECTS = [
         likes: 198,
         bookmarks: 41,
         views: 740,
-        image: 'assets/project4.png',
+        image: 'assets/project4.webp',
         demoUrl: 'https://designx-minimalist.vercel.app',
         liveDemo: 'https://designx-minimalist.vercel.app',
         github: 'https://github.com/apex-skillspace/nutrition-site'
@@ -78,7 +78,7 @@ export const PROJECTS = [
         likes: 310,
         bookmarks: 92,
         views: 1450,
-        image: 'assets/project5.png',
+        image: 'assets/project5.webp',
         demoUrl: 'https://designx-editorial.framer.website',
         liveDemo: 'https://designx-editorial.framer.website',
         github: 'https://github.com/apex-skillspace/entertainment-hub'
@@ -110,7 +110,7 @@ export const PROJECTS = [
         likes: 340,
         bookmarks: 110,
         views: 1560,
-        image: 'assets/project8.png',
+        image: 'assets/project8.webp',
         demoUrl: 'https://designx-uikit-preview.vercel.app',
         liveDemo: 'https://designx-uikit-preview.vercel.app',
         github: 'https://github.com/apex-skillspace/resume-builder'
@@ -126,7 +126,7 @@ export const PROJECTS = [
         likes: 420,
         bookmarks: 180,
         views: 2800,
-        image: 'assets/project3.png',
+        image: 'assets/project3.webp',
         demoUrl: 'https://designx-motion-kit.framer.website',
         liveDemo: 'https://designx-motion-kit.framer.website',
         github: 'https://github.com/apex-skillspace/shoe-recognition'
@@ -142,7 +142,7 @@ export const PROJECTS = [
         likes: 312,
         bookmarks: 84,
         views: 1240,
-        image: 'assets/project9.png',
+        image: 'assets/project9.webp',
         demoUrl: 'https://designx-ai-project.vercel.app',
         liveDemo: 'https://designx-ai-project.vercel.app',
         github: 'https://github.com/apex-skillspace/ai-presentation'
@@ -158,7 +158,7 @@ export const PROJECTS = [
         likes: 620,
         bookmarks: 240,
         views: 4100,
-        image: 'assets/project2.png',
+        image: 'assets/project2.webp',
         demoUrl: 'https://designx-demo-dashboard.vercel.app',
         liveDemo: 'https://designx-demo-dashboard.vercel.app',
         github: 'https://github.com/apex-skillspace/analytics-dashboard'
@@ -174,7 +174,7 @@ export const PROJECTS = [
         likes: 710,
         bookmarks: 310,
         views: 5200,
-        image: 'assets/project10.png',
+        image: 'assets/project10.webp',
         demoUrl: 'https://designx-premium-landing.webflow.io',
         liveDemo: 'https://designx-premium-landing.webflow.io',
         github: 'https://github.com/apex-skillspace/landing-system'

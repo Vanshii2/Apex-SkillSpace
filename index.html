@@ -2,221 +2,230 @@
 <html lang="en" data-theme="dark">
 
 <head>
-    <style id="fouc-preload">
-        * {
-            transition: none !important;
-        }
-    </style>
-    <!-- Immediate Theme Helper to prevent FOUC -->
-    <script>
-        (function () {
-            const savedTheme = localStorage.getItem('fpm_theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-        })();
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Designex</title>
-
-    <!-- SEO Optimization -->
     <meta name="description"
         content="A next-generation immersive marketplace where developers, designers, and 3D creators showcase and trade futuristic UI components, mockups, and templates.">
-    <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22%2300f2fe%22/></svg>">
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22%2300f2fe%22/></svg>">
 
-    <!-- Google Typography -->
+    <script>
+        (function () {
+            const t = localStorage.getItem('fpm_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', t);
+            
+            // Clean up the FOUC style once the DOM is safely constructed
+            document.addEventListener('DOMContentLoaded', function () {
+                const f = document.getElementById('fouc-preload');
+                if (f) f.remove();
+            });
+        })();
+    </script>
+    <style id="fouc-preload">*, *::before, *::after { transition: none !important; }</style>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;1,300&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap"
-        rel="stylesheet">
 
-    <!-- CSS Dependencies (Linked as independent files, no @import) -->
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/core.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">    <link rel="preload" as="image" href="assets/infi1.webp" fetchpriority="high">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@300;400;500;600;700&display=swap">
+
+    <!-- <link rel="stylesheet" href="css/variables.css"> -->
+    <!-- <link rel="stylesheet" href="css/core.css"> -->
     <link rel="stylesheet" href="css/utilities.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/pages/home.css">
-    <link rel="stylesheet" href="css/particles.css">
-    <link rel="stylesheet" href="css/pages/sell.css">
-    <link rel="stylesheet" href="css/pages/shop.css">
-    <link rel="stylesheet" href="css/pages/dashboard.css">
-    <link rel="stylesheet" href="css/pages/profile.css">
-    <link rel="stylesheet" href="css/mobile-responsive.css">
-</head>
 
+    <!-- <link rel="preload" as="style" href="css/particles.css" onload="this.onload=null;this.rel='stylesheet'"> -->
+    
+    <link rel="stylesheet" href="css/mobile-responsive.css">
+
+    <noscript>
+        <!-- <link rel="stylesheet" href="css/particles.css"> -->
+    </noscript>
+</head>
 <body>
 
-    <!-- Scroll Progress Bar -->
     <div class="scroll-progress-container" id="scroll-tracker">
         <div class="scroll-progress-bar"></div>
     </div>
 
-    <!-- Dual Node Custom Lerped Cursor -->
     <div class="custom-cursor"></div>
     <div class="custom-cursor-dot"></div>
-
-    <!-- Page Transition Overlay Curtain -->
     <div class="page-transition-overlay active" id="page-curtain"></div>
 
-    <!-- Sticky Navbar -->
+    <!-- ── Navbar ── -->
     <nav class="navbar" id="app-nav">
         <div class="navbar-container">
             <a href="index.html" class="logo" id="nav-logo">
-                <img src="logo_black1.png" alt="DesignX Logo" style="height: 70px; " class="nav-logo-img light-logo">
-                <img src="logo_white1.png" alt="DesignX Logo" style="height: 70px; " class="nav-logo-img dark-logo">
+                <!--
+                    width/height = intrinsic image size (adjust to match your actual files).
+                    style="height:70px;width:auto" overrides the display size without CLS.
+                    fetchpriority="high" + decoding="sync" → browser paints logo on first frame.
+                -->
+                <img src="logo_black.webp"
+                     alt="DesignX Logo"
+                     width="200" height="70"
+                     style="height:70px;width:auto;"
+                     class="nav-logo-img light-logo"
+                     fetchpriority="high"
+                     decoding="sync">
+                <img src="logo_white.webp"
+                     alt="DesignX Logo"
+                     width="200" height="70"
+                     style="height:70px;width:auto;"
+                     class="nav-logo-img dark-logo"
+                     fetchpriority="high"
+                     decoding="sync">
             </a>
 
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link active">Home</a></li>
-                <li><a href="showcase.html" class="nav-link">Portfolios</a></li>
-                <li><a href="portfolio.html" class="nav-link">Builder</a></li>
-                <li><a href="marketplace.html" class="nav-link">Marketplace</a></li>
-                <a href="profile.html" class="nav-link">Profile</a>
+                <li><a href="index.html"      class="nav-link active">Home</a></li>
+                <li><a href="showcase.html"   class="nav-link">Portfolios</a></li>
+                <li><a href="portfolio.html"  class="nav-link">Builder</a></li>
+                <li><a href="marketplace.html"class="nav-link">Marketplace</a></li>
+                <li><a href="profile.html"    class="nav-link">Profile</a></li>
             </ul>
 
             <div class="nav-actions">
-                <!-- Theme Toggle Button -->
-                <button class="nav-btn theme-toggle-btn" title="Toggle System Theme">
-                    <svg width="18" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                <button class="nav-btn theme-toggle-btn" title="Toggle System Theme" aria-label="Toggle theme">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1"  x2="12" y2="3"/>
+                        <line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22"  y1="4.22"  x2="5.64"  y2="5.64"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1"  y1="12" x2="3"  y2="12"/>
+                        <line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22"  y1="19.78" x2="5.64"  y2="18.36"/>
+                        <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
                     </svg>
                 </button>
-
-                <a href="login.html" class="nav-link" style="margin-left: 12px; font-weight: 500;">Login</a>
-                <a href="signup.html" class="btn btn-hero-solid clickable"
-                    style="padding: 10px 20px; font-size: 0.9rem;">Get Started</a>
+                <a href="login.html"   class="nav-link"       style="margin-left:12px;font-weight:500;">Login</a>
+                <a href="signup.html"  class="btn btn-hero-solid clickable"
+                   style="padding:10px 20px;font-size:.9rem;">Get Started</a>
             </div>
         </div>
     </nav>
 
     <div id="app-content">
-        <!-- Cinematic Hero Section -->
-        <header class="hero-section" style="position: relative; overflow: hidden;">
-            <div id="particle-container"></div>
-            <!-- Removed Glow Mesh -->
+
+        <!-- ── Hero ── -->
+        <header class="hero-section" style="position:relative;overflow:hidden;">
+            <!-- <div id="particle-container"></div> -->
 
             <div class="container hero-centered">
                 <div class="hero-logo-badge">
-                    <img src="logo_black1.png" alt="Apex Logo style" class="hero-logo-img light-logo"
-                        style="height: 70px; ">
-                    <img src="logo_white1.png" alt="Apex Logo style" class="hero-logo-img dark-logo"
-                        style="height: 70px; ">
+                    <img src="logo_black.webp"
+                         alt=""
+                         width="200" height="70"
+                         style="height:70px;width:auto;"
+                         class="hero-logo-img light-logo"
+                         fetchpriority="high"
+                         decoding="sync"
+                         aria-hidden="true">
+                    <img src="logo_white.webp"
+                         alt=""
+                         width="200" height="70"
+                         style="height:70px;width:auto;"
+                         class="hero-logo-img dark-logo"
+                         fetchpriority="high"
+                         decoding="sync"
+                         aria-hidden="true">
                 </div>
+
                 <h1 class="hero-heading antigravity-hero" id="typewriter-hero">
-                    <span class="typewriter-text"></span><span class="hero-cursor-line"></span>
+                    <span class="typewriter-text"></span><span class="hero-cursor-line" aria-hidden="true"></span>
                 </h1>
 
                 <div class="hero-actions fade-in-up-delay-3">
-                    <a href="signup.html" class="btn btn-hero-solid clickable">Get Started</a>
+                    <a href="signup.html"   class="btn btn-hero-solid clickable">Get Started</a>
                     <a href="showcase.html" class="btn btn-hero-outline clickable">View Demo</a>
                 </div>
             </div>
         </header>
 
-        <!-- Infinite Scrolling Marquee Carousel -->
-        <section class="squarespace-marquee-section" id="marquee-section">
+        <!-- ── Marquee Carousel ── -->
+        <section class="squarespace-marquee-section" id="marquee-section" aria-label="Portfolio examples">
             <div class="marquee-track-container">
                 <div class="marquee-track" id="marquee-track">
-                    <!-- Original Set -->
-                    <div class="marquee-card">
-                        <img src="assets/infi1.jpg" alt="Frontend Developer">
-                        <div class="marquee-overlay">
-                            <h3 class="marquee-title">Frontend Developer</h3>
 
-                        </div>
-                    </div>
+                    <!--
+                        Card 1 — LCP candidate.
+                        NO loading="lazy" (eager by default).
+                        fetchpriority="high" + decoding="sync" matches the <link rel="preload"> in <head>.
+                    -->
                     <div class="marquee-card">
-                        <img src="assets/infi2.jpg" alt="UI/UX Designer">
-                        <div class="marquee-overlay">
-                            <h3 class="marquee-title">UI/UX Designer</h3>
-                        </div>
-                    </div>
-                    <div class="marquee-card">
-                        <img src="assets/infi3.jpg" alt="Student Portfolio">
-                        <div class="marquee-overlay">
-                            <h3 class="marquee-title">Student Portfolio</h3>
-                        </div>
-                    </div>
-                    <div class="marquee-card">
-                        <img src="assets/infi4.jpg" alt="Creative Developer">
-                        <div class="marquee-overlay">
-                            <h3 class="marquee-title">Creative Developer</h3>
-                        </div>
-                    </div>
-                    <div class="marquee-card">
-                        <img src="assets/infi5.jpg" alt="Software Engineer">
-                        <div class="marquee-overlay">
-                            <h3 class="marquee-title">Software Engineer</h3>
-                        </div>
-                    </div>
-                    <div class="marquee-card">
-                        <img src="assets/right.jpg" alt="Product Designer">
-                        <div class="marquee-overlay">
-                            <h3 class="marquee-title">Product Designer</h3>
-                            <!-- <span class="marquee-arrow">→</span> -->
-                        </div>
-                    </div>
-                    <!-- Duplicate Set for Infinite Scroll -->
-                    <div class="marquee-card">
-                        <img src="assets/infi6.jpg" alt="Frontend Developer">
+                        <img src="assets/infi1.webp"
+                             width="420" height="360"
+                             fetchpriority="high"
+                             decoding="sync"
+                             alt="Frontend Developer portfolio example">
                         <div class="marquee-overlay">
                             <h3 class="marquee-title">Frontend Developer</h3>
                         </div>
                     </div>
+
+                    <!-- Cards 2-6: lazy loaded, below-fold at page load -->
                     <div class="marquee-card">
-                        <img src="assets/infi10.jpg" alt="UI/UX Designer">
+                        <img src="assets/infi2.webp"
+                             width="420" height="360"
+                             loading="lazy" decoding="async"
+                             alt="UI/UX Designer portfolio example">
                         <div class="marquee-overlay">
                             <h3 class="marquee-title">UI/UX Designer</h3>
                         </div>
                     </div>
+
                     <div class="marquee-card">
-                        <img src="assets/infi1.jpg" alt="Student Portfolio">
+                        <img src="assets/infi3.webp"
+                             width="420" height="360"
+                             loading="lazy" decoding="async"
+                             alt="Student portfolio example">
                         <div class="marquee-overlay">
                             <h3 class="marquee-title">Student Portfolio</h3>
-                            <!-- <span class="marquee-arrow">→</span -->
                         </div>
                     </div>
+
                     <div class="marquee-card">
-                        <img src="assets/right.jpg" alt="Creative Developer">
+                        <img src="assets/infi4.webp"
+                             width="420" height="360"
+                             loading="lazy" decoding="async"
+                             alt="Creative developer portfolio example">
                         <div class="marquee-overlay">
                             <h3 class="marquee-title">Creative Developer</h3>
                         </div>
                     </div>
+
                     <div class="marquee-card">
-                        <img src="assets/infi7.jpg" alt="Software Engineer">
+                        <img src="assets/infi5.webp"
+                             width="420" height="360"
+                             loading="lazy" decoding="async"
+                             alt="Software engineer portfolio example">
                         <div class="marquee-overlay">
                             <h3 class="marquee-title">Software Engineer</h3>
                         </div>
                     </div>
+
                     <div class="marquee-card">
-                        <img src="assets/infi5.jpg" alt="Product Designer">
+                        <img src="assets/infi6.webp"
+                             width="420" height="360"
+                             loading="lazy" decoding="async"
+                             alt="Product designer portfolio example">
                         <div class="marquee-overlay">
                             <h3 class="marquee-title">Product Designer</h3>
                         </div>
                     </div>
+
                 </div>
             </div>
-
         </section>
 
-        <!-- New Beautiful Section: How It Works -->
-        <!--
-            HOW IT WORKS — SECTION HTML
-            Link the stylesheet: <link rel="stylesheet" href="css/pages/how-it-works.css">
-            Drop this block where the old workflow-carousel section was in index.html.
-        -->
-
+        <!-- ── How It Works ── -->
         <section class="how-it-works-section" id="how-it-works">
             <div class="container">
-
-                <!-- Header -->
                 <div class="hiw-header">
                     <span class="hiw-eyebrow">Workflow</span>
                     <h2 class="hiw-heading">How It Works</h2>
@@ -225,93 +234,58 @@
                         and get discovered by top tech companies.
                     </p>
                 </div>
-
-                <!-- Card Grid -->
                 <div class="hiw-grid">
-
-                    <!-- Card 1 — Purple -->
                     <div class="hiw-card hiw-card--purple">
                         <div class="hiw-inner">
                             <span class="hiw-step">Step 01</span>
                             <h3 class="hiw-title"><strong>CREATE</strong> your profile</h3>
-                            <p class="hiw-desc">
-                                Sign up and set up your core identity. Choose your aesthetic
-                                and let your personal brand shine through.
-                            </p>
+                            <p class="hiw-desc">Sign up and set up your core identity. Choose your aesthetic
+                                and let your personal brand shine through.</p>
                         </div>
                     </div>
-
-                    <!-- Card 2 — Green -->
                     <div class="hiw-card hiw-card--green">
                         <div class="hiw-inner">
                             <span class="hiw-step">Step 02</span>
                             <h3 class="hiw-title"><strong>ADD</strong> your projects</h3>
-                            <p class="hiw-desc">
-                                Upload your best work. Our platform automatically formats
-                                it into stunning, responsive case studies.
-                            </p>
+                            <p class="hiw-desc">Upload your best work. Our platform automatically formats
+                                it into stunning, responsive case studies.</p>
                         </div>
                     </div>
-
-                    <!-- Card 3 — Orange -->
                     <div class="hiw-card hiw-card--orange">
                         <div class="hiw-inner">
                             <span class="hiw-step">Step 03</span>
                             <h3 class="hiw-title"><strong>PUBLISH</strong> &amp; share</h3>
-                            <p class="hiw-desc">
-                                Go live instantly. Share your unique link with recruiters
-                                and your network to open new opportunities.
-                            </p>
-
+                            <p class="hiw-desc">Go live instantly. Share your unique link with recruiters
+                                and your network to open new opportunities.</p>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
 
-
-
-        <!-- Feature Carousel Section -->
-
-
-
-        <!--
-    FEATURED PROJECTS — SECTION HTML
-    ─────────────────────────────────────────────────────
-    1. Add to <head>:
-       <link rel="stylesheet" href="css/pages/featured-projects.css">
-
-    2. Replace your entire <section class="feature-carousel-section">
-       block with this section.
-
-    3. Move featured-projects.css into css/pages/ alongside home.css.
-    ─────────────────────────────────────────────────────
--->
-
+        <!-- ── Featured Projects ── -->
         <section class="featured-projects-section">
             <div class="featured-projects-container">
-
-                <!-- Header row -->
                 <div class="fp-header">
                     <h2 class="fp-heading">Featured Projects</h2>
                     <a href="marketplace.html" class="fp-view-all">
                         View all projects
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <line x1="7" y1="17" x2="17" y2="7" />
-                            <polyline points="7 7 17 7 17 17" />
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2.5"
+                             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="7" y1="17" x2="17" y2="7"/>
+                            <polyline points="7 7 17 7 17 17"/>
                         </svg>
                     </a>
                 </div>
-
-                <!-- Cards -->
                 <div class="fp-grid">
-
-                    <!-- Card 1 -->
                     <a href="marketplace.html" class="fp-card">
                         <div class="fp-img-wrap">
-                            <img src="assets/project1.png" alt="Face Recognition Dashboard" class="fp-img">
+                            <img src="assets/project1.webp"
+                                 alt="Face Recognition Dashboard"
+                                 class="fp-img"
+                                 width="560" height="420"
+                                 loading="lazy" decoding="async">
                             <span class="fp-cat">AI · Vision</span>
                         </div>
                         <div class="fp-footer">
@@ -319,11 +293,13 @@
                             <span class="fp-price">₹49</span>
                         </div>
                     </a>
-
-                    <!-- Card 2 -->
                     <a href="marketplace.html" class="fp-card">
                         <div class="fp-img-wrap">
-                            <img src="assets/project2.png" alt="Health Monitoring System" class="fp-img">
+                            <img src="assets/project2.webp"
+                                 alt="Health Monitoring System"
+                                 class="fp-img"
+                                 width="560" height="420"
+                                 loading="lazy" decoding="async">
                             <span class="fp-cat">ML · Health</span>
                         </div>
                         <div class="fp-footer">
@@ -331,11 +307,13 @@
                             <span class="fp-price">₹39</span>
                         </div>
                     </a>
-
-                    <!-- Card 3 -->
                     <a href="marketplace.html" class="fp-card">
                         <div class="fp-img-wrap">
-                            <img src="assets/project3.png" alt="Shoe Mark Recognition" class="fp-img">
+                            <img src="assets/project3.webp"
+                                 alt="Shoe Mark Recognition"
+                                 class="fp-img"
+                                 width="560" height="420"
+                                 loading="lazy" decoding="async">
                             <span class="fp-cat">Computer Vision</span>
                         </div>
                         <div class="fp-footer">
@@ -343,127 +321,119 @@
                             <span class="fp-price">₹59</span>
                         </div>
                     </a>
-
-                    <!--
-                                Add more cards here by duplicating the block above.
-                                The nth-child color cycle in the CSS handles accent colors
-                                automatically up to 6 cards.
-                            -->
-
                 </div>
             </div>
         </section>
-        <!-- New Section: Everything You Need In One Portfolio -->
-        <section class="section" id="everything-you-need" ">
-                    <div class=" container">
-            <div style="margin-bottom:48px;">
-                <h2 style="font-size:2.8rem; margin-top:12px; letter-spacing: -0.02em; ">Everything You Need
-                    In One
-                    Portfolio</h2>
-            </div>
-            <div class="everything-layout">
 
-                <div class="portfolio-preview">
-
-                    <img src="assets/right2.jpg" class="preview-main">
-
-                    <!-- <img src="assets/2.webp" class="preview-top"> -->
-
-                    <!-- <img src="assets/3.webp" class="preview-bottom"> -->
-
+        <!-- ── Everything You Need ── -->
+        <section class="section" id="everything-you-need">
+            <div class="container">
+                <div style="margin-bottom:48px;">
+                    <h2 style="font-size:2.8rem;margin-top:12px;letter-spacing:-0.02em;">
+                        Everything You Need In One Portfolio
+                    </h2>
                 </div>
-
-                <div class="features-side">
-
-                    <div class="grid grid-2" style="gap: 24px;">
-                        <div class="premium-feature-card">
-                            <h3 class="premium-feature-title">Skills</h3>
-                            <p class="premium-feature-desc">Highlight your technical and soft skills with
-                                visually
-                                appealing tags and proficiency indicators.</p>
-                        </div>
-                        <div class="premium-feature-card">
-                            <h3 class="premium-feature-title">Projects</h3>
-                            <p class="premium-feature-desc">Showcase your best work with deep-dive case
-                                studies,
-                                image galleries, and live demo links.</p>
-                        </div>
-                        <div class="premium-feature-card">
-                            <h3 class="premium-feature-title">Resume</h3>
-                            <p class="premium-feature-desc">Provide your professional history in an
-                                easy-to-read,
-                                downloadable format for recruiters.</p>
-                        </div>
-                        <div class="premium-feature-card">
-                            <h3 class="premium-feature-title">Social Links</h3>
-                            <p class="premium-feature-desc">Connect your GitHub, LinkedIn, Twitter, and
-                                other
-                                platforms directly to your portfolio hub.</p>
+                <div class="everything-layout">
+                    <div class="portfolio-preview">
+                        <!--
+                            Replace 800/600 with your actual image dimensions.
+                            Explicit w/h prevents CLS while lazy loads.
+                        -->
+                        <img src="assets/right2.webp"
+                             class="preview-main"
+                             width="800" height="600"
+                             loading="lazy" decoding="async"
+                             alt="Portfolio preview screenshot">
+                    </div>
+                    <div class="features-side">
+                        <div class="grid grid-2" style="gap:24px;">
+                            <div class="premium-feature-card">
+                                <h3 class="premium-feature-title">Skills</h3>
+                                <p class="premium-feature-desc">Highlight your technical and soft skills with
+                                    visually appealing tags and proficiency indicators.</p>
+                            </div>
+                            <div class="premium-feature-card">
+                                <h3 class="premium-feature-title">Projects</h3>
+                                <p class="premium-feature-desc">Showcase your best work with deep-dive case
+                                    studies, image galleries, and live demo links.</p>
+                            </div>
+                            <div class="premium-feature-card">
+                                <h3 class="premium-feature-title">Resume</h3>
+                                <p class="premium-feature-desc">Provide your professional history in an
+                                    easy-to-read, downloadable format for recruiters.</p>
+                            </div>
+                            <div class="premium-feature-card">
+                                <h3 class="premium-feature-title">Social Links</h3>
+                                <p class="premium-feature-desc">Connect your GitHub, LinkedIn, Twitter, and
+                                    other platforms directly to your portfolio hub.</p>
+                            </div>
                         </div>
                     </div>
-
-                </div>
-
-            </div>
-
-    </div>
-    </section>
-
-
-    <!-- Final CTA -->
-    <section class="section final-cta">
-        <div class="container hero-centered">
-            <h2 style="font-size:2.5rem; margin-bottom:24px;">
-                Monetize Your Skills
-            </h2>
-
-            <a href="marketplace.html" class="btn btn-hero-solid clickable" style="padding:16px 32px;font-size:1.1rem;">
-                Get Started
-            </a>
-        </div>
-    </section>
-
-    <!-- Premium Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <a href="index.html" class="logo">
-                        <img src="logo_black1.png" alt="Logo" style="height: 70px;" class="nav-logo-img light-logo">
-                        <img src="logo_white1.png" alt="Logo" style="height: 70px;" class="nav-logo-img dark-logo">
-                    </a>
-
-                    <p class="footer-desc">The ultimate platform for building stunning, high-converting professional portfolios.</p>
-                </div>
-                <div>
-                    <h4 class="footer-title">Platform</h4>
-                    <ul class="footer-links">
-                        <li><a href="index.html" class="footer-link">Home</a></li>
-                        <li><a href="login.html" class="footer-link">Login</a></li>
-                        <li><a href="signup.html" class="footer-link">Sign Up</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="footer-title">Legal</h4>
-                    <ul class="footer-links">
-                        <li><a href="#" class="footer-link">Privacy Policy</a></li>
-                        <li><a href="#" class="footer-link">Terms of Service</a></li>
-                        <li><a href="#" class="footer-link">Contact Us</a></li>
-                    </ul>
                 </div>
             </div>
+        </section>
 
-            <div class="footer-bottom">
-                <span>© 2026 DesignX SkillSpace. All rights reserved.</span>
-                <span>Designed for you.</span>
+        <!-- ── Final CTA ── -->
+        <section class="section final-cta">
+            <div class="container hero-centered">
+                <h2 style="font-size:2.5rem;margin-bottom:24px;">Monetize Your Skills</h2>
+                <a href="marketplace.html" class="btn btn-hero-solid clickable"
+                   style="padding:16px 32px;font-size:1.1rem;">Get Started</a>
             </div>
-        </div>
-    </footer>
-    </div>
+        </section>
 
-    <!-- Main JavaScript Modules -->
-     <script src="js/mobile-nav.js"></script>
+        <!-- ── Footer ── -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <a href="index.html" class="logo">
+                            <!-- Footer logos: lazy is fine, they're well below fold -->
+                            <img src="logo_black.webp"
+                                 alt="DesignX"
+                                 width="200" height="70"
+                                 style="height:70px;width:auto;"
+                                 class="nav-logo-img light-logo"
+                                 loading="lazy" decoding="async">
+                            <img src="logo_white.webp"
+                                 alt="DesignX"
+                                 width="200" height="70"
+                                 style="height:70px;width:auto;"
+                                 class="nav-logo-img dark-logo"
+                                 loading="lazy" decoding="async">
+                        </a>
+                        <p class="footer-desc">The ultimate platform for building stunning,
+                            high-converting professional portfolios.</p>
+                    </div>
+                    <div>
+                        <h4 class="footer-title">Platform</h4>
+                        <ul class="footer-links">
+                            <li><a href="index.html"  class="footer-link">Home</a></li>
+                            <li><a href="login.html"  class="footer-link">Login</a></li>
+                            <li><a href="signup.html" class="footer-link">Sign Up</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="footer-title">Legal</h4>
+                        <ul class="footer-links">
+                            <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                            <li><a href="#" class="footer-link">Terms of Service</a></li>
+                            <li><a href="#" class="footer-link">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <span>© 2026 DesignX SkillSpace. All rights reserved.</span>
+                    <span>Designed for you.</span>
+                </div>
+            </div>
+        </footer>
+
+    </div><!-- /#app-content -->
+
+    <!-- Scripts: defer blocks nothing, module is auto-deferred -->
+    <script src="js/mobile-nav.js" defer></script>
     <script type="module" src="js/index.js"></script>
-</body>
 
+</body>
 </html>

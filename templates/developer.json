@@ -2,11 +2,11 @@
   "id": "developer",
   "name": "Developer Portfolio",
   "description": "Tech-focused portfolio for developers",
-  "font": "Courier New",
+  "font": "Fira Code",
   "colors": {
-    "background": "#0a0e27",
-    "text": "#ffffff",
-    "accent": "#ffffff"
+    "background": "#f8fafc",
+    "text": "#0f172a",
+    "accent": "#2563eb"
   },
   "sections": {
     "photo": true,
@@ -16,6 +16,6 @@
     "projects": true,
     "contact": true
   },
-  "cardStyle": "glassmorphism",
+  "cardStyle": "flat",
   "layout": "grid"
 }

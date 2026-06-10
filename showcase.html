@@ -25,8 +25,8 @@
     <link rel="stylesheet" href="css/core.css">
     <link rel="stylesheet" href="css/utilities.css">
     <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/pages/home.css">
-    <link rel="stylesheet" href="css/pages/shop.css">
+    <!-- <link rel="stylesheet" href="css/pages/home.css"> -->
+    <!-- <link rel="stylesheet" href="css/pages/shop.css"> -->
     <link rel="stylesheet" href="css/pages/showcase.css">
     <link rel="stylesheet" href="css/mobile-responsive.css">
 
@@ -58,8 +58,8 @@
     <nav class="navbar" id="app-nav">
         <div class="navbar-container">
             <a href="index.html" class="logo" id="nav-logo">
-                <img src="logo_black1.png" alt="Apex Logo" style="height: 70px; " class="nav-logo-img light-logo">
-                <img src="logo_white1.png" alt="Apex Logo" style="height: 70px; " class="nav-logo-img dark-logo">
+                <img src="logo_black1.webp" alt="Apex Logo" width="128" height="70" style="height: 70px; width: auto;" class="nav-logo-img light-logo">
+                <img src="logo_white1.webp" alt="Apex Logo" width="128" height="70" style="height: 70px; width: auto;" class="nav-logo-img dark-logo">
             </a>
 
             <ul class="nav-menu">
@@ -97,13 +97,11 @@
                 </ul>
 
                 <!-- Hero Section for Showcase -->
-                <!-- Hero Section for Showcase -->
-                <section
-                    style="margin-bottom: 56px; margin-top: 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px;">
-                    <h1 style="font-size: 3.2rem; letter-spacing: -0.03em; line-height: 1.1; margin: 0;">
+                <section class="showcase-hero">
+                    <h1 class="showcase-title">
                         Creator Portfolios
                     </h1>
-                    <a href="portfolio.html" class="btn btn-glow clickable" style="flex-shrink: 0;">
+                    <a href="portfolio.html" class="btn btn-glow clickable showcase-btn">
                         Create Your Portfolio
                     </a>
                 </section>
@@ -114,7 +112,37 @@
                         style="font-size: 1.8rem; font-family: var(--font-display); margin-bottom: 32px; letter-spacing: -0.01em;">
                         Featured Creative Directors</h2>
                     <div class="grid grid-3" id="portfolio-creators-list">
-                        <!-- Loaded dynamically via js/modules/portfolio.js -->
+                        <!-- Skeleton Cards to prevent CLS -->
+                        <div class="creator-card skeleton-card">
+                            <div class="creator-banner skeleton-shimmer"></div>
+                            <div class="creator-body" style="gap: 12px; padding: 22px;">
+                                <div class="creator-avatar skeleton-shimmer" style="margin-top: -54px; border-radius: 16px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 60%; height: 20px; border-radius: 4px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 40%; height: 12px; border-radius: 4px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 90%; height: 40px; border-radius: 4px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 100%; height: 40px; border-radius: 12px; margin-top: auto;"></div>
+                            </div>
+                        </div>
+                        <div class="creator-card skeleton-card">
+                            <div class="creator-banner skeleton-shimmer"></div>
+                            <div class="creator-body" style="gap: 12px; padding: 22px;">
+                                <div class="creator-avatar skeleton-shimmer" style="margin-top: -54px; border-radius: 16px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 60%; height: 20px; border-radius: 4px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 40%; height: 12px; border-radius: 4px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 90%; height: 40px; border-radius: 4px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 100%; height: 40px; border-radius: 12px; margin-top: auto;"></div>
+                            </div>
+                        </div>
+                        <div class="creator-card skeleton-card">
+                            <div class="creator-banner skeleton-shimmer"></div>
+                            <div class="creator-body" style="gap: 12px; padding: 22px;">
+                                <div class="creator-avatar skeleton-shimmer" style="margin-top: -54px; border-radius: 16px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 60%; height: 20px; border-radius: 4px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 40%; height: 12px; border-radius: 4px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 90%; height: 40px; border-radius: 4px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 100%; height: 40px; border-radius: 12px; margin-top: auto;"></div>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -128,7 +156,49 @@
                     <p style="color: var(--text-muted); margin-bottom: 32px;">Click View Details to inspect project
                         mockups .</p>
                     <div class="grid grid-3" id="portfolio-projects-grid">
-                        <!-- Loaded dynamically via js/modules/portfolio.js -->
+                        <!-- Skeleton Cards to prevent CLS -->
+                        <div class="project-card skeleton-card">
+                            <div class="project-img-wrap skeleton-shimmer" style="aspect-ratio: 4/2.3;"></div>
+                            <div class="project-body" style="height: 52px; background: #0d0d0d;">
+                                <div class="skeleton-text skeleton-shimmer" style="width: 50%; height: 16px; border-radius: 4px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 25%; height: 16px; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                        <div class="project-card skeleton-card">
+                            <div class="project-img-wrap skeleton-shimmer" style="aspect-ratio: 4/2.3;"></div>
+                            <div class="project-body" style="height: 52px; background: #0d0d0d;">
+                                <div class="skeleton-text skeleton-shimmer" style="width: 50%; height: 16px; border-radius: 4px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 25%; height: 16px; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                        <div class="project-card skeleton-card">
+                            <div class="project-img-wrap skeleton-shimmer" style="aspect-ratio: 4/2.3;"></div>
+                            <div class="project-body" style="height: 52px; background: #0d0d0d;">
+                                <div class="skeleton-text skeleton-shimmer" style="width: 50%; height: 16px; border-radius: 4px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 25%; height: 16px; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                        <div class="project-card skeleton-card">
+                            <div class="project-img-wrap skeleton-shimmer" style="aspect-ratio: 4/2.3;"></div>
+                            <div class="project-body" style="height: 52px; background: #0d0d0d;">
+                                <div class="skeleton-text skeleton-shimmer" style="width: 50%; height: 16px; border-radius: 4px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 25%; height: 16px; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                        <div class="project-card skeleton-card">
+                            <div class="project-img-wrap skeleton-shimmer" style="aspect-ratio: 4/2.3;"></div>
+                            <div class="project-body" style="height: 52px; background: #0d0d0d;">
+                                <div class="skeleton-text skeleton-shimmer" style="width: 50%; height: 16px; border-radius: 4px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 25%; height: 16px; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                        <div class="project-card skeleton-card">
+                            <div class="project-img-wrap skeleton-shimmer" style="aspect-ratio: 4/2.3;"></div>
+                            <div class="project-body" style="height: 52px; background: #0d0d0d;">
+                                <div class="skeleton-text skeleton-shimmer" style="width: 50%; height: 16px; border-radius: 4px;"></div>
+                                <div class="skeleton-text skeleton-shimmer" style="width: 25%; height: 16px; border-radius: 4px;"></div>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -140,8 +210,8 @@
                 <div class="footer-grid">
                     <div class="footer-brand">
                         <a href="index.html" class="logo">
-                            <img src="logo_black1.png" alt="Logo" style="height: 70px;" class="nav-logo-img light-logo">
-                            <img src="logo_white1.png" alt="Logo" style="height: 70px;" class="nav-logo-img dark-logo">
+                            <img src="logo_black1.webp" alt="Logo" style="height: 70px;" class="nav-logo-img light-logo">
+                            <img src="logo_white1.webp" alt="Logo" style="height: 70px;" class="nav-logo-img dark-logo">
                         </a>
     
                         <p class="footer-desc">The ultimate platform for building stunning, high-converting professional portfolios.</p>

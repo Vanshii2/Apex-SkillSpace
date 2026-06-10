@@ -431,3 +431,86 @@
     color: #000000 !important;
 }
 
+/* --- Showcase Layout Shift Constraints --- */
+#portfolio-creators-list {
+    min-height: 380px;
+}
+#portfolio-projects-grid {
+    min-height: 520px;
+}
+
+/* --- Premium Skeleton Loader Shimmering Effects --- */
+@keyframes skeleton-shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.skeleton-shimmer {
+    background: linear-gradient(90deg, #16161c 25%, #22222a 50%, #16161c 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.6s infinite ease-in-out;
+}
+
+[data-theme="light"] .skeleton-shimmer {
+    background: linear-gradient(90deg, #e5e5eb 25%, #f2f2f7 50%, #e5e5eb 75%);
+    background-size: 200% 100%;
+}
+
+.skeleton-card {
+    pointer-events: none !important;
+    user-select: none !important;
+}
+
+.skeleton-text {
+    background: #22222a;
+}
+
+[data-theme="light"] .skeleton-text {
+    background: #e5e5eb;
+}
+
+/* ── Showcase Hero Section ── */
+.showcase-hero {
+    margin-bottom: 56px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.showcase-title {
+    font-size: 3.2rem;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin: 0;
+}
+
+.showcase-btn {
+    flex-shrink: 0;
+}
+
+/* ── Mobile Responsive for Showcase Hero ── */
+@media (max-width: 768px) {
+    .showcase-hero {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 36px;
+    }
+    
+    .showcase-title {
+        font-size: 2.2rem;
+    }
+    
+    .showcase-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+

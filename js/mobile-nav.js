@@ -50,4 +50,13 @@
             hamburger.setAttribute('aria-expanded', false);
         }
     });
+
+    // Close when scrolling the page
+    window.addEventListener('scroll', function () {
+        if (navMenu.classList.contains('open')) {
+            navMenu.classList.remove('open');
+            hamburger.classList.remove('open');
+            hamburger.setAttribute('aria-expanded', false);
+        }
+    }, { passive: true });
 })();

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" data-theme="dark">
 
 <head>
@@ -285,7 +285,7 @@
 
             // Load Template Config
             let template = null;
-            let isCustom = data.selectedTemplate === 'custom' || data.customTheme;
+            let isCustom = data.selectedTemplate === 'custom';
 
             if (data.selectedTemplate !== 'custom') {
                 try {
@@ -316,12 +316,22 @@
                     },
                     sections: data.sectionVisibility || { photo: true, about: true, skills: true, experience: true, education: true, projects: true, certifications: true, testimonials: true, contact: true },
                     cardStyle: ct.cardStyle || 'glassmorphism',
-                    layout: 'centered'
+                    layout: ct.layout || 'centered',
+                    avatarShape: ct.avatarShape || 'circle'
                 };
             }
 
             // Inject styles dynamically based on template config
             injectTemplateStyles(template, isCustom, data.customTheme);
+
+            // Apply layout class to root
+            const layoutClass = isCustom
+                ? (data.customTheme && data.customTheme.layout ? data.customTheme.layout : 'centered')
+                : (template.layout || 'centered');
+            const portfolioRoot = document.getElementById('portfolio-root');
+            if (portfolioRoot) {
+                portfolioRoot.className = `layout-${layoutClass}`;
+            }
 
             // Populate text elements
             document.title = `${data.name} // Professional Portfolio`;
@@ -488,7 +498,8 @@
 
             // Handle Section Visibilities
             const visibility = isCustom ? (data.sectionVisibility || {}) : (template.sections || {});
-            for (const [sec, visible] of Object.entries(visibility)) {
+            const secs = ['photo', 'about', 'skills', 'experience', 'education', 'projects', 'certifications', 'testimonials'];
+            secs.forEach(sec => {
                 const element = document.getElementById(`sec-${sec}`);
                 if (element) {
                     let hasContent = true;
@@ -507,13 +518,15 @@
                     } else if (sec === 'about') {
                         hasContent = data.about && data.about.trim() !== '' &&
                             !data.about.trim().startsWith('Tell your') &&
-                            !data.about.trim().startsWith('Describe your');
+                            !data.about.trim().startsWith('Describe your') &&
+                            !data.about.trim().startsWith('Add your');
                     } else if (sec === 'photo') {
                         hasContent = !!data.photo;
                     }
+                    const visible = visibility[sec] !== false;
                     element.style.display = (visible && hasContent) ? 'flex' : 'none';
                 }
-            }
+            });
 
             // Contact form submit handling
             const contactForm = document.getElementById('contact-form');
@@ -572,11 +585,16 @@
                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
             ];
             
-            const monthName = monthNames[monthIndex];
-            if (monthName) {
-                return `${monthName} ${year}`;
+            const monthName = monthNames[monthIndex] || parts[1];
+            const yy = year.length >= 4 ? year.slice(-2) : year;
+            
+            if (parts.length >= 3) {
+                const day = parseInt(parts[2], 10);
+                const dd = day < 10 ? '0' + day : day.toString();
+                return `${dd}/${monthName}/${yy}`;
             }
-            return dateStr;
+            
+            return `${monthName}/${yy}`;
         }
 
         // Helper to calculate relative luminance of a hex color
@@ -597,340 +615,250 @@
             return luminance > 140;
         }
 
+        // Helper to convert hex to rgba
+        function hexToRgba(hex, alpha) {
+            if (!hex) return `rgba(255,255,255,${alpha})`;
+            let cleanHex = hex.trim().replace('#', '');
+            if (cleanHex.length === 3) {
+                cleanHex = cleanHex.split('').map(c => c + c).join('');
+            }
+            if (cleanHex.length !== 6) return `rgba(255,255,255,${alpha})`;
+            const r = parseInt(cleanHex.substring(0, 2), 16);
+            const g = parseInt(cleanHex.substring(2, 4), 16);
+            const b = parseInt(cleanHex.substring(4, 6), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        // --- EDS-ready shared CSS generator ---
+        // Same logic as buildPortfolioCSS() in portfolio-builder.js.
+        // Selectors are adapted for view-portfolio.html element structure.
+        function buildPortfolioCSS(sel, tok) {
+            const {
+                font, fontSize, accent, text, cardStyle, dividerStyle,
+                bgStyle, bgIsImage, isLight, isCustom, isCreativeA4,
+                cardBg, cardBorder, cardShadow, blur, hexToRgba, cardBgColor,
+                avatarShape, layout
+            } = tok;
+
+            const s = sel.scope;
+            const isCentered = layout === 'centered' || !layout;
+
+            return `
+                ${s} ${sel.heroSelector} {
+                    display: flex; flex-direction: column;
+                    align-items: ${ isCentered ? 'center' : 'flex-start' } !important;
+                    text-align: ${ isCentered ? 'center' : 'left' } !important;
+                }
+                ${s} ${sel.nameSelector} {
+                    font-size: 1.85em; font-weight: 700;
+                    color: ${text};
+                    margin: 0 0 0.5em 0; letter-spacing: -0.02em;
+                }
+                ${s} ${sel.roleSelector} {
+                    font-size: 0.8em; color: ${accent};
+                    font-family: var(--font-mono); text-transform: uppercase;
+                    letter-spacing: 0.1em; margin: 0;
+                }
+                ${s} ${sel.locationBadgeSelector} { color: ${accent}dd; border: 1px solid ${accent}25; background: ${accent}0a; }
+                ${s} ${sel.aboutSelector} { font-size: 0.9em; line-height: 1.7; color: ${text}dd; margin: 0; }
+                ${s} ${sel.sectionTitleSelector} {
+                    font-size: 1em; font-weight: 600; margin: 0; letter-spacing: -0.01em; color: ${text};
+                    border-bottom: ${dividerStyle === 'none' ? 'none' : `2px ${dividerStyle} ${accent}25`};
+                    padding-bottom: 0.625em;
+                }
+                ${s} ${sel.sectionContainerSelector} {
+                    display: flex; flex-direction: column; gap: 1.25em;
+                    padding: 2em; border-radius: 1.125em;
+                    background: ${cardBg}; border: ${cardBorder};
+                    box-shadow: ${cardShadow};
+                    backdrop-filter: blur(${blur}); -webkit-backdrop-filter: blur(${blur});
+                }
+                ${s} ${sel.skillSelector} {
+                    padding: 0.3em 0.75em; border-radius: 99px; font-size: 0.75em; font-weight: 500;
+                    background: ${isCustom ? hexToRgba(accent,'0.08') : (isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)')} !important;
+                    color: ${isCustom ? accent : (isLight ? '#111111' : '#ffffff')} !important;
+                    border: 1px solid ${isCustom ? hexToRgba(accent,'0.25') : (isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.12)')} !important;
+                    font-family: var(--font-mono);
+                }
+                ${s} ${sel.expItemSelector} {
+                    padding: 1em; border-radius: 0.75em;
+                    background: ${isCustom ? hexToRgba(cardBgColor,'0.9') : (isLight ? 'rgba(255,255,255,0.65)' : 'rgba(255,255,255,0.035)')} !important;
+                    border: 1px solid ${isCustom ? hexToRgba(accent,'0.15') : (isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.08)')} !important;
+                    box-shadow: ${isLight ? '0 8px 32px 0 rgba(31,38,135,0.04)' : '0 8px 32px 0 rgba(0,0,0,0.2)'} !important;
+                    backdrop-filter: blur(12px) !important; -webkit-backdrop-filter: blur(12px) !important;
+                    color: ${text} !important; display: flex; gap: 1em; align-items: center;
+                }
+                ${s} ${sel.expTitleSelector} { font-size: 0.9em; font-weight: 600; margin: 0; color: ${text} !important; }
+                ${s} ${sel.expCompanySelector} { font-size: 0.8em; color: ${accent} !important; font-weight: 500; }
+                ${s} ${sel.expPeriodSelector} { font-size: 0.7em; color: ${isLight ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.6)'} !important; font-family: var(--font-mono) !important; }
+                ${s} ${sel.photoSelector} {
+                    border: 3px solid ${accent};
+                    border-radius: ${ avatarShape === 'circle' ? '50%' : avatarShape === 'square' ? '4px' : '20px' };
+                    width: 7.5em; height: 7.5em; overflow: hidden;
+                    margin: 0 auto 1.25em auto; box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+                }
+                ${s} ${sel.photoSelector} img { width: 100%; height: 100%; object-fit: cover; }
+                .social-anchor { font-weight: 500; color: ${text}99; text-decoration: none; transition: color 0.2s ease; }
+                .social-anchor:hover { color: ${accent}; }
+
+                /* Layout: Left-Aligned */
+                ${s}.layout-left-aligned ${sel.heroSelector} { text-align: left !important; align-items: flex-start !important; }
+                ${s}.layout-left-aligned ${sel.locationBadgeSelector} { align-self: flex-start !important; }
+
+                /* Layout: Split (Two-Column, desktop only) */
+                @media (min-width: 769px) {
+                    ${s}.layout-split {
+                        display: grid !important;
+                        grid-template-columns: 280px 1fr !important;
+                        gap: 2em !important; align-items: start !important;
+                    }
+                    ${s}.layout-split ${sel.splitHeroSelector} {
+                        grid-column: 1 !important; position: sticky !important; top: 80px !important;
+                        text-align: left !important; align-items: flex-start !important;
+                    }
+                    ${s}.layout-split ${sel.splitAboutSelector} { grid-column: 1 !important; }
+                    ${s}.layout-split ${sel.splitColSelector} { grid-column: 2 !important; }
+                    ${s}.layout-split ${sel.locationBadgeSelector} { align-self: flex-start !important; }
+                }
+
+                /* Creative A4 Paper Style */
+                ${ isCreativeA4 ? `
+                body { background: ${bgStyle} !important; }
+                ${s} {
+                    background: rgba(250,246,240,0.97) !important;
+                    border: 6px double ${accent} !important;
+                    outline: 2px solid ${accent}55 !important; outline-offset: -16px !important;
+                    border-radius: 4px !important;
+                    box-shadow: 0 12px 60px rgba(0,0,0,0.35) !important;
+                    padding: 48px !important; max-width: 860px !important;
+                }
+                ${s} ${sel.sectionContainerSelector} {
+                    background: transparent !important; border: none !important;
+                    box-shadow: none !important; backdrop-filter: none !important;
+                    border-radius: 0 !important;
+                    border-top: 1px dashed ${accent}30 !important; padding: 1.5em 0 !important;
+                }
+                ${s} ${sel.expItemSelector} {
+                    background: transparent !important; border: none !important;
+                    box-shadow: none !important;
+                    border-bottom: 1px solid ${accent}18 !important;
+                    border-radius: 0 !important; padding: 0.75em 0 !important;
+                }
+                ` : '' }
+
+                @media (max-width: 720px) {
+                    body { padding: 4.75em 1em 2.5em; }
+                    ${s} ${sel.nameSelector} { font-size: 2.15rem; }
+                    ${s} ${sel.sectionContainerSelector} { padding: 24px; }
+                    .social-links-row { flex-wrap: wrap; }
+                }
+            `;
+        }
+
         // Function to inject styles dynamically based on template config
         function injectTemplateStyles(t, isCustom = false, customTheme = null) {
             const styleTag = document.getElementById('dynamic-template-styles');
 
-            // Choose template settings
             const font = (isCustom && customTheme) ? customTheme.font : t.font;
+            const fontSize = (customTheme && customTheme.fontSize) ? customTheme.fontSize : '16px';
             const accent = (isCustom && customTheme) ? customTheme.accent : t.colors.accent;
             const text = (isCustom && customTheme) ? customTheme.text : t.colors.text;
             const cardStyle = (isCustom && customTheme) ? customTheme.cardStyle : t.cardStyle;
-
-            // Resolve background
-            let backgroundStyle = '';
-            if (isCustom && customTheme) {
-                if (customTheme.backgroundType === 'gradient') {
-                    backgroundStyle = `linear-gradient(135deg, ${customTheme.backgroundGradientStart} 0%, ${customTheme.backgroundGradientEnd} 100%)`;
-                } else {
-                    backgroundStyle = customTheme.backgroundSolid;
-                }
-            } else {
-                backgroundStyle = `radial-gradient(circle at top right, ${t.colors.accent}22, transparent 34rem), ${t.colors.background}`;
-            }
-
+            const dividerStyle = (isCustom && customTheme) ? (customTheme.dividerStyle || 'dashed') : 'dashed';
+            const layout = (isCustom && customTheme) ? (customTheme.layout || 'centered') : (t.layout || 'centered');
+            const avatarShape = (isCustom && customTheme) ? (customTheme.avatarShape || 'circle') : (t.avatarShape || 'circle');
+            const isCreativeA4 = cardStyle === 'creative-a4';
             const isGlass = cardStyle === 'glassmorphism';
             const isGlow = cardStyle === 'glow';
+
+            // Resolve background
+            let bgStyle = '';
+            let bgIsImage = false;
+            const rawBg = (isCustom && customTheme)
+                ? (customTheme.backgroundType === 'gradient' ? null : customTheme.backgroundSolid)
+                : t.colors.background;
+
+            if (rawBg && (rawBg.startsWith('http') || rawBg.startsWith('url('))) {
+                bgStyle = `url('${rawBg}') center/cover no-repeat fixed`;
+                bgIsImage = true;
+            } else if (isCustom && customTheme) {
+                bgStyle = customTheme.backgroundType === 'gradient'
+                    ? `linear-gradient(135deg, ${customTheme.backgroundGradientStart} 0%, ${customTheme.backgroundGradientEnd} 100%)`
+                    : (customTheme.backgroundSolid || '#ffffff');
+            } else {
+                bgStyle = t.colors.background || '#ffffff';
+            }
 
             const bgSolid = (isCustom && customTheme) ? customTheme.backgroundSolid : t.colors.background;
             const bgGradStart = (isCustom && customTheme) ? customTheme.backgroundGradientStart : t.colors.background;
             const bgType = (isCustom && customTheme) ? customTheme.backgroundType : 'solid';
-            const currentBg = bgType === 'solid' ? bgSolid : bgGradStart;
-            const isLight = isColorLight(currentBg);
+            const currentBg = bgIsImage ? '#f5f0eb' : (bgType === 'solid' ? bgSolid : bgGradStart);
+            const isLight = bgIsImage ? true : isColorLight(currentBg);
 
-            // Set global theme attribute so text and button variables adapt automatically
             document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
 
             const blur = (isCustom && customTheme) ? customTheme.blurIntensity : '15px';
             const borderOp = (isCustom && customTheme) ? customTheme.borderOpacity : '0.08';
+            const cardBgColor = (isCustom && customTheme) ? (customTheme.cardBgColor || '#ffffff') : '#ffffff';
 
-            let cardBg = '';
-            let cardBorder = '';
-            let cardShadow = '';
-
-            if (isGlass) {
-                cardBg = isLight ? `rgba(0,0,0,0.025)` : `rgba(255,255,255,0.045)`;
-                cardBorder = `1px solid ${isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255, 255, 255, ' + borderOp + ')'}`;
-                cardShadow = 'none';
-            } else if (isGlow) {
-                cardBg = isLight ? '#ffffff' : '#0f1220';
-                cardBorder = `1px solid ${accent}44`;
-                cardShadow = `0 10px 30px ${accent}12, 0 0 20px ${accent}04`;
-            } else if (cardStyle === 'shadow') {
-                cardBg = isLight ? '#ffffff' : '#111322';
-                cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1e293b';
-                cardShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05)';
+            let cardBg = '', cardBorder = '', cardShadow = '';
+            if (isCustom && customTheme) {
+                cardBg = cardBgColor;
+                if (isGlass) { cardBg = hexToRgba(cardBgColor, isLight ? '0.025' : '0.045'); cardBorder = `1px solid ${isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,' + borderOp + ')' }`; cardShadow = 'none'; }
+                else if (isGlow) { cardBorder = `1px solid ${accent}44`; cardShadow = `0 10px 30px ${accent}12, 0 0 20px ${accent}04`; }
+                else if (cardStyle === 'shadow') { cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1e293b'; cardShadow = '0 10px 25px -5px rgba(0,0,0,0.05)'; }
+                else { cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1a1d35'; cardShadow = 'none'; }
             } else {
-                // Flat
-                cardBg = isLight ? '#f9fafb' : '#0e101f';
-                cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1a1d35';
-                cardShadow = 'none';
+                if (isGlass) { cardBg = isLight ? 'rgba(0,0,0,0.025)' : 'rgba(255,255,255,0.045)'; cardBorder = `1px solid ${isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,' + borderOp + ')' }`; cardShadow = 'none'; }
+                else if (isGlow) { cardBg = isLight ? '#ffffff' : '#0f1220'; cardBorder = `1px solid ${accent}44`; cardShadow = `0 10px 30px ${accent}12`; }
+                else if (cardStyle === 'shadow') { cardBg = isLight ? '#ffffff' : '#111322'; cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1e293b'; cardShadow = '0 10px 25px -5px rgba(0,0,0,0.05)'; }
+                else { cardBg = isLight ? '#f9fafb' : '#0e101f'; cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1a1d35'; cardShadow = 'none'; }
             }
+
+            const tok = { font, fontSize, accent, text, cardStyle, dividerStyle, bgStyle, bgIsImage, isLight, isCustom, isCreativeA4, cardBg, cardBorder, cardShadow, blur, hexToRgba, cardBgColor, avatarShape, layout };
+
+            // View-portfolio selectors — map to actual HTML element classes/ids
+            const sel = {
+                scope: '#portfolio-root',
+                heroSelector: '.portfolio-header',
+                nameSelector: '#portfolio-name',
+                roleSelector: '#portfolio-role',
+                taglineSelector: '#portfolio-tagline',
+                locationBadgeSelector: '#portfolio-location',
+                aboutSelector: '#portfolio-about',
+                sectionTitleSelector: '.section-title',
+                sectionContainerSelector: '.portfolio-section',
+                skillSelector: '.port-skill-badge',
+                expItemSelector: '.timeline-card',
+                expTitleSelector: '.timeline-title',
+                expCompanySelector: '.timeline-company',
+                expPeriodSelector: '.timeline-date',
+                photoSelector: '.portfolio-avatar-container',
+                socialSelector: '.social-anchor',
+                splitHeroSelector: '.portfolio-header',
+                splitAboutSelector: '#sec-about',
+                splitColSelector: '#sec-skills, #sec-experience, #sec-education, #sec-projects, #sec-certifications, #sec-testimonials, #sec-contact',
+            };
 
             styleTag.innerHTML = `
                 body {
                     font-family: "${font}", var(--font-sans);
-                    background: ${backgroundStyle};
+                    font-size: ${fontSize};
+                    background: ${isCreativeA4 ? bgStyle : bgStyle};
                     color: ${text};
                     margin: 0;
-                    padding: 88px 24px 64px;
+                    padding: 5.5em 1.5em 4em;
                     min-height: 100vh;
                     transition: background 0.3s ease, color 0.3s ease;
                 }
-
                 #portfolio-root {
-                    max-width: 900px;
-                    margin: 0 auto;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 36px;
+                    max-width: 900px; margin: 0 auto;
+                    display: flex; flex-direction: column; gap: 2.25em;
                 }
-
-                /* Header/Hero Styles */
-                .portfolio-header {
-                    text-align: center;
-                    margin-bottom: 12px;
-                    padding: 36px 20px 18px;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                }
-
-                .portfolio-avatar-container {
-                    width: 120px;
-                    height: 120px;
-                    border-radius: 50%;
-                    overflow: hidden;
-                    margin: 0 auto 20px auto;
-                    border: 3px solid ${accent};
-                    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-                }
-
-                .portfolio-avatar-container img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                }
-
-                #portfolio-name {
-                    font-size: 3rem;
-                    font-weight: 700;
-                    margin: 0 0 8px 0;
-                    letter-spacing: -0.02em;
-                }
-
-                #portfolio-role {
-                    font-size: 1.15rem;
-                    color: ${accent};
-                    font-family: var(--font-mono);
-                    text-transform: uppercase;
-                    letter-spacing: 0.1em;
-                    margin: 0;
-                }
-
-                #portfolio-location {
-                    color: ${accent}dd;
-                    border: 1px solid ${accent}25;
-                    background: ${accent}0a;
-                }
-
-                /* Section Styles */
-                .portfolio-section {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 20px;
-                    padding: 32px;
-                    border-radius: 18px;
-                    background: ${cardBg};
-                    border: ${cardBorder};
-                    box-shadow: ${cardShadow};
-                    backdrop-filter: blur(${blur});
-                    -webkit-backdrop-filter: blur(${blur});
-                }
-
-                .section-title {
-                    font-size: 1.35rem;
-                    font-weight: 600;
-                    margin: 0;
-                    letter-spacing: -0.01em;
-                    color: ${text};
-                    border-bottom: 2px dashed ${accent}25;
-                    padding-bottom: 10px;
-                }
-
-                #portfolio-about {
-                    font-size: 1.05rem;
-                    line-height: 1.7;
-                    color: ${text}dd;
-                    margin: 0;
-                }
-
-                /* Skills styles */
-                .skills-grid {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 10px;
-                }
-
-                .port-skill-badge {
-                    padding: 5px 12px;
-                    border-radius: 99px;
-                    font-size: 0.8rem;
-                    font-weight: 500;
-                    background: ${isGlass ? 'rgba(255,255,255,0.05)' : accent + '10'};
-                    color: ${isLight ? '#111111' : '#ffffff'};
-                    border: 1px solid ${isGlass ? 'rgba(255,255,255,0.08)' : accent + '20'};
-                    font-family: var(--font-mono);
-                }
-
-                /* Experience styles */
-                .experience-timeline {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 16px;
-                }
-
-                .timeline-card {
-                    padding: 16px;
-                    border-radius: 12px;
-                    background: ${isLight ? 'rgba(255, 255, 255, 0.65)' : 'rgba(255, 255, 255, 0.035)'} !important;
-                    border: 1px solid ${isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.08)'} !important;
-                    box-shadow: ${isLight ? '0 8px 32px 0 rgba(31, 38, 135, 0.04)' : '0 8px 32px 0 rgba(0, 0, 0, 0.2)'} !important;
-                    backdrop-filter: blur(12px) !important;
-                    -webkit-backdrop-filter: blur(12px) !important;
-                    color: ${text} !important;
-                    display: flex;
-                    gap: 16px;
-                    align-items: center;
-                }
-
-                .timeline-header {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 2px;
-                    flex: 1;
-                    min-width: 0;
-                }
-
-                .timeline-title {
-                    font-size: 1.05rem;
-                    font-weight: 600;
-                    margin: 0;
-                    color: ${text} !important;
-                }
-
-                .timeline-company {
-                    font-size: 0.95rem;
-                    color: ${accent} !important;
-                    font-weight: 500;
-                }
-
-                .timeline-date {
-                    font-size: 0.8rem;
-                    color: ${isLight ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.6)'} !important;
-                    font-family: var(--font-mono) !important;
-                }
-
-                /* Project displays */
-                .projects-display-grid {
-                    display: grid;
-                    grid-template-columns: repeat(2, 1fr);
-                    gap: 20px;
-                }
-
-                @media (max-width: 640px) {
-                    .projects-display-grid {
-                        grid-template-columns: 1fr;
-                    }
-                }
-
-                .port-project-card {
-                    overflow: hidden;
-                    border-radius: 16px;
-                    background: ${isLight ? 'rgba(255, 255, 255, 0.65)' : 'rgba(255, 255, 255, 0.035)'} !important;
-                    border: 1px solid ${isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.08)'} !important;
-                    box-shadow: ${isLight ? '0 8px 32px 0 rgba(31, 38, 135, 0.04)' : '0 8px 32px 0 rgba(0, 0, 0, 0.2)'} !important;
-                    backdrop-filter: blur(12px) !important;
-                    -webkit-backdrop-filter: blur(12px) !important;
-                    color: ${text} !important;
-                    display: flex;
-                    gap: 16px;
-                    align-items: flex-start;
-                    padding: 16px;
-                    transition: transform 0.2s ease, box-shadow 0.2s ease;
-                }
-
-                .port-project-card:hover {
-                    transform: translateY(-3px);
-                    box-shadow: ${isLight ? '0 12px 32px rgba(31, 38, 135, 0.08)' : '0 12px 32px rgba(0,0,0,0.35)'} !important;
-                }
-
-                .port-proj-img {
-                    width: 72px;
-                    height: 72px;
-                    object-fit: cover;
-                    border-radius: 8px;
-                    flex-shrink: 0;
-                    border: 1px solid rgba(0, 0, 0, 0.05);
-                }
-
-                .port-proj-content {
-                    flex: 1;
-                    min-width: 0;
-                    padding: 0;
-                }
-
-                .port-proj-status {
-                    font-size: 0.65rem;
-                    font-family: var(--font-mono);
-                    text-transform: uppercase;
-                    letter-spacing: 0.05em;
-                    color: ${accent} !important;
-                    display: inline-block;
-                    margin-bottom: 6px;
-                    font-weight: 600;
-                }
-
-                .port-proj-title {
-                    font-size: 1.05rem;
-                    margin: 0 0 6px 0;
-                    line-height: 1.3;
-                    color: ${text} !important;
-                }
-
-                .port-proj-desc {
-                    font-size: 0.85rem;
-                    line-height: 1.5;
-                    color: ${text} !important;
-                    opacity: 0.85;
-                    margin: 0;
-                }
-
-                /* Social Anchors */
-                .social-anchor {
-                    font-weight: 500;
-                    color: ${text}99;
-                    text-decoration: none;
-                    transition: color 0.2s ease;
-                }
-
-                .social-anchor:hover {
-                    color: ${accent};
-                }
-
-                @media (max-width: 720px) {
-                    body {
-                        padding: 76px 16px 40px;
-                    }
-
-                    #portfolio-name {
-                        font-size: 2.15rem;
-                    }
-
-                    #portfolio-role {
-                        font-size: 0.95rem;
-                    }
-
-                    .portfolio-section {
-                        padding: 24px;
-                    }
-
-                    .social-links-row {
-                        flex-wrap: wrap;
-                    }
-                }
+                ${buildPortfolioCSS(sel, tok)}
             `;
         }
+    
     </script>
 </body>
 

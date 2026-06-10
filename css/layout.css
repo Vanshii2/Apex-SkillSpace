@@ -718,7 +718,7 @@
     }
 
     .nav-menu {
-        display: none; /* hide full nav links on mobile */
+        display: none !important; /* hide full nav links on mobile */
     }
 
     .nav-actions {

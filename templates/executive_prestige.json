@@ -1,0 +1,27 @@
+{
+  "id": "executive_prestige",
+  "name": "Executive Prestige",
+  "description": "Dark executive look with rich marble texture and gold accents — authority and class",
+  "font": "Space Grotesk",
+  "colors": {
+    "background": "https://images.unsplash.com/photo-1557683316-973673baf926?w=1920&q=80",
+    "text": "#f0ede8",
+    "accent": "#c9a84c"
+  },
+  "sections": {
+    "photo": true,
+    "about": true,
+    "skills": true,
+    "experience": true,
+    "education": true,
+    "projects": true,
+    "certifications": true,
+    "testimonials": true,
+    "contact": true
+  },
+  "cardStyle": "creative-a4",
+  "layout": "split",
+  "avatarShape": "square",
+  "dividerStyle": "solid",
+  "accentOverride": "#c9a84c"
+}

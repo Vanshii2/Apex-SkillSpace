@@ -1,21 +1,26 @@
 {
   "id": "beige_combo",
-  "name": "Beige, Brown & Black",
-  "description": "Premium earthy beige canvas with warm brown accents and deep black details",
+  "name": "Creative A4 Canvas",
+  "description": "Elegant structured paper look with an artistic double-border frame on a warm earthy texture background",
   "font": "Bricolage Grotesque",
   "colors": {
-    "background": "#f5efe6",
+    "background": "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=1920&q=80",
     "text": "#1a1510",
-    "accent": "#27272a"
+    "accent": "#8b5a2b"
   },
   "sections": {
     "photo": true,
     "about": true,
     "skills": true,
     "experience": true,
+    "education": true,
     "projects": true,
+    "certifications": true,
+    "testimonials": true,
     "contact": true
   },
-  "cardStyle": "shadow",
-  "layout": "centered"
+  "cardStyle": "creative-a4",
+  "layout": "centered",
+  "avatarShape": "rounded",
+  "dividerStyle": "dashed"
 }

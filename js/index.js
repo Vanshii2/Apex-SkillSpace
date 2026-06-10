@@ -8,57 +8,59 @@
 import { initDB, getProjects, getCreators, likeProject, bookmarkProject } from './modules/db.js';
 import { initTheme } from './core/theme.js';
 import { initCustomCursor, initSpotlightCards, initScrollProgress, initLazyLoadSections, initPageTransitions, showToast, initAntigravityParticles, initTypewriter } from './core/global.js';
-import { initNavbarScroll, initFloatingDock, initNotifications, initCommandPalette } from './core/ui.js';
+import { initNavbarScroll,  initCommandPalette } from './core/ui.js';
 import { addToCart, getCart, removeFromCart } from './modules/db.js';
 
 // --- Page Specific Imports ---
-import { initPortfolioPage, openGlobalPreviewDrawer, closeGlobalPreviewDrawer } from './modules/portfolio.js';
-import { initShopPage } from './modules/shop.js';
-import { initProfilePage } from './modules/profile.js';
+// import { initPortfolioPage, openGlobalPreviewDrawer, closeGlobalPreviewDrawer } from './modules/portfolio.js';
+// import { initShopPage } from './modules/shop.js';
+// import { initProfilePage } from './modules/profile.js';
 import { logoutUser, requireAuth, getCurrentUser } from './auth.js';
 import { initParticles } from './modules/particles.js';
-import { initPortfolioBuilder } from './portfolio-builder.js';
+// import { initPortfolioBuilder } from './portfolio-builder.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Remove transitions override to re-enable them for hover events
-    setTimeout(() => {
-        const foucStyle = document.getElementById('fouc-preload');
-        if (foucStyle) foucStyle.remove();
-    }, 50);
+    const foucStyle = document.getElementById('fouc-preload');
+    if (foucStyle) foucStyle.remove();
 
-    // 1. Initialize Client Database Seeds
     initDB();
-
-    // 2. Initialize Visual System & Interactions
     initTheme();
-    initCustomCursor();
-    initSpotlightCards();
-    initScrollProgress();
-    initLazyLoadSections();
-    initPageTransitions();
 
-    // 3. Initialize Shared Layout Elements
-    initNavbarScroll();
-    initFloatingDock();
-    initNotifications();
-    initCommandPalette();
+    const schedule = window.requestIdleCallback || (cb => setTimeout(cb, 1));
 
-    // 4. Bind Global Modal/Drawer Closers
-    document.addEventListener('click', (e) => {
-        if (e.target.closest('#drawer-close')) {
-            closeGlobalPreviewDrawer();
-        }
+    schedule(() => {
+        initScrollProgress();
+        initNavbarScroll();
     });
 
-    // 5. Page-Specific Coordinators
-    window.detectPageAndLoadModule = detectPageAndLoadModule;
-    detectPageAndLoadModule();
+    schedule(() => {
+        // Comment out or remove if you're not using spotlight card hover patterns
+        // initSpotlightCards(); 
+        initLazyLoadSections();
+        initPageTransitions();
+    });
 
-    // 6. Global Cart Logic
-    initGlobalCart();
+    schedule(() => {
+        // REMOVE THIS — it runs a ghost mouse listener that hits the DOM layout engine hard
+        // initCustomCursor(); 
+        
+        initFloatingDock();
+        initNotifications();
+        initCommandPalette();
+    });
 
-    // 7. Update navbar auth buttons based on session state
-    updateNavbarAuthButtons();
+    schedule(() => {
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#drawer-close')) {
+                const drawer = document.getElementById('preview-drawer');
+                if (drawer) drawer.classList.remove('show');
+            }
+        });
+        window.detectPageAndLoadModule = detectPageAndLoadModule;
+        detectPageAndLoadModule();
+        initGlobalCart();
+        updateNavbarAuthButtons();
+    });
 });
 
 function updateNavbarAuthButtons() {
@@ -299,9 +301,10 @@ function detectPageAndLoadModule() {
     // We check for key semantic IDs in the markup to load modules safely
 
     // A. HOME PAGE
-    if (document.getElementById('trending-projects-grid')) {
-        hydrateHomePage();
-    }
+    // (Static elements are used, hydrateHomePage is commented out to avoid ReferenceError)
+    // if (document.getElementById('trending-projects-grid') || document.querySelector('.fp-grid')) {
+    //     hydrateHomePage();
+    // }
 
     // B. ANTIGRAVITY HERO SPECKS
     if (document.getElementById('particle-container')) {
@@ -317,10 +320,6 @@ function detectPageAndLoadModule() {
     if (document.getElementById('marquee-track')) {
         initMarqueeCarousel();
     }
-    // How it works CAROUSEL
-    //     if (document.querySelector('.workflow-carousel')) {
-    //     initWorkflowCarousel();
-    // }
 
     // SECONDARY CAROUSEL
     if (document.getElementById('secondary-carousel')) {
@@ -329,29 +328,37 @@ function detectPageAndLoadModule() {
 
     // B. PORTFOLIO SHOWCASE PAGE
     if (document.getElementById('portfolio-projects-grid')) {
-        initPortfolioPage();
+        import('./modules/portfolio.js').then(({ initPortfolioPage }) => {
+            initPortfolioPage();
+        });
     }
 
     // C. MARKETPLACE / SHOP PAGE
     if (document.getElementById('shop-projects-grid')) {
-        initShopPage();
+        import('./modules/shop.js').then(({ initShopPage }) => {
+            initShopPage();
+        });
     }
 
     // E. PUBLIC PROFILE PAGE
     if (document.getElementById('prof-avatar')) {
         if (requireAuth()) {
-            initProfilePage();
+            import('./modules/profile.js').then(({ initProfilePage }) => {
+                initProfilePage();
+            });
         }
     }
 
     // F. PORTFOLIO BUILDER PAGE
     if (document.querySelector('.portfolio-builder-container')) {
         if (requireAuth()) {
-            initPortfolioBuilder().then(() => {
-                console.log('Portfolio Builder initialized');
-                if (window.lucide) {
-                    window.lucide.createIcons();
-                }
+            import('./portfolio-builder.js').then(({ initPortfolioBuilder }) => {
+                initPortfolioBuilder().then(() => {
+                    console.log('Portfolio Builder initialized');
+                    if (window.lucide) {
+                        window.lucide.createIcons();
+                    }
+                });
             });
         }
     }
@@ -491,150 +498,316 @@ function detectPageAndLoadModule() {
 // marquee A shaped
 
 
+// export function initMarqueeCarousel() {
+//     const track = document.getElementById('marquee-track');
+//     const container = track?.parentElement;
+//     if (!track || !container) return;
+
+//     const CARD_W = 420;
+//     const GAP = 16;
+//     const STEP = CARD_W + GAP;
+//     const PAUSE_MS = 1400;
+//     const MOVE_MS = 850;
+
+//     // Height per distance-step from center. All share same bottom baseline.
+//     // const HEIGHTS = [420, 350, 290, 240, 200];
+//     const HEIGHTS = [360, 320, 280, 240, 180];
+
+//     const origCards = Array.from(track.querySelectorAll('.marquee-card'));
+//     const total = origCards.length;
+//     origCards.forEach(c => track.appendChild(c.cloneNode(true)));
+//     origCards.forEach(c => track.appendChild(c.cloneNode(true)));
+//     const all = Array.from(track.querySelectorAll('.marquee-card'));
+
+//     let offset = 0;
+//     let centerIdx = total;
+//     let animating = false;
+
+//     const vpW = () => container.offsetWidth;
+
+//     function initOffset() {
+//         return vpW() / 2 - centerIdx * STEP - CARD_W / 2;
+//     }
+
+//     function styleCards(off) {
+//         const cx = vpW() / 2;
+//         all.forEach((card, i) => {
+//             const cardCx = off + i * STEP + CARD_W / 2;
+//             const frac = Math.abs(cardCx - cx) / STEP;
+//             const lo = Math.floor(frac);
+//             const hi = Math.min(lo + 1, HEIGHTS.length - 1);
+//             const t = frac - lo;
+//             const hLo = HEIGHTS[Math.min(lo, HEIGHTS.length - 1)];
+//             const hHi = HEIGHTS[hi];
+//             const h = hLo + (hHi - hLo) * t;
+//             const op = 0.55 + Math.max(0, 1 - frac / 2.5) * 0.45;
+//             card.style.height = h + 'px';
+//             card.style.opacity = op;
+//             card.style.transform = 'none'; // no scale, no translate
+//         });
+//     }
+
+//     function setTrack(off, animated) {
+//         track.style.transition = animated
+//             ? `transform ${MOVE_MS}ms cubic-bezier(0.4,0,0.2,1)`
+//             : 'none';
+//         track.style.transform = `translateX(${off}px)`;
+//     }
+
+//     function easeIO(t) { return t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
+
+//     function advance() {
+//         if (animating) return;
+//         animating = true;
+
+//         const from = offset;
+//         const to = offset - STEP;
+//         const t0 = performance.now();
+
+//         setTrack(to, true);
+
+//         (function raf(now) {
+//             const p = Math.min((now - t0) / MOVE_MS, 1);
+//             styleCards(from + (to - from) * easeIO(p));
+//             if (p < 1) requestAnimationFrame(raf);
+//         })(performance.now());
+
+//         setTimeout(() => {
+//             offset = to;
+//             centerIdx++;
+//             animating = false;
+
+//             if (centerIdx >= total * 2) {
+//                 centerIdx = total;
+//                 offset = initOffset();
+//                 setTrack(offset, false);
+//                 track.getBoundingClientRect();
+//                 styleCards(offset);
+//             }
+
+//             setTimeout(advance, PAUSE_MS);
+//         }, MOVE_MS);
+//     }
+
+//     function init() {
+//         offset = initOffset();
+//         setTrack(offset, false);
+//         styleCards(offset);
+//         setTimeout(advance, PAUSE_MS);
+//     }
+
+//     window.addEventListener('resize', () => {
+//         offset = initOffset();
+//         setTrack(offset, false);
+//         styleCards(offset);
+//     });
+
+//     setTimeout(init, 60);
+// }
+
 export function initMarqueeCarousel() {
     const track = document.getElementById('marquee-track');
     const container = track?.parentElement;
+
     if (!track || !container) return;
 
-    const CARD_W = 420;
-    const GAP = 16;
-    const STEP = CARD_W + GAP;
-    const PAUSE_MS = 1400;
+    const PAUSE_MS = 1200;
     const MOVE_MS = 850;
-
-    // Height per distance-step from center. All share same bottom baseline.
-    // const HEIGHTS = [420, 350, 290, 240, 200];
     const HEIGHTS = [360, 320, 280, 240, 180];
 
-    const origCards = Array.from(track.querySelectorAll('.marquee-card'));
-    const total = origCards.length;
-    origCards.forEach(c => track.appendChild(c.cloneNode(true)));
-    origCards.forEach(c => track.appendChild(c.cloneNode(true)));
-    const all = Array.from(track.querySelectorAll('.marquee-card'));
+    const originalCards = [...track.querySelectorAll('.marquee-card')];
+    if (!originalCards.length) return;
 
-    let offset = 0;
-    let centerIdx = total;
-    let animating = false;
+    const total = originalCards.length;
+    const CLONES_PER_SIDE = 3;
 
-    const vpW = () => container.offsetWidth;
-
-    function initOffset() {
-        return vpW() / 2 - centerIdx * STEP - CARD_W / 2;
+    // Remove any existing clones first to prevent exponential growth if re-init'd
+    const allCurrentCards = [...track.querySelectorAll('.marquee-card')];
+    if (allCurrentCards.length > total) {
+        // Reset to original cards only
+        track.innerHTML = '';
+        originalCards.forEach(c => track.appendChild(c));
     }
 
-    function styleCards(off) {
-        const cx = vpW() / 2;
-        all.forEach((card, i) => {
-            const cardCx = off + i * STEP + CARD_W / 2;
-            const frac = Math.abs(cardCx - cx) / STEP;
-            const lo = Math.floor(frac);
-            const hi = Math.min(lo + 1, HEIGHTS.length - 1);
-            const t = frac - lo;
-            const hLo = HEIGHTS[Math.min(lo, HEIGHTS.length - 1)];
-            const hHi = HEIGHTS[hi];
-            const h = hLo + (hHi - hLo) * t;
-            const op = 0.55 + Math.max(0, 1 - frac / 2.5) * 0.45;
-            card.style.height = h + 'px';
-            card.style.opacity = op;
-            card.style.transform = 'none'; // no scale, no translate
+    for (let i = 0; i < CLONES_PER_SIDE; i++) {
+        [...originalCards].reverse().forEach(card => {
+            track.insertBefore(card.cloneNode(true), track.firstChild);
+        });
+        originalCards.forEach(card => {
+            track.appendChild(card.cloneNode(true));
         });
     }
 
-    function setTrack(off, animated) {
-        track.style.transition = animated
-            ? `transform ${MOVE_MS}ms cubic-bezier(0.4,0,0.2,1)`
-            : 'none';
-        track.style.transform = `translateX(${off}px)`;
+    const cards = [...track.querySelectorAll('.marquee-card')];
+    let cardWidth = originalCards[0].getBoundingClientRect().width || 420;
+    let gap = parseFloat(getComputedStyle(track).gap) || 16;
+    let STEP = cardWidth + gap;
+
+    let centerIndex = total * CLONES_PER_SIDE;
+    let animating = false;
+    
+    // Core performance fix: Measure once here
+    let cachedCenterX = container.offsetWidth / 2;
+    let offset = cachedCenterX - centerIndex * STEP - cardWidth / 2;
+
+    function updateCardStyles(currentOffset) {
+        if (!document.getElementById('marquee-track')) return;
+        cards.forEach((card, i) => {
+            const cardCenter = currentOffset + i * STEP + cardWidth / 2;
+            const distance = Math.abs(cardCenter - cachedCenterX) / STEP;
+
+            const low = Math.floor(distance);
+            const high = Math.min(low + 1, HEIGHTS.length - 1);
+            const blend = distance - low;
+
+            const h1 = HEIGHTS[Math.min(low, HEIGHTS.length - 1)];
+            const h2 = HEIGHTS[high];
+            const height = h1 + (h2 - h1) * blend;
+
+            const opacity = 0.55 + Math.max(0, 1 - distance / 2.5) * 0.45;
+
+            card.style.height = `${height}px`;
+            card.style.opacity = opacity;
+        });
     }
 
-    function easeIO(t) { return t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
+    function setOffset(value, animate) {
+        if (!document.getElementById('marquee-track')) return;
+        track.style.transition = animate
+            ? `transform ${MOVE_MS}ms cubic-bezier(0.4,0,0.2,1)`
+            : 'none';
+        track.style.transform = `translateX(${value}px)`;
+    }
 
-    function advance() {
+    function moveNext() {
+        const currentTrack = document.getElementById('marquee-track');
+        if (!currentTrack) return; // Self-clean: Stop recursion if element is removed from DOM
+
         if (animating) return;
         animating = true;
 
+        // Re-measure cardWidth dynamically if it was initially loaded with 0 width
+        if (cardWidth <= 40) {
+            const currentWidth = originalCards[0].getBoundingClientRect().width;
+            if (currentWidth > 40) {
+                cardWidth = currentWidth;
+                gap = parseFloat(getComputedStyle(currentTrack).gap) || 16;
+                STEP = cardWidth + gap;
+                cachedCenterX = container.offsetWidth / 2;
+                offset = cachedCenterX - centerIndex * STEP - cardWidth / 2;
+            }
+        }
+
+        const target = offset - STEP;
+        setOffset(target, true);
+
+        const start = performance.now();
         const from = offset;
-        const to = offset - STEP;
-        const t0 = performance.now();
 
-        setTrack(to, true);
+        function frame(now) {
+            if (!document.getElementById('marquee-track')) return; // Exit if page changed
+            const progress = Math.min((now - start) / MOVE_MS, 1);
+            const eased = progress < 0.5
+                ? 2 * progress * progress
+                : -1 + (4 - 2 * progress) * progress;
 
-        (function raf(now) {
-            const p = Math.min((now - t0) / MOVE_MS, 1);
-            styleCards(from + (to - from) * easeIO(p));
-            if (p < 1) requestAnimationFrame(raf);
-        })(performance.now());
+            updateCardStyles(from + (target - from) * eased);
+
+            if (progress < 1) {
+                requestAnimationFrame(frame);
+            }
+        }
+
+        requestAnimationFrame(frame);
 
         setTimeout(() => {
-            offset = to;
-            centerIdx++;
-            animating = false;
+            if (!document.getElementById('marquee-track')) return;
+            offset = target;
+            centerIndex++;
 
-            if (centerIdx >= total * 2) {
-                centerIdx = total;
-                offset = initOffset();
-                setTrack(offset, false);
-                track.getBoundingClientRect();
-                styleCards(offset);
+            if (centerIndex >= total * (CLONES_PER_SIDE + 1)) {
+                centerIndex = total * CLONES_PER_SIDE;
+                const newOffset = cachedCenterX - centerIndex * STEP - cardWidth / 2;
+
+                track.style.transition = 'none';
+                updateCardStyles(newOffset);
+                track.style.transform = `translateX(${newOffset}px)`;
+
+                void track.offsetWidth; // Force reflow safely
+
+                offset = newOffset;
             }
 
-            setTimeout(advance, PAUSE_MS);
+            animating = false;
+            setTimeout(moveNext, PAUSE_MS);
+
         }, MOVE_MS);
     }
 
     function init() {
-        offset = initOffset();
-        setTrack(offset, false);
-        styleCards(offset);
-        setTimeout(advance, PAUSE_MS);
+        setOffset(offset, false);
+        updateCardStyles(offset);
+        track.classList.add('ready');
+        setTimeout(moveNext, PAUSE_MS);
     }
 
-    window.addEventListener('resize', () => {
-        offset = initOffset();
-        setTrack(offset, false);
-        styleCards(offset);
-    });
-
-    setTimeout(init, 60);
-}
-export function initSecondaryCarousel() {
-    const track = document.getElementById('secondary-carousel');
-    const prevBtn = document.getElementById('sec-carousel-prev');
-    const nextBtn = document.getElementById('sec-carousel-next');
-    if (!track) return;
-
-    const cards = Array.from(track.children);
-    const perPage = window.innerWidth > 1024 ? 3 : window.innerWidth > 640 ? 2 : 1;
-    const pages = Math.ceil(cards.length / perPage);
-    let current = 0;
-
-    // Rebuild footer as centered dots only
-    const footer = track.closest('.feature-carousel-section').querySelector('.feature-carousel-footer');
-    if (footer) {
-        footer.innerHTML = '';
-        footer.style.justifyContent = 'center';
-        for (let i = 0; i < pages; i++) {
-            const d = document.createElement('div');
-            d.className = 'feature-dot' + (i === 0 ? ' active' : '');
-            d.addEventListener('click', () => goTo(i));
-            footer.appendChild(d);
+    // Cleaned up: Refresh our cache calculation strictly on resize, self-cleans on DOM removal
+    const handleResize = () => {
+        const currentTrack = document.getElementById('marquee-track');
+        if (!currentTrack) {
+            window.removeEventListener('resize', handleResize);
+            return;
         }
-    }
+        cardWidth = originalCards[0].getBoundingClientRect().width || 420;
+        gap = parseFloat(getComputedStyle(currentTrack).gap) || 16;
+        STEP = cardWidth + gap;
+        cachedCenterX = container.offsetWidth / 2;
+        offset = cachedCenterX - centerIndex * STEP - cardWidth / 2;
+        setOffset(offset, false);
+        updateCardStyles(offset);
+    };
+    window.addEventListener('resize', handleResize);
 
-    function cardStep() {
-        return cards[0].offsetWidth + 20;
-    }
-
-    function goTo(p) {
-        current = Math.max(0, Math.min(pages - 1, p));
-        track.style.transform = `translateX(${-current * perPage * cardStep()}px)`;
-        footer?.querySelectorAll('.feature-dot')
-            .forEach((d, i) => d.classList.toggle('active', i === current));
-    }
-
-    if (prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
-    if (nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
+    init();
 }
+// export function initSecondaryCarousel() {
+//     const track = document.getElementById('secondary-carousel');
+//     const prevBtn = document.getElementById('sec-carousel-prev');
+//     const nextBtn = document.getElementById('sec-carousel-next');
+//     if (!track) return;
+
+//     const cards = Array.from(track.children);
+//     const perPage = window.innerWidth > 1024 ? 3 : window.innerWidth > 640 ? 2 : 1;
+//     const pages = Math.ceil(cards.length / perPage);
+//     let current = 0;
+
+//     // Rebuild footer as centered dots only
+//     const footer = track.closest('.feature-carousel-section').querySelector('.feature-carousel-footer');
+//     if (footer) {
+//         footer.innerHTML = '';
+//         footer.style.justifyContent = 'center';
+//         for (let i = 0; i < pages; i++) {
+//             const d = document.createElement('div');
+//             d.className = 'feature-dot' + (i === 0 ? ' active' : '');
+//             d.addEventListener('click', () => goTo(i));
+//             footer.appendChild(d);
+//         }
+//     }
+
+//     function cardStep() {
+//         return cards[0].offsetWidth + 20;
+//     }
+
+//     function goTo(p) {
+//         current = Math.max(0, Math.min(pages - 1, p));
+//         track.style.transform = `translateX(${-current * perPage * cardStep()}px)`;
+//         footer?.querySelectorAll('.feature-dot')
+//             .forEach((d, i) => d.classList.toggle('active', i === current));
+//     }
+
+//     if (prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
+//     if (nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
+// }
 // export function initWorkflowCarousel() {
 
 //     const cards =

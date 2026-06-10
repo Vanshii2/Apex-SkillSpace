@@ -61,21 +61,25 @@
 
                 <!-- Active Portfolio Switcher Bar -->
                 <div class="portfolio-switcher-bar">
-                    <div class="switcher-header">
-                        <div class="switcher-label">
+                    <div class="switcher-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                        <div class="switcher-label" style="margin-top: 4px;">
                             <i data-lucide="folder"></i> Active Portfolio
                         </div>
-                        <button type="button" id="btnCreateNewSidebar" class="switcher-create-btn clickable">
-                            <i data-lucide="plus"></i> Create New
-                        </button>
+                        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
+                            <button type="button" id="btnCreateNewSidebar" class="switcher-create-btn clickable">
+                                <i data-lucide="plus"></i> Create New
+                            </button>
+                            <button type="button" id="btnDeleteCurrentPortfolio" class="switcher-create-btn clickable"
+                                style="background: none; border: none; padding: 0; color: rgba(255, 255, 255, 0.6); display: flex; align-items: center; gap: 4px;"
+                                title="Delete Current Portfolio">
+                                <i data-lucide="trash-2" style="width: 12px; height: 12px; color: #ffffff;"></i> Delete
+                            </button>
+                        </div>
                     </div>
                     <div style="display:flex; gap:8px; align-items:center;">
                         <select id="portfolioSelect" class="form-select select-compact" style="flex:1;">
                             <!-- Populated dynamically -->
                         </select>
-                        <button type="button" id="btnDeleteCurrentPortfolio" class="btn btn-secondary clickable" style="padding: 0 10px; height: 38px; border-color: rgba(239, 68, 68, 0.4); color: #ef4444;" title="Delete Current Portfolio">
-                            <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
-                        </button>
                     </div>
                 </div>
 
@@ -102,46 +106,42 @@
 
                         <div class="form-group">
                             <label class="form-label">Full Name <span class="required-asterisk">*</span></label>
-                            <input type="text" class="form-input" id="fullName" placeholder="Your Name">
+                            <input type="text" class="form-input" id="fullName">
                             <span class="error-msg">Full Name is required.</span>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Professional Role <span class="required-asterisk">*</span></label>
-                            <input type="text" class="form-input" id="role"
-                                placeholder="e.g. Senior Frontend Architect">
+                            <input type="text" class="form-input" id="role">
                             <span class="error-msg">Professional Role is required.</span>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Tagline / Headline</label>
-                            <input type="text" class="form-input" id="tagline"
-                                placeholder="e.g. Building premium digital experiences">
+                            <input type="text" class="form-input" id="tagline">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Location</label>
-                            <input type="text" class="form-input" id="location" placeholder="e.g. Bangalore, India">
+                            <input type="text" class="form-input" id="location">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Bio Narrative</label>
-                            <textarea class="form-textarea" id="about"
-                                placeholder="Write a short summary of your background..."></textarea>
+                            <label class="form-label">Bio Narrative <span class="required-asterisk">*</span></label>
+                            <textarea class="form-textarea" id="about"></textarea>
                         </div>
 
                         <div style="margin-top: 14px; border-top: 1px solid var(--border-subtle); padding-top: 12px;">
                             <label class="form-sub-heading">Contact Details</label>
                             <div class="form-group">
                                 <label class="form-label">Phone Number <span class="required-asterisk">*</span></label>
-                                <input type="text" class="form-input" id="phone" placeholder="+91 98765 43210">
+                                <input type="text" class="form-input" id="phone">
                                 <span class="error-msg">Phone Number is required.</span>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Gmail / Email <span class="required-asterisk">*</span></label>
-                                <input type="email" class="form-input" id="email" placeholder="you@domain.com">
+                                <input type="email" class="form-input" id="email">
                                 <span class="error-msg">Email is required.</span>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Website URL</label>
-                                <input type="text" class="form-input" id="websiteUrl"
-                                    placeholder="https://yourwebsite.com">
+                                <input type="text" class="form-input" id="websiteUrl">
                                 <span class="error-msg">Please enter a valid URL.</span>
                             </div>
                         </div>
@@ -150,17 +150,17 @@
                             <label class="form-sub-heading">Social Handles</label>
                             <div class="form-group">
                                 <label class="form-label">GitHub Username</label>
-                                <input type="text" class="form-input" id="githubLink" placeholder="github-username">
+                                <input type="text" class="form-input" id="githubLink">
                                 <span class="error-msg">Please enter a valid GitHub username or URL.</span>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">LinkedIn Username</label>
-                                <input type="text" class="form-input" id="linkedinLink" placeholder="linkedin-username">
+                                <input type="text" class="form-input" id="linkedinLink">
                                 <span class="error-msg">Please enter a valid LinkedIn username or URL.</span>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Twitter Username</label>
-                                <input type="text" class="form-input" id="twitterLink" placeholder="twitter-username">
+                                <input type="text" class="form-input" id="twitterLink">
                                 <span class="error-msg">Please enter a valid Twitter/X username or URL.</span>
                             </div>
                         </div>
@@ -178,9 +178,9 @@
                     </div>
                     <div class="accordion-body">
                         <div class="form-group">
-                            <label class="form-label">Add a Skill</label>
+                            <label class="form-label">Add a Skill <span class="required-asterisk">*</span></label>
                             <div class="compact-input-btn">
-                                <input type="text" class="form-input" id="skillInput" placeholder="e.g. Next.js">
+                                <input type="text" class="form-input" id="skillInput">
                                 <button class="btn-compact" id="addSkillBtn">Add</button>
                             </div>
                             <div class="skills-list" id="skillsList"></div>
@@ -189,7 +189,7 @@
                         <div style="margin-top: 16px; border-top: 1px solid var(--border-subtle); padding-top: 14px;">
                             <div
                                 style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                                <label class="form-sub-heading" style="margin:0;">Experience</label>
+                                <label class="form-sub-heading" style="margin:0;">Experience <span class="required-asterisk">*</span></label>
                                 <button class="btn-text-action" id="addExpBtn">
                                     <i data-lucide="plus"></i> Add
                                 </button>
@@ -200,7 +200,7 @@
                         <div style="margin-top: 16px; border-top: 1px solid var(--border-subtle); padding-top: 14px;">
                             <div
                                 style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                                <label class="form-sub-heading" style="margin:0;">Education</label>
+                                <label class="form-sub-heading" style="margin:0;">Education <span class="required-asterisk">*</span></label>
                                 <button class="btn-text-action" id="addEduBtn">
                                     <i data-lucide="plus"></i> Add
                                 </button>
@@ -239,9 +239,9 @@
                                     <i data-lucide="plus"></i> Add
                                 </button>
                             </div> -->
-                            <!-- <div id="testimonialsList"></div>
+                        <!-- <div id="testimonialsList"></div>
                         </div> -->
-<!-- 
+                        <!-- 
                         <div style="margin-top: 16px; border-top: 1px solid var(--border-subtle); padding-top: 14px;">
                             <div
                                 style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
@@ -339,21 +339,29 @@
                             </div>
                         </div>
 
-                        <!-- Theme Accents -->
+                        <!-- Theme Colors -->
                         <div class="form-group"
                             style="margin-top: 14px; border-top: 1px solid var(--border-subtle); padding-top: 12px;">
-                            <label class="form-label">Accent Highlight Color</label>
+                            <label class="form-label">Font Color</label>
                             <div class="color-picker-sync">
-                                <input type="color" class="color-swatch" id="themeAccent" value="#dc2626">
-                                <input type="text" class="color-text-input" id="themeAccentHex" value="#dc2626">
+                                <input type="color" class="color-swatch" id="themeText" value="#111111">
+                                <input type="text" class="color-text-input" id="themeTextHex" value="#111111">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">Primary Text Color</label>
+                            <label class="form-label">Card Color</label>
                             <div class="color-picker-sync">
-                                <input type="color" class="color-swatch" id="themeText" value="#111111">
-                                <input type="text" class="color-text-input" id="themeTextHex" value="#111111">
+                                <input type="color" class="color-swatch" id="themeCardBgColor" value="#ffffff">
+                                <input type="text" class="color-text-input" id="themeCardBgColorHex" value="#ffffff">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Accent Color</label>
+                            <div class="color-picker-sync">
+                                <input type="color" class="color-swatch" id="themeAccent" value="#dc2626">
+                                <input type="text" class="color-text-input" id="themeAccentHex" value="#dc2626">
                             </div>
                         </div>
 
@@ -366,98 +374,41 @@
                                 <option value="glassmorphism">Slick Glassmorphism</option>
                                 <option value="shadow">Elegant Soft Shadow</option>
                                 <option value="glow">Neon Accent Glow</option>
+                                <option value="creative-a4">Creative A4 Paper Sheet</option>
                             </select>
                         </div>
 
-                        <div id="glassmorphismControls" style="display: none;">
-                            <div class="form-group">
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <label class="form-label" style="margin:0;">Glass Blur</label>
-                                    <span class="form-label" id="blurVal"
-                                        style="color:var(--primary); margin:0;">15px</span>
-                                </div>
-                                <input type="range" class="form-range" id="themeBlur" min="0" max="40" value="15"
-                                    style="width:100%; margin-top:8px;">
-                            </div>
-                            <div class="form-group">
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <label class="form-label" style="margin:0;">Border Opacity</label>
-                                    <span class="form-label" id="borderVal"
-                                        style="color:var(--primary); margin:0;">0.08</span>
-                                </div>
-                                <input type="range" class="form-range" id="themeBorderOpacity" min="0" max="100"
-                                    value="8" style="width:100%; margin-top:8px;">
-                            </div>
-                        </div>
-
-                        <!-- Visibility selectors -->
+                        <!-- Section Title Divider Style controls -->
                         <div class="form-group"
                             style="margin-top: 14px; border-top: 1px solid var(--border-subtle); padding-top: 12px;">
-                            <label class="form-label" style="margin-bottom:8px;">Section Visibility Toggles</label>
+                            <label class="form-label">Divider Line Style</label>
+                            <select class="form-select" id="themeDividerStyle">
+                                <option value="dashed">Dashed Line</option>
+                                <option value="dotted">Dotted Line</option>
+                                <option value="solid">Solid Line</option>
+                                <option value="double">Double Line</option>
+                                <option value="none">No Divider Line</option>
+                            </select>
+                        </div>
 
-                            <div class="toggle-row">
-                                <span class="toggle-label">Profile Avatar</span>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="visible-photo" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            <div class="toggle-row">
-                                <span class="toggle-label">About Narrative</span>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="visible-about" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            <div class="toggle-row">
-                                <span class="toggle-label">Skills List</span>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="visible-skills" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            <div class="toggle-row">
-                                <span class="toggle-label">Work Experience</span>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="visible-experience" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            <div class="toggle-row">
-                                <span class="toggle-label">Education Timeline</span>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="visible-education" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            <div class="toggle-row">
-                                <span class="toggle-label">Portfolio Projects</span>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="visible-projects" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            <div class="toggle-row">
-                                <span class="toggle-label">Certifications</span>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="visible-certifications" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            <div class="toggle-row">
-                                <span class="toggle-label">Testimonials</span>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="visible-testimonials" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            <div class="toggle-row">
-                                <span class="toggle-label">Get In Touch Form</span>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="visible-contact" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
+                        <!-- Portfolio Layout Style -->
+                        <div class="form-group">
+                            <label class="form-label">Portfolio Layout Style</label>
+                            <select class="form-select" id="themeLayout">
+                                <option value="centered">Centered Stack</option>
+                                <option value="left-aligned">Left Aligned Stack</option>
+                                <option value="split">Modern Split (Two-Column)</option>
+                            </select>
+                        </div>
+
+                        <!-- Avatar Image Shape -->
+                        <div class="form-group">
+                            <label class="form-label">Avatar Image Shape</label>
+                            <select class="form-select" id="themeAvatarShape">
+                                <option value="circle">Circle</option>
+                                <option value="square">Square</option>
+                                <option value="rounded">Rounded Square</option>
+                            </select>
                         </div>
 
                     </div>
@@ -623,12 +574,12 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label class="form-label">Job Title <span class="required-asterisk">*</span></label>
-                    <input type="text" class="form-input" id="expTitle" placeholder="e.g. Senior Frontend Engineer">
+                    <input type="text" class="form-input" id="expTitle">
                     <span class="error-msg">Job Title is required.</span>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Company Name <span class="required-asterisk">*</span></label>
-                    <input type="text" class="form-input" id="expCompany" placeholder="e.g. Stripe">
+                    <input type="text" class="form-input" id="expCompany">
                     <span class="error-msg">Company Name is required.</span>
                 </div>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;">
@@ -668,12 +619,12 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label class="form-label">School / University <span class="required-asterisk">*</span></label>
-                    <input type="text" class="form-input" id="eduSchool" placeholder="e.g. IIT Bombay">
+                    <input type="text" class="form-input" id="eduSchool">
                     <span class="error-msg">School / University is required.</span>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Degree / Field of Study <span class="required-asterisk">*</span></label>
-                    <input type="text" class="form-input" id="eduDegree" placeholder="e.g. B.Tech Computer Science">
+                    <input type="text" class="form-input" id="eduDegree">
                     <span class="error-msg">Degree / Field of Study is required.</span>
                 </div>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;">
@@ -713,24 +664,21 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label class="form-label">Project Title <span class="required-asterisk">*</span></label>
-                    <input type="text" class="form-input" id="projTitle" placeholder="e.g. AI Financial Analyst">
+                    <input type="text" class="form-input" id="projTitle">
                     <span class="error-msg">Project Title is required.</span>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Project Description <span class="required-asterisk">*</span></label>
-                    <textarea class="form-textarea" id="projDesc"
-                        placeholder="Describe highlights, tech stack, and results..."
-                        style="min-height:80px;"></textarea>
+                    <textarea class="form-textarea" id="projDesc" style="min-height:80px;"></textarea>
                     <span class="error-msg">Project Description is required.</span>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Tech Tags (comma-separated)</label>
-                    <input type="text" class="form-input" id="projTags" placeholder="e.g. Next.js, TailwindCSS, OpenAI">
+                    <input type="text" class="form-input" id="projTags">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Demo / GitHub URL (Optional)</label>
-                    <input type="text" class="form-input" id="projLink"
-                        placeholder="https://github.com/username/project">
+                    <input type="text" class="form-input" id="projLink">
                     <span class="error-msg">Please enter a valid URL.</span>
                 </div>
                 <div class="form-group">

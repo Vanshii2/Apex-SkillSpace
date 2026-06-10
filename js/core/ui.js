@@ -52,97 +52,97 @@ export function initNavbarScroll() {
 }
 
 // --- 2. Floating Dock Visibility & Active states ---
-export function initFloatingDock() {
-    const dockContainer = document.querySelector('.floating-dock-container');
-    if (!dockContainer) return;
+// export function initFloatingDock() {
+//     const dockContainer = document.querySelector('.floating-dock-container');
+//     if (!dockContainer) return;
 
-    // Smooth fade-in shortly after load
-    setTimeout(() => {
-        dockContainer.classList.add('visible');
-    }, 800);
+//     // Smooth fade-in shortly after load
+//     setTimeout(() => {
+//         dockContainer.classList.add('visible');
+//     }, 800);
 
-    // Highlight active dock item matching current URL
-    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-    const dockItems = document.querySelectorAll('.dock-item');
-    dockItems.forEach(item => {
-        const href = item.getAttribute('href');
-        if (href === currentPath || (currentPath === '' && href === 'index.html')) {
-            item.classList.add('active');
-        } else {
-            item.classList.remove('active');
-        }
-    });
-}
+//     // Highlight active dock item matching current URL
+//     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+//     const dockItems = document.querySelectorAll('.dock-item');
+//     dockItems.forEach(item => {
+//         const href = item.getAttribute('href');
+//         if (href === currentPath || (currentPath === '' && href === 'index.html')) {
+//             item.classList.add('active');
+//         } else {
+//             item.classList.remove('active');
+//         }
+//     });
+// }
 
 // --- 3. Notification Dropdown Toggle ---
-export function initNotifications() {
-    const bellBtn = document.getElementById('nav-bell');
-    const dropdown = document.getElementById('notification-dropdown');
-    if (!bellBtn || !dropdown) return;
+// export function initNotifications() {
+//     const bellBtn = document.getElementById('nav-bell');
+//     const dropdown = document.getElementById('notification-dropdown');
+//     if (!bellBtn || !dropdown) return;
 
-    const bellDot = bellBtn.querySelector('.notification-dot');
+//     const bellDot = bellBtn.querySelector('.notification-dot');
 
-    // Dynamic bell dot toggler based on unread counts
-    const updateBellState = () => {
-        const notifs = getNotifications();
-        const unreadCount = notifs.filter(n => n.unread).length;
-        if (unreadCount > 0) {
-            if (!bellDot) {
-                const dot = document.createElement('span');
-                dot.className = 'notification-dot';
-                bellBtn.appendChild(dot);
-            }
-        } else if (bellDot) {
-            bellDot.remove();
-        }
-    };
+//     // Dynamic bell dot toggler based on unread counts
+//     const updateBellState = () => {
+//         const notifs = getNotifications();
+//         const unreadCount = notifs.filter(n => n.unread).length;
+//         if (unreadCount > 0) {
+//             if (!bellDot) {
+//                 const dot = document.createElement('span');
+//                 dot.className = 'notification-dot';
+//                 bellBtn.appendChild(dot);
+//             }
+//         } else if (bellDot) {
+//             bellDot.remove();
+//         }
+//     };
 
-    const renderNotificationsList = () => {
-        const notifs = getNotifications();
-        const listContainer = dropdown.querySelector('.notification-list');
-        if (!listContainer) return;
+//     const renderNotificationsList = () => {
+//         const notifs = getNotifications();
+//         const listContainer = dropdown.querySelector('.notification-list');
+//         if (!listContainer) return;
 
-        if (notifs.length === 0) {
-            listContainer.innerHTML = `<li class="notification-item" style="text-align:center;color:var(--text-muted);">No notifications</li>`;
-            return;
-        }
+//         if (notifs.length === 0) {
+//             listContainer.innerHTML = `<li class="notification-item" style="text-align:center;color:var(--text-muted);">No notifications</li>`;
+//             return;
+//         }
 
-        listContainer.innerHTML = notifs.map(notif => `
-            <li class="notification-item ${notif.unread ? 'unread' : ''}">
-                <p style="font-size:0.85rem;color:var(--text-primary);">${notif.text}</p>
-                <span class="notification-time">${notif.time}</span>
-            </li>
-        `).join('');
-    };
+//         listContainer.innerHTML = notifs.map(notif => `
+//             <li class="notification-item ${notif.unread ? 'unread' : ''}">
+//                 <p style="font-size:0.85rem;color:var(--text-primary);">${notif.text}</p>
+//                 <span class="notification-time">${notif.time}</span>
+//             </li>
+//         `).join('');
+//     };
 
-    bellBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isOpen = dropdown.classList.contains('show');
+//     bellBtn.addEventListener('click', (e) => {
+//         e.stopPropagation();
+//         const isOpen = dropdown.classList.contains('show');
 
-        // Close other dropdowns
-        document.querySelectorAll('.notification-dropdown').forEach(d => d.classList.remove('show'));
+//         // Close other dropdowns
+//         document.querySelectorAll('.notification-dropdown').forEach(d => d.classList.remove('show'));
 
-        if (!isOpen) {
-            renderNotificationsList();
-            dropdown.classList.add('show');
-            // Mark all read on opening
-            markNotificationsRead();
-            updateBellState();
-        } else {
-            dropdown.classList.remove('show');
-        }
-    });
+//         if (!isOpen) {
+//             renderNotificationsList();
+//             dropdown.classList.add('show');
+//             // Mark all read on opening
+//             markNotificationsRead();
+//             updateBellState();
+//         } else {
+//             dropdown.classList.remove('show');
+//         }
+//     });
 
-    document.addEventListener('click', () => {
-        dropdown.classList.remove('show');
-    });
+//     document.addEventListener('click', () => {
+//         dropdown.classList.remove('show');
+//     });
 
-    dropdown.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
+//     dropdown.addEventListener('click', (e) => {
+//         e.stopPropagation();
+//     });
 
-    updateBellState();
-}
+//     updateBellState();
+// }
 
 // --- 4. High-Fidelity Command Palette overlay & searching logic ---
 export function initCommandPalette() {

@@ -222,7 +222,7 @@ const createPlaceholderPortfolio = (id) => {
             realName = authUser.name || '';
             realEmail = authUser.email || '';
         }
-    } catch(_) {}
+    } catch (_) { }
 
     return {
         id: id || 'port_' + Date.now(),
@@ -235,35 +235,10 @@ const createPlaceholderPortfolio = (id) => {
         websiteUrl: '',
         about: '',
         photo: '',
-        skills: ['JavaScript', 'React', 'CSS'],
-        experience: [
-            {
-                id: 'exp_' + Date.now(),
-                title: 'Software Engineer',
-                company: 'Tech Corp',
-                startDate: '2023-01-01',
-                endDate: ''
-            }
-        ],
-        education: [
-            {
-                id: 'edu_' + Date.now(),
-                degree: 'B.S. Computer Science',
-                school: 'University of Technology',
-                startDate: '2019-09-01',
-                endDate: '2023-05-01'
-            }
-        ],
-        projects: [
-            {
-                id: 'proj_' + Date.now(),
-                title: 'E-commerce Platform',
-                description: 'A full-stack e-commerce application built with React and Node.js.',
-                tags: 'React, Node, MongoDB',
-                link: '#',
-                status: 'Featured'
-            }
-        ],
+        skills: [],
+        experience: [],
+        education: [],
+        projects: [],
         certifications: [],
         testimonials: [],
         socialLinks: {},
@@ -272,14 +247,18 @@ const createPlaceholderPortfolio = (id) => {
         customTheme: {
             backgroundType: 'solid',
             backgroundSolid: '#ffffff',
-            backgroundGradientStart: '#0f1220',
-            backgroundGradientEnd: '#060814',
+            backgroundGradientStart: '#f8fafc',
+            backgroundGradientEnd: '#f1f5f9',
             text: '#111111',
-            accent: '#111111',
+            accent: '#2563eb',
             font: 'Inter',
             cardStyle: 'flat',
+            cardBgColor: '#ffffff',
             blurIntensity: '15px',
-            borderOpacity: '0.08'
+            borderOpacity: '0.08',
+            dividerStyle: 'dashed',
+            layout: 'centered',
+            avatarShape: 'circle'
         },
         sectionVisibility: {
             photo: true,
@@ -310,18 +289,31 @@ function loadPortfolioData() {
             activePort.customTheme = {
                 backgroundType: 'solid',
                 backgroundSolid: '#ffffff',
-                backgroundGradientStart: '#0f1220',
-                backgroundGradientEnd: '#060814',
+                backgroundGradientStart: '#f8fafc',
+                backgroundGradientEnd: '#f1f5f9',
                 text: '#111111',
-                accent: '#111111',
+                accent: '#2563eb',
                 font: 'Inter',
                 cardStyle: 'flat',
+                cardBgColor: '#ffffff',
                 blurIntensity: '15px',
                 borderOpacity: '0.08'
             };
         }
+        if (!activePort.customTheme.cardBgColor) {
+            activePort.customTheme.cardBgColor = '#ffffff';
+        }
+        if (!activePort.customTheme.dividerStyle) {
+            activePort.customTheme.dividerStyle = 'dashed';
+        }
+        if (!activePort.customTheme.layout) {
+            activePort.customTheme.layout = 'centered';
+        }
+        if (!activePort.customTheme.avatarShape) {
+            activePort.customTheme.avatarShape = 'circle';
+        }
         if (activePort.customTheme.accent === '#00ffaa' || activePort.customTheme.accent === '#00FFAA' || activePort.customTheme.accent === '#dc2626') {
-            activePort.customTheme.accent = '#111111';
+            activePort.customTheme.accent = '#2563eb';
         }
         if (!activePort.sectionVisibility) {
             activePort.sectionVisibility = {
@@ -448,6 +440,8 @@ export function createNewPortfolio() {
     renderEducation();
     renderProjects();
     updatePreview();
+
+    showToast('Portfolio created successfully!', 'success');
 }
 
 // Edit/Switch Portfolio
@@ -492,6 +486,8 @@ export function deletePortfolio(id) {
         renderEducation();
         renderProjects();
         updatePreview();
+
+        showToast('Portfolio deleted successfully!', 'success');
     }
 }
 
@@ -544,6 +540,8 @@ function populateEditorForm() {
     const themeAccentHex = document.getElementById('themeAccentHex');
     const themeText = document.getElementById('themeText');
     const themeTextHex = document.getElementById('themeTextHex');
+    const themeCardBgColor = document.getElementById('themeCardBgColor');
+    const themeCardBgColorHex = document.getElementById('themeCardBgColorHex');
     const themeFont = document.getElementById('themeFont');
     const themeFontSize = document.getElementById('themeFontSize');
     const themeCardStyle = document.getElementById('themeCardStyle');
@@ -573,29 +571,24 @@ function populateEditorForm() {
     if (themeAccentHex) themeAccentHex.value = ct.accent || '#111111';
     if (themeText) themeText.value = ct.text || '#111111';
     if (themeTextHex) themeTextHex.value = ct.text || '#111111';
+    if (themeCardBgColor) themeCardBgColor.value = ct.cardBgColor || '#ffffff';
+    if (themeCardBgColorHex) themeCardBgColorHex.value = ct.cardBgColor || '#ffffff';
     if (themeFont) themeFont.value = ct.font || 'Inter';
     if (themeFontSize) themeFontSize.value = ct.fontSize || '16px';
-    if (themeCardStyle) {
-        themeCardStyle.value = ct.cardStyle || 'flat';
-        toggleCardInputs(ct.cardStyle || 'flat');
-    }
-    if (themeBlur) {
-        themeBlur.value = parseInt(ct.blurIntensity) || 15;
-        const lbl = document.getElementById('blurVal');
-        if (lbl) lbl.textContent = ct.blurIntensity;
-    }
-    if (themeBorderOpacity) {
-        themeBorderOpacity.value = Math.round(parseFloat(ct.borderOpacity) * 100) || 8;
-        const lbl = document.getElementById('borderVal');
-        if (lbl) lbl.textContent = ct.borderOpacity;
+    const themeDividerStyle = document.getElementById('themeDividerStyle');
+    if (themeDividerStyle) {
+        themeDividerStyle.value = ct.dividerStyle || 'dashed';
     }
 
-    // Set visibility checkboxes
-    const vis = portfolioState.sectionVisibility;
-    Object.keys(vis).forEach(key => {
-        const cb = document.getElementById('visible-' + key);
-        if (cb) cb.checked = vis[key];
-    });
+    const themeLayout = document.getElementById('themeLayout');
+    if (themeLayout) {
+        themeLayout.value = ct.layout || 'centered';
+    }
+
+    const themeAvatarShape = document.getElementById('themeAvatarShape');
+    if (themeAvatarShape) {
+        themeAvatarShape.value = ct.avatarShape || 'circle';
+    }
 
     // Populate profile photo URL
     const profilePhotoUrl = document.getElementById('profilePhotoUrl');
@@ -650,6 +643,7 @@ function bindColorSync(pickerId, textId, stateKey) {
         picker.addEventListener('input', (e) => {
             const val = e.target.value;
             text.value = val;
+            portfolioState.selectedTemplate = 'custom';
             portfolioState.customTheme[stateKey] = val;
             savePortfolioData();
             updatePreview();
@@ -658,6 +652,7 @@ function bindColorSync(pickerId, textId, stateKey) {
             const val = e.target.value.trim();
             if (/^#[0-9A-F]{6}$/i.test(val)) {
                 picker.value = val;
+                portfolioState.selectedTemplate = 'custom';
                 portfolioState.customTheme[stateKey] = val;
                 savePortfolioData();
                 updatePreview();
@@ -700,29 +695,23 @@ function setupEditorListeners() {
         }
     };
 
-    const fullNameInput = document.getElementById('fullName');
-    if (fullNameInput) {
-        fullNameInput.addEventListener('focus', function() {
-            // If the name is exactly the seeded user's name or a default placeholder, clear it once on first focus
-            let authName = '';
-            try {
-                const authData = localStorage.getItem('apex_user_data');
-                if (authData) authName = JSON.parse(authData).name || '';
-            } catch(e){}
-            
-            if (this.value === authName || this.value === 'Your Name' || this.value === 'Nova Stark') {
-                this.value = '';
-                portfolioState.name = '';
-                savePortfolioData();
-                updatePreview();
-            }
-        });
-    }
+
 
     bindInputToState('fullName', 'name');
     bindInputToState('role', 'role');
     bindInputToState('tagline', 'tagline');
     bindInputToState('location', 'location');
+    const locationInput = document.getElementById('location');
+    if (locationInput) {
+        locationInput.addEventListener('focus', () => {
+            if (locationInput.value === 'San Francisco, CA') {
+                locationInput.value = '';
+                portfolioState.location = '';
+                savePortfolioData();
+                updatePreview();
+            }
+        });
+    }
     bindInputToState('about', 'about');
     bindInputToState('email', 'email');
     bindInputToState('phone', 'phone');
@@ -851,6 +840,7 @@ function setupEditorListeners() {
     bgTypeRadios.forEach(radio => {
         radio.addEventListener('change', (e) => {
             const val = e.target.value;
+            portfolioState.selectedTemplate = 'custom';
             portfolioState.customTheme.backgroundType = val;
             toggleBgInputs(val);
             savePortfolioData();
@@ -861,6 +851,7 @@ function setupEditorListeners() {
     const themeFontSize = document.getElementById('themeFontSize');
     if (themeFontSize) {
         themeFontSize.addEventListener('change', (e) => {
+            portfolioState.selectedTemplate = 'custom';
             portfolioState.customTheme.fontSize = e.target.value;
             savePortfolioData();
             updatePreview();
@@ -872,10 +863,12 @@ function setupEditorListeners() {
     bindColorSync('themeBgGradEnd', 'themeBgGradEndHex', 'backgroundGradientEnd');
     bindColorSync('themeAccent', 'themeAccentHex', 'accent');
     bindColorSync('themeText', 'themeTextHex', 'text');
+    bindColorSync('themeCardBgColor', 'themeCardBgColorHex', 'cardBgColor');
 
     const themeFont = document.getElementById('themeFont');
     if (themeFont) {
         themeFont.addEventListener('change', (e) => {
+            portfolioState.selectedTemplate = 'custom';
             portfolioState.customTheme.font = e.target.value;
             savePortfolioData();
             updatePreview();
@@ -886,6 +879,7 @@ function setupEditorListeners() {
     if (themeCardStyle) {
         themeCardStyle.addEventListener('change', (e) => {
             const val = e.target.value;
+            portfolioState.selectedTemplate = 'custom';
             portfolioState.customTheme.cardStyle = val;
             toggleCardInputs(val);
             savePortfolioData();
@@ -893,42 +887,37 @@ function setupEditorListeners() {
         });
     }
 
-    const themeBlur = document.getElementById('themeBlur');
-    if (themeBlur) {
-        themeBlur.addEventListener('input', (e) => {
-            const val = e.target.value + 'px';
-            const lbl = document.getElementById('blurVal');
-            if (lbl) lbl.textContent = val;
-            portfolioState.customTheme.blurIntensity = val;
+    const themeDividerStyle = document.getElementById('themeDividerStyle');
+    if (themeDividerStyle) {
+        themeDividerStyle.addEventListener('change', (e) => {
+            portfolioState.selectedTemplate = 'custom';
+            portfolioState.customTheme.dividerStyle = e.target.value;
             savePortfolioData();
             updatePreview();
         });
     }
 
-    const themeBorderOpacity = document.getElementById('themeBorderOpacity');
-    if (themeBorderOpacity) {
-        themeBorderOpacity.addEventListener('input', (e) => {
-            const val = (e.target.value / 100).toFixed(2);
-            const lbl = document.getElementById('borderVal');
-            if (lbl) lbl.textContent = val;
-            portfolioState.customTheme.borderOpacity = val;
+    // Layout dropdown
+    const themeLayout = document.getElementById('themeLayout');
+    if (themeLayout) {
+        themeLayout.addEventListener('change', (e) => {
+            portfolioState.selectedTemplate = 'custom';
+            portfolioState.customTheme.layout = e.target.value;
             savePortfolioData();
             updatePreview();
         });
     }
 
-    // Visibility toggles
-    const visFields = ['photo', 'about', 'skills', 'experience', 'education', 'projects', 'certifications', 'testimonials', 'contact'];
-    visFields.forEach(field => {
-        const cb = document.getElementById('visible-' + field);
-        if (cb) {
-            cb.addEventListener('change', (e) => {
-                portfolioState.sectionVisibility[field] = e.target.checked;
-                savePortfolioData();
-                updatePreview();
-            });
-        }
-    });
+    // Avatar shape dropdown
+    const themeAvatarShape = document.getElementById('themeAvatarShape');
+    if (themeAvatarShape) {
+        themeAvatarShape.addEventListener('change', (e) => {
+            portfolioState.selectedTemplate = 'custom';
+            portfolioState.customTheme.avatarShape = e.target.value;
+            savePortfolioData();
+            updatePreview();
+        });
+    }
 }
 
 function bindSocialInput(inputId, key) {
@@ -1495,15 +1484,26 @@ function injectPreviewStyles(t, isCustom = false) {
 
     // Fallback/Custom check variables
     const font = isCustom ? portfolioState.customTheme.font : t.font;
-    const fontSize = isCustom ? (portfolioState.customTheme.fontSize || '16px') : '16px';
+    const fontSize = portfolioState.customTheme.fontSize || '16px';
     let accent = isCustom ? portfolioState.customTheme.accent : t.colors.accent;
     let text = isCustom ? portfolioState.customTheme.text : t.colors.text;
     const cardStyle = isCustom ? portfolioState.customTheme.cardStyle : t.cardStyle;
+    const dividerStyle = isCustom ? (portfolioState.customTheme.dividerStyle || 'dashed') : 'dashed';
 
     // Resolve background
     let bgStyle = '';
+    let bgIsImage = false;
     const ct = portfolioState.customTheme;
-    if (isCustom) {
+    const layout = isCustom ? (ct.layout || 'centered') : (t.layout || 'centered');
+    const avatarShape = isCustom ? (ct.avatarShape || 'circle') : (t.avatarShape || 'circle');
+    const isCreativeA4 = cardStyle === 'creative-a4';
+
+    // Resolve the raw background value (could be a URL for template presets)
+    const rawBg = isCustom ? ct.backgroundSolid : t.colors.background;
+    if (rawBg && (rawBg.startsWith('http') || rawBg.startsWith('url('))) {
+        bgStyle = `url('${rawBg}') center/cover no-repeat fixed`;
+        bgIsImage = true;
+    } else if (isCustom) {
         if (ct.backgroundType === 'gradient') {
             bgStyle = `linear-gradient(135deg, ${ct.backgroundGradientStart} 0%, ${ct.backgroundGradientEnd} 100%)`;
         } else {
@@ -1517,8 +1517,8 @@ function injectPreviewStyles(t, isCustom = false) {
     const bgSolid = isCustom ? ct.backgroundSolid : t.colors.background;
     const bgGradStart = isCustom ? ct.backgroundGradientStart : t.colors.background;
     const bgType = isCustom ? ct.backgroundType : 'solid';
-    const currentBg = bgType === 'solid' ? bgSolid : bgGradStart;
-    const isLight = isColorLight(currentBg);
+    const currentBg = bgIsImage ? '#f5f0eb' : (bgType === 'solid' ? bgSolid : bgGradStart);
+    const isLight = bgIsImage ? true : isColorLight(currentBg);
 
     // Apply data-theme attribute on preview container to sync styles
     const previewContainer = document.querySelector('.portfolio-preview');
@@ -1530,7 +1530,7 @@ function injectPreviewStyles(t, isCustom = false) {
     if (!isCustom) {
         if (!isLight) {
             text = '#ffffff';
-            if (accent === '#000000' || accent === '#000' || accent === '#111111' || accent === '#111' || accent === '#dc2626') {
+            if (accent === '#000000' || accent === '#00' || accent === '#111111' || accent === '#111' || accent === '#dc2626') {
                 accent = '#ffffff';
             }
         } else {
@@ -1551,27 +1551,106 @@ function injectPreviewStyles(t, isCustom = false) {
     let cardBorder = '';
     let cardShadow = '';
 
-    if (isGlass) {
-        cardBg = isLight ? `rgba(0,0,0,0.025)` : `rgba(255,255,255,0.045)`;
-        cardBorder = `1px solid ${isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255, 255, 255, ' + borderOp + ')'}`;
-        cardShadow = 'none';
-    } else if (isGlow) {
-        cardBg = isLight ? '#ffffff' : '#0f1220';
-        cardBorder = `1px solid ${accent}44`;
-        cardShadow = `0 10px 30px ${accent}12, 0 0 20px ${accent}04`;
-    } else if (cardStyle === 'shadow') {
-        cardBg = isLight ? '#ffffff' : '#111322';
-        cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1e293b';
-        cardShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05)';
+    // Helper to convert hex to rgba
+    const hexToRgba = (hex, alpha) => {
+        if (!hex) return `rgba(255,255,255,${alpha})`;
+        let cleanHex = hex.trim().replace('#', '');
+        if (cleanHex.length === 3) {
+            cleanHex = cleanHex.split('').map(c => c + c).join('');
+        }
+        if (cleanHex.length !== 6) return `rgba(255,255,255,${alpha})`;
+        const r = parseInt(cleanHex.substring(0, 2), 16);
+        const g = parseInt(cleanHex.substring(2, 4), 16);
+        const b = parseInt(cleanHex.substring(4, 6), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    };
+
+    const cardBgColor = isCustom ? (ct.cardBgColor || '#ffffff') : '#ffffff';
+
+    if (isCustom) {
+        cardBg = cardBgColor;
+        if (isGlass) {
+            cardBg = hexToRgba(cardBgColor, isLight ? '0.025' : '0.045');
+            cardBorder = `1px solid ${isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255, 255, 255, ' + borderOp + ')'}`;
+            cardShadow = 'none';
+        } else if (isGlow) {
+            cardBorder = `1px solid ${accent}44`;
+            cardShadow = `0 10px 30px ${accent}12, 0 0 20px ${accent}04`;
+        } else if (cardStyle === 'shadow') {
+            cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1e293b';
+            cardShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05)';
+        } else {
+            // Flat
+            cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1a1d35';
+            cardShadow = 'none';
+        }
     } else {
-        // Flat
-        cardBg = isLight ? '#f9fafb' : '#0e101f';
-        cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1a1d35';
-        cardShadow = 'none';
+        if (isGlass) {
+            cardBg = isLight ? `rgba(0,0,0,0.025)` : `rgba(255,255,255,0.045)`;
+            cardBorder = `1px solid ${isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255, 255, 255, ' + borderOp + ')'}`;
+            cardShadow = 'none';
+        } else if (isGlow) {
+            cardBg = isLight ? '#ffffff' : '#0f1220';
+            cardBorder = `1px solid ${accent}44`;
+            cardShadow = `0 10px 30px ${accent}12, 0 0 20px ${accent}04`;
+        } else if (cardStyle === 'shadow') {
+            cardBg = isLight ? '#ffffff' : '#111322';
+            cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1e293b';
+            cardShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05)';
+        } else {
+            // Flat
+            cardBg = isLight ? '#f9fafb' : '#0e101f';
+            cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1a1d35';
+            cardShadow = 'none';
+        }
     }
 
-    styleTag.innerHTML = `
-        .portfolio-preview {
+    styleTag.innerHTML = buildPortfolioCSS({
+        scope: '.portfolio-preview',
+        heroSelector: '.preview-hero',
+        nameSelector: '.preview-name',
+        roleSelector: '.preview-role',
+        taglineSelector: '.preview-tagline',
+        locationBadgeSelector: '.preview-location-badge',
+        aboutSelector: '.preview-about',
+        sectionTitleSelector: '.preview-section-title',
+        sectionContainerSelector: '.preview-section-container',
+        skillSelector: '.preview-skill',
+        expItemSelector: '.preview-experience-item',
+        expTitleSelector: '.preview-exp-title',
+        expCompanySelector: '.preview-exp-company',
+        expPeriodSelector: '.preview-exp-period',
+        photoSelector: '.preview-photo',
+        socialSelector: '.social-anchor',
+        splitHeroSelector: '.preview-hero',
+        splitAboutSelector: '[data-section="about"]',
+        splitColSelector: '[data-section="skills"], [data-section="experience"], [data-section="education"], [data-section="projects"], [data-section="certifications"], [data-section="testimonials"], [data-section="contact"]',
+    }, { font, fontSize, accent, text, cardStyle, dividerStyle, bgStyle, bgIsImage, isLight, isCustom, isGlass, isCreativeA4, cardBg, cardBorder, cardShadow, blur, hexToRgba, cardBgColor, avatarShape, layout });
+}
+
+/**
+ * Shared CSS generator — EDS-ready.
+ * Generates scoped portfolio CSS from resolved tokens.
+ * Identical output for both the builder preview and view-portfolio.html.
+ * @param {Object} sel  - Map of semantic selector names to actual CSS class/id strings
+ * @param {Object} tok  - Resolved theme tokens
+ */
+function buildPortfolioCSS(sel, tok) {
+    const {
+        font, fontSize, accent, text, cardStyle, dividerStyle,
+        bgStyle, bgIsImage, isLight, isCustom, isGlass, isCreativeA4,
+        cardBg, cardBorder, cardShadow, blur, hexToRgba, cardBgColor,
+        avatarShape, layout
+    } = tok;
+
+    const s = sel.scope; // e.g. ".portfolio-preview" or "#portfolio-root"
+    const isCentered = layout === 'centered' || !layout;
+    const isLeft = layout === 'left-aligned';
+    const isSplit = layout === 'split';
+
+    return `
+        /* ── Base ── */
+        ${s} {
             font-family: "${font}", var(--font-sans) !important;
             font-size: ${fontSize} !important;
             background: ${bgStyle} !important;
@@ -1579,40 +1658,49 @@ function injectPreviewStyles(t, isCustom = false) {
             transition: background 0.2s, color 0.2s;
         }
 
-        .portfolio-preview .preview-name {
+        /* ── Hero / Header ── */
+        ${s} ${sel.heroSelector} {
+            display: flex;
+            flex-direction: column;
+            align-items: ${ (isCentered) ? 'center' : 'flex-start' } !important;
+            text-align: ${ (isCentered) ? 'center' : 'left' } !important;
+        }
+        ${s} ${sel.nameSelector} {
             color: ${text} !important;
             font-family: "${font}", var(--font-sans) !important;
+            font-size: 1.85em !important;
         }
-
-        .portfolio-preview .preview-role {
+        ${s} ${sel.roleSelector} {
             color: ${accent} !important;
             font-family: var(--font-mono) !important;
+            font-size: 0.8em !important;
         }
-
-        .portfolio-preview .preview-tagline {
-            color: ${isLight ? 'rgba(0,0,0,0.7)' : 'rgba(255, 255, 255, 0.75)'} !important;
+        ${s} ${sel.taglineSelector} {
+            color: ${isLight ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.75)'} !important;
             font-family: "${font}", var(--font-sans) !important;
+            font-size: 1em !important;
         }
-
-        .portfolio-preview .preview-location-badge {
+        ${s} ${sel.locationBadgeSelector} {
             color: ${accent}dd !important;
             border: 1px solid ${accent}25 !important;
             background: ${accent}0a !important;
+            font-size: 0.75em !important;
         }
-
-        .portfolio-preview .preview-about {
-            color: ${isLight ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.85)'} !important;
+        ${s} ${sel.aboutSelector} {
+            color: ${isLight ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.85)'} !important;
             font-family: "${font}", var(--font-sans) !important;
+            font-size: 0.9em !important;
         }
 
-        .portfolio-preview .preview-section-title {
+        /* ── Sections ── */
+        ${s} ${sel.sectionTitleSelector} {
             color: ${text} !important;
-            border-bottom: 2.5px dashed ${accent}25 !important;
+            border-bottom: ${dividerStyle === 'none' ? 'none' : `2.5px ${dividerStyle} ${accent}25`} !important;
             font-family: "${font}", var(--font-sans) !important;
+            font-size: 1em !important;
             margin-bottom: 20px;
         }
-
-        .portfolio-preview .preview-section-container {
+        ${s} ${sel.sectionContainerSelector} {
             background: ${cardBg} !important;
             border: ${cardBorder} !important;
             box-shadow: ${cardShadow} !important;
@@ -1624,64 +1712,83 @@ function injectPreviewStyles(t, isCustom = false) {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .portfolio-preview .preview-skill {
-            background: ${isLight ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.06)'} !important;
-            color: ${text} !important;
-            border: 1px solid ${isLight ? 'rgba(0, 0, 0, 0.08)' : 'rgba(255, 255, 255, 0.12)'} !important;
+        /* ── Skills ── */
+        ${s} ${sel.skillSelector} {
+            background: ${isCustom ? hexToRgba(accent,'0.08') : (isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)')} !important;
+            color: ${isCustom ? accent : text} !important;
+            border: 1px solid ${isCustom ? hexToRgba(accent,'0.25') : (isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.12)')} !important;
             font-family: var(--font-mono) !important;
+            font-size: 0.75em !important;
         }
 
-        .portfolio-preview .preview-experience-item {
-            background: ${isLight ? 'rgba(255, 255, 255, 0.65)' : 'rgba(255, 255, 255, 0.035)'} !important;
-            border: 1px solid ${isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.08)'} !important;
-            box-shadow: ${isLight ? '0 8px 32px 0 rgba(31, 38, 135, 0.04)' : '0 8px 32px 0 rgba(0, 0, 0, 0.2)'} !important;
+        /* ── Timeline / Experience Items ── */
+        ${s} ${sel.expItemSelector} {
+            background: ${isCustom ? hexToRgba(cardBgColor,'0.9') : (isLight ? 'rgba(255,255,255,0.65)' : 'rgba(255,255,255,0.035)')} !important;
+            border: 1px solid ${isCustom ? hexToRgba(accent,'0.15') : (isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.08)')} !important;
+            box-shadow: ${isLight ? '0 8px 32px 0 rgba(31,38,135,0.04)' : '0 8px 32px 0 rgba(0,0,0,0.2)'} !important;
             backdrop-filter: blur(12px) !important;
             -webkit-backdrop-filter: blur(12px) !important;
-            padding: 16px;
-            border-radius: 12px;
-            margin-bottom: 14px;
+            padding: 16px; border-radius: 12px; margin-bottom: 14px;
             color: ${text} !important;
-            display: flex;
-            gap: 16px;
-            align-items: center;
+            display: flex; gap: 16px; align-items: center;
         }
+        ${s} ${sel.expTitleSelector} { color: ${text} !important; font-family: "${font}", var(--font-sans) !important; font-size: 0.9em !important; }
+        ${s} ${sel.expCompanySelector} { color: ${accent} !important; font-size: 0.8em !important; }
+        ${s} ${sel.expPeriodSelector} { color: ${isLight ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.6)'} !important; font-family: var(--font-mono) !important; font-size: 0.7em !important; }
 
-        .portfolio-preview .preview-exp-title {
-            color: ${text} !important;
-            font-family: "${font}", var(--font-sans) !important;
-        }
-
-        .portfolio-preview .preview-exp-company {
-            color: ${accent} !important;
-            font-family: var(--font-sans) !important;
-        }
-
-        .portfolio-preview .preview-exp-period {
-            color: ${isLight ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.6)'} !important;
-            font-family: var(--font-mono) !important;
-        }
-
-        .portfolio-preview .preview-photo {
+        /* ── Avatar ── */
+        ${s} ${sel.photoSelector} {
             border: 3.5px solid ${accent} !important;
+            border-radius: ${ avatarShape === 'circle' ? '50%' : avatarShape === 'square' ? '4px' : '18px' } !important;
         }
 
-        .portfolio-preview .social-anchor {
-            color: ${isLight ? 'rgba(0, 0, 0, 0.65)' : 'rgba(255, 255, 255, 0.65)'} !important;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.2s ease;
+        /* ── Social Links ── */
+        ${s} ${sel.socialSelector} {
+            color: ${isLight ? 'rgba(0,0,0,0.65)' : 'rgba(255,255,255,0.65)'} !important;
+            text-decoration: none; font-size: 0.8em !important; transition: color 0.2s ease;
+        }
+        ${s} ${sel.socialSelector}:hover { color: ${accent} !important; }
+
+        /* ── Layout: Left-Aligned ── */
+        ${s}.layout-left-aligned ${sel.heroSelector} {
+            text-align: left !important; align-items: flex-start !important;
+        }
+        ${s}.layout-left-aligned ${sel.locationBadgeSelector} { align-self: flex-start !important; }
+
+        /* ── Layout: Split (Two-Column, desktop only) ── */
+        @media (min-width: 769px) {
+            ${s}.layout-split {
+                display: grid !important;
+                grid-template-columns: 280px 1fr !important;
+                gap: 28px !important; align-items: start !important;
+            }
+            ${s}.layout-split ${sel.splitHeroSelector},
+            ${s}.layout-split ${sel.splitAboutSelector} {
+                grid-column: 1 !important; position: sticky !important; top: 20px !important;
+            }
+            ${s}.layout-split ${sel.splitColSelector} { grid-column: 2 !important; }
+            ${s}.layout-split ${sel.splitHeroSelector} {
+                text-align: left !important; align-items: flex-start !important;
+            }
+            ${s}.layout-split ${sel.locationBadgeSelector} { align-self: flex-start !important; }
         }
 
-        .portfolio-preview .social-anchor:hover {
-            color: ${accent} !important;
+        /* ── Creative A4 Paper Style ── */
+        ${ isCreativeA4 ? `
+        ${s} ${sel.sectionContainerSelector},
+        ${s} ${sel.expItemSelector} {
+            background: transparent !important; border: none !important;
+            box-shadow: none !important; backdrop-filter: none !important;
         }
-
-        .portfolio-preview .form-input,
-        .portfolio-preview .form-textarea {
-            background: ${isLight ? 'rgba(0, 0, 0, 0.02)' : 'rgba(255, 255, 255, 0.03)'} !important;
-            border: 1px solid ${isLight ? 'rgba(0, 0, 0, 0.08)' : 'rgba(255, 255, 255, 0.08)'} !important;
-            color: ${text} !important;
+        ${s} > * {
+            background: rgba(250,246,240,0.96) !important;
+            border: 5px double ${accent} !important;
+            outline: 2px solid ${accent}44 !important; outline-offset: -12px !important;
+            border-radius: 4px !important;
+            box-shadow: 0 8px 48px rgba(0,0,0,0.25) !important;
+            padding: 40px !important;
         }
+        ` : '' }
     `;
 }
 
@@ -1691,16 +1798,15 @@ function updatePreview() {
     if (!preview) return;
 
     // Inject dynamic styling scoped to the preview container
-    const isCustom = portfolioState.selectedTemplate === 'custom' || portfolioState.customTheme.backgroundSolid !== '';
+    const isCustom = portfolioState.selectedTemplate === 'custom';
     const template = getTemplate(portfolioState.selectedTemplate);
     injectPreviewStyles(template || { font: 'Inter', colors: { background: '#ffffff', text: '#111111', accent: '#000000' }, cardStyle: 'flat' }, isCustom);
 
-    // Apply template structural layout class
-    if (template && template.layout) {
-        preview.className = `portfolio-preview layout-${template.layout}`;
-    } else {
-        preview.className = 'portfolio-preview layout-centered';
-    }
+    // Apply layout class — custom theme's layout takes precedence
+    const activeLayout = portfolioState.selectedTemplate === 'custom'
+        ? (portfolioState.customTheme.layout || 'centered')
+        : (template && template.layout ? template.layout : 'centered');
+    preview.className = `portfolio-preview layout-${activeLayout}`;
 
     // Update section visibilities
     const vis = portfolioState.sectionVisibility || {};
@@ -1711,7 +1817,7 @@ function updatePreview() {
         if (section === 'photo') {
             if (photoSection) {
                 const hasPhoto = !!portfolioState.photo;
-                photoSection.style.display = (vis.photo && hasPhoto) ? 'block' : 'none';
+                photoSection.style.display = (vis.photo !== false && hasPhoto) ? 'block' : 'none';
             }
         } else if (container) {
             let hasContent = true;
@@ -1730,9 +1836,10 @@ function updatePreview() {
             } else if (section === 'about') {
                 hasContent = portfolioState.about && portfolioState.about.trim() !== '' &&
                     !portfolioState.about.trim().startsWith('Tell your') &&
-                    !portfolioState.about.trim().startsWith('Describe your');
+                    !portfolioState.about.trim().startsWith('Describe your') &&
+                    !portfolioState.about.trim().startsWith('Add your');
             }
-            container.style.display = (vis[section] && hasContent) ? 'block' : 'none';
+            container.style.display = (vis[section] !== false && hasContent) ? 'block' : 'none';
         }
     });
 
@@ -1747,6 +1854,11 @@ function updatePreview() {
     if (previewRole) previewRole.textContent = portfolioState.role;
     if (previewTagline) previewTagline.textContent = portfolioState.tagline;
     if (previewLocation) previewLocation.textContent = portfolioState.location;
+
+    const previewAbout = preview.querySelector('.preview-about');
+    if (previewAbout) {
+        previewAbout.textContent = portfolioState.about || 'Add your professional summary here...';
+    }
 
     // Sync the browser URL bar in the frame header
     const urlBar = document.getElementById('browserUrlText');
@@ -1850,7 +1962,7 @@ function updatePreviewExperience() {
     }
 
     const isLight = document.querySelector('.portfolio-preview')?.getAttribute('data-theme') === 'light';
-    const isCustom = portfolioState.selectedTemplate === 'custom' || portfolioState.customTheme.backgroundSolid !== '';
+    const isCustom = portfolioState.selectedTemplate === 'custom';
     const template = getTemplate(portfolioState.selectedTemplate);
     const fallbackAccent = isLight ? '#111111' : '#ffffff';
     const accent = (isCustom ? portfolioState.customTheme.accent : (template ? template.colors.accent : null)) || fallbackAccent;
@@ -1884,7 +1996,7 @@ function updatePreviewEducation() {
     }
 
     const isLight = document.querySelector('.portfolio-preview')?.getAttribute('data-theme') === 'light';
-    const isCustom = portfolioState.selectedTemplate === 'custom' || portfolioState.customTheme.backgroundSolid !== '';
+    const isCustom = portfolioState.selectedTemplate === 'custom';
     const template = getTemplate(portfolioState.selectedTemplate);
     const fallbackAccent = isLight ? '#111111' : '#ffffff';
     const accent = (isCustom ? portfolioState.customTheme.accent : (template ? template.colors.accent : null)) || fallbackAccent;
@@ -1947,7 +2059,7 @@ function updatePreviewCertifications() {
     }
 
     const isLight = document.querySelector('.portfolio-preview')?.getAttribute('data-theme') === 'light';
-    const isCustom = portfolioState.selectedTemplate === 'custom' || portfolioState.customTheme.backgroundSolid !== '';
+    const isCustom = portfolioState.selectedTemplate === 'custom';
     const template = getTemplate(portfolioState.selectedTemplate);
     const fallbackAccent = isLight ? '#111111' : '#ffffff';
     const accent = (isCustom ? portfolioState.customTheme.accent : (template ? template.colors.accent : null)) || fallbackAccent;
@@ -1983,7 +2095,7 @@ function updatePreviewTestimonials() {
     }
 
     const isLight = document.querySelector('.portfolio-preview')?.getAttribute('data-theme') === 'light';
-    const isCustom = portfolioState.selectedTemplate === 'custom' || portfolioState.customTheme.backgroundSolid !== '';
+    const isCustom = portfolioState.selectedTemplate === 'custom';
     const template = getTemplate(portfolioState.selectedTemplate);
     const fallbackAccent = isLight ? '#111111' : '#ffffff';
     const accent = (isCustom ? portfolioState.customTheme.accent : (template ? template.colors.accent : null)) || fallbackAccent;
@@ -2025,17 +2137,32 @@ async function setupTemplateGallery() {
         const text = template.colors.text || '#111111';
         const accent = template.colors.accent || '#dc2626';
 
-        let cardBg = bg;
-        if (template.id === 'glass') {
-            cardBg = 'linear-gradient(135deg, #0f172a 0%, #020617 100%)';
+        // Detect image backgrounds
+        const isImageBg = bg.startsWith('http') || bg.startsWith('url(');
+
+        let cardBgStyle = '';
+        if (isImageBg) {
+            cardBgStyle = `background: url('${bg}') center/cover no-repeat; color: ${text};`;
+        } else if (template.id === 'glass') {
+            cardBgStyle = `background: linear-gradient(135deg, #0f172a 0%, #020617 100%); color: ${text};`;
         } else if (template.id === 'executive') {
-            cardBg = 'linear-gradient(135deg, #1e1b4b 0%, #090514 100%)';
+            cardBgStyle = `background: linear-gradient(135deg, #1e1b4b 0%, #090514 100%); color: ${text};`;
+        } else if (template.id === 'floral_elegance') {
+            cardBgStyle = `background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%); color: #831843;`;
+        } else if (template.id === 'executive_prestige') {
+            cardBgStyle = `background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #f8fafc;`;
+        } else {
+            cardBgStyle = `background: ${bg}; color: ${text};`;
         }
+
+        const innerContent = isImageBg
+            ? `<span style="background:rgba(255,255,255,0.85); padding: 3px 8px; border-radius: 4px; font-size: 0.9em; border-bottom: 2px solid ${accent}; color: #111;">Aa</span>`
+            : `<span style="border-bottom: 2px solid ${accent}; padding-bottom: 2px;">Aa</span>`;
 
         return `
             <div class="theme-card ${isSelected ? 'selected' : ''}" onclick="window.portfolioBuilder.selectTemplate('${template.id}')">
-                <div class="theme-card-preview" style="background: ${cardBg}; color: ${text}; font-family: '${template.font}', sans-serif;">
-                    <span style="border-bottom: 2px solid ${accent}; padding-bottom: 2px;">Aa</span>
+                <div class="theme-card-preview" style="${cardBgStyle} font-family: '${template.font}', sans-serif;">
+                    ${innerContent}
                 </div>
                 <div class="theme-card-name">${template.name}</div>
             </div>
@@ -2053,14 +2180,18 @@ export function selectTemplate(templateId) {
         const t = getTemplate(templateId);
         if (t) {
             // Re-apply template styles to the custom theme variables for easier override
-            portfolioState.customTheme.backgroundType = (templateId === 'glass' || templateId === 'executive') ? 'gradient' : 'solid';
+            portfolioState.customTheme.backgroundType = 'solid';
             portfolioState.customTheme.backgroundSolid = t.colors.background;
             portfolioState.customTheme.backgroundGradientStart = t.colors.background;
-            portfolioState.customTheme.backgroundGradientEnd = '#020308';
+            portfolioState.customTheme.backgroundGradientEnd = '#f1f5f9';
             portfolioState.customTheme.text = t.colors.text;
             portfolioState.customTheme.accent = t.colors.accent;
             portfolioState.customTheme.font = t.font;
             portfolioState.customTheme.cardStyle = t.cardStyle || 'flat';
+            portfolioState.customTheme.cardBgColor = '#ffffff';
+            portfolioState.customTheme.dividerStyle = t.dividerStyle || 'dashed';
+            portfolioState.customTheme.layout = t.layout || 'centered';
+            portfolioState.customTheme.avatarShape = t.avatarShape || 'circle';
 
             // Sync controls visibilities to template preset default
             const vis = t.sections || {};
@@ -2436,23 +2567,28 @@ function setupValidationListeners() {
 function formatDateString(dateStr) {
     if (!dateStr) return '';
     if (dateStr.toLowerCase() === 'present') return 'Present';
-    
+
     const parts = dateStr.split('-');
     if (parts.length === 1) {
         return dateStr;
     }
-    
+
     const year = parts[0];
     const monthIndex = parseInt(parts[1], 10) - 1;
-    
+
     const monthNames = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
-    
-    const monthName = monthNames[monthIndex];
-    if (monthName) {
-        return `${monthName} ${year}`;
+
+    const monthName = monthNames[monthIndex] || parts[1];
+    const yy = year.length >= 4 ? year.slice(-2) : year;
+
+    if (parts.length >= 3) {
+        const day = parseInt(parts[2], 10);
+        const dd = day < 10 ? '0' + day : day.toString();
+        return `${dd}/${monthName}/${yy}`;
     }
-    return dateStr;
+
+    return `${monthName}/${yy}`;
 }

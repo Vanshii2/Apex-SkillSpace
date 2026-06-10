@@ -6,7 +6,7 @@ function createProjectCard(p) {
     return `
         <div class="project-card">
             <div class="project-card-img-wrapper">
-                <img src="${p.thumbnail}" alt="${p.title}" loading="lazy">
+                <img src="${p.image}" alt="${p.title}" loading="lazy">
                 <div class="project-card-overlay">
                     <button class="btn btn-primary clickable"
                         onclick="viewProjectDetails('${p.id}')">
@@ -17,16 +17,13 @@ function createProjectCard(p) {
 
             <div class="project-card-content">
                 <div class="project-card-header">
-                    <span class="badge badge-primary">${p.category}</span>
+                    <span class="badge badge-primary">${p.category || 'Asset'}</span>
                     <h3 class="project-card-title">${p.title}</h3>
                     <span class="project-card-seller">by ${p.seller}</span>
                 </div>
 
-
-                
-
                 <div class="project-card-footer">
-                    <span class="project-card-price">$${Number(p.price).toFixed(2)}</span>
+                    <span class="project-card-price">₹${Number(p.price).toFixed(2)}</span>
                     <button class="btn btn-glow clickable" onclick="addToCart('${p.id}')">
                         Add to Cart
                     </button>
@@ -43,10 +40,10 @@ function createFeaturedCard(p) {
 
     return `
         <div class="featured-card">
-            <img src="${p.thumbnail}" alt="${p.title}" class="featured-card-img">
+            <img src="${p.image}" alt="${p.title}" class="featured-card-img">
 
             <div class="featured-card-info">
-                <span class="badge badge-glow">${p.category}</span>
+                <span class="badge badge-glow">${p.category || 'Featured'}</span>
 
                 <h2 class="featured-card-title">${p.title}</h2>
 
@@ -63,7 +60,7 @@ function createFeaturedCard(p) {
                     </button>
 
                     <span class="project-card-price" style="font-size:1.5rem;">
-                        $${Number(p.price).toFixed(2)}
+                        ₹${Number(p.price).toFixed(2)}
                     </span>
                 </div>
             </div>
@@ -72,13 +69,15 @@ function createFeaturedCard(p) {
 }
 
 window.viewProjectDetails = (id) => {
-    const p = allProjects.find(item => item.id === id);
+    // Assuming 'PROJECTS' is your imported or globally available array
+    const p = PROJECTS.find(item => item.id === id);
     if (!p) return;
 
     document.getElementById('drawer-title').textContent = p.title;
-    document.getElementById('drawer-img').src = p.thumbnail;
-    document.getElementById('drawer-badge').textContent = p.category;
-    document.getElementById('drawer-price').textContent = `$${Number(p.price).toFixed(2)}`;
+    // CHANGED p.thumbnail to p.image
+    document.getElementById('drawer-img').src = p.image; 
+    document.getElementById('drawer-badge').textContent = p.category || 'Asset';
+    document.getElementById('drawer-price').textContent = `₹${Number(p.price).toFixed(2)}`;
     document.getElementById('drawer-desc').textContent = p.description;
 
     document.getElementById('drawer-tags').innerHTML =

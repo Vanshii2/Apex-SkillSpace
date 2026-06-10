@@ -108,16 +108,6 @@ export function initLazyLoadSections() {
     }, observerOptions);
 
     sections.forEach(sec => {
-        sec.style.opacity = '0';
-        sec.style.transform = 'translateY(16px)';
-        sec.style.transition = 'opacity var(--transition-slow), transform var(--transition-slow)';
-
-        // Custom dynamic stylesheet injector for loaded items
-        const sheet = document.styleSheets[0] || document.head.appendChild(document.createElement('style')).sheet;
-        try {
-            sheet.insertRule('.section-visible { opacity: 1 !important; transform: translateY(0) !important; }', 0);
-        } catch (e) { }
-
         observer.observe(sec);
     });
 }
@@ -125,6 +115,17 @@ export function initLazyLoadSections() {
 // --- Helper to update layout active highlights globally ---
 export function updateLayoutActiveStates() {
     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+
+    // Collapse mobile menu if open on page transitions
+    const navMenu = document.querySelector('#app-nav .nav-menu');
+    const hamburger = document.querySelector('#app-nav .nav-hamburger');
+    if (navMenu) {
+        navMenu.classList.remove('open');
+    }
+    if (hamburger) {
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+    }
 
     // Update Navbar Scrolled Class State immediately to prevent FOUC / flashes
     const navbar = document.querySelector('.navbar');
@@ -349,6 +350,8 @@ export function initPageTransitions() {
         'login.html',
         'signup.html',
         'portfolio.html',
+        'showcase.html',
+        'marketplace.html',
         '404.html'
     ];
 

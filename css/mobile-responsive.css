@@ -21,7 +21,7 @@
 
     /* Hide nav links on mobile — show hamburger instead */
     .nav-menu {
-        display: none;
+        display: none !important;
         position: absolute;
         top: calc(100% + 10px);
         left: 0;
@@ -44,7 +44,7 @@
     }
 
     .nav-menu.open {
-        display: flex;
+        display: flex !important;
     }
 
     .nav-menu li,

@@ -260,3 +260,14 @@
     color: var(--warning);
     border-color: rgba(255, 182, 0, 0.2);
 }
+
+/* --- High-performance Lazy Loaded Sections --- */
+.lazy-section, .spotlight-card, .featured-creators, .trending-projects {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+.section-visible {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}

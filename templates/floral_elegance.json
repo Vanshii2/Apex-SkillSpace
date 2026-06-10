@@ -1,0 +1,27 @@
+{
+  "id": "floral_elegance",
+  "name": "Floral Elegance",
+  "description": "Romantic botanical backdrop with ornamental borders and soft rose tones",
+  "font": "Playfair Display",
+  "colors": {
+    "background": "https://images.unsplash.com/photo-1490750967868-88df5691166a?w=1920&q=80",
+    "text": "#2d1a1a",
+    "accent": "#9b5c6e"
+  },
+  "sections": {
+    "photo": true,
+    "about": true,
+    "skills": true,
+    "experience": true,
+    "education": true,
+    "projects": true,
+    "certifications": true,
+    "testimonials": true,
+    "contact": true
+  },
+  "cardStyle": "creative-a4",
+  "layout": "centered",
+  "avatarShape": "circle",
+  "dividerStyle": "dashed",
+  "accentOverride": "#9b5c6e"
+}

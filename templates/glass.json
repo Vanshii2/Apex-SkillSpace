@@ -2,11 +2,11 @@
   "id": "glass",
   "name": "Glassmorphism",
   "description": "Modern glassmorphism design template",
-  "font": "Trebuchet MS",
+  "font": "Sora",
   "colors": {
-    "background": "#1a1a2e",
-    "text": "#ffffff",
-    "accent": "#ffffff"
+    "background": "#f3f4f6",
+    "text": "#1f2937",
+    "accent": "#4f46e5"
   },
   "sections": {
     "photo": true,
