@@ -19,7 +19,7 @@ function loadCheckoutSummary() {
 
     if (cartItems.length === 0) {
         if(listContainer) {
-            listContainer.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:20px;">Your cart is empty.</div>';
+            listContainer.innerHTML = '<div style="color:black;text-align:center;padding:20px;">Your cart is empty.</div>';
         }
         return;
     }
