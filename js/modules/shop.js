@@ -7,6 +7,7 @@
 */
 
 import { getProjects, addToCart, removeFromCart, addToWishlist, removeFromWishlist, getCart, getWishlist } from './db.js';
+import { getImage } from './images.js';
 import { showToast } from '../core/global.js';
 import { openGlobalPreviewDrawer } from './portfolio.js';
 
@@ -89,7 +90,7 @@ export function initShopPage() {
             return `
                 <div class="project-card shop-product-card" data-id="${p.id}">
                     <div class="project-card-img-wrapper">
-                        <img src="${p.image}" alt="${p.title}" loading="lazy">
+                        <img src="${getImage(p.image)}" alt="${p.title}" loading="lazy">
                         <div class="project-card-overlay">
                             <button
                                 class="btn btn-primary preview-trigger-btn clickable"

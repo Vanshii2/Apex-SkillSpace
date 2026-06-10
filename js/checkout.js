@@ -1,4 +1,5 @@
 import { getCart, getProjects, clearCart } from './modules/db.js';
+import { getImage } from './modules/images.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     loadCheckoutSummary();
@@ -31,7 +32,7 @@ function loadCheckoutSummary() {
             return `
                 <div class="summary-item">
                     <div style="display:flex; gap:12px; align-items:center;">
-                        <img src="${item.image}" alt="" style="width:40px;height:40px;border-radius:6px;object-fit:cover;">
+                        <img src="${getImage(item.image)}" alt="" style="width:40px;height:40px;border-radius:6px;object-fit:cover;">
                         <span class="summary-item-title">${item.title}</span>
                     </div>
                     <span class="summary-item-price">₹${item.price.toFixed(2)}</span>

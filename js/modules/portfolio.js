@@ -1,4 +1,5 @@
 import { getProjects, getCreators, bookmarkProject, addToCart } from './db.js';
+import { getImage } from './images.js';
 import { showToast } from '../core/global.js';
 
 /* ==========================================================================
@@ -17,7 +18,7 @@ function renderProjectCard(project) {
         <div class="project-card" data-id="${project.id}">
 
             <div class="project-img-wrap">
-                <img src="${project.image}" alt="${project.title}" loading="lazy">
+                <img src="${getImage(project.image)}" alt="${project.title}" loading="lazy">
 
                
 
@@ -150,7 +151,7 @@ export function openGlobalPreviewDrawer(id, cartSet, syncCartSet) {
         const buyBtn = document.getElementById('drawer-buy-btn');
 
         if (titleEl) titleEl.textContent = p.title || '';
-        if (imgEl) imgEl.src = p.image || '';
+        if (imgEl) imgEl.src = getImage(p.image) || '';
         if (badgeEl) badgeEl.textContent = p.status || p.category || '';
         if (priceEl) priceEl.textContent = `₹${(p.price || 0).toFixed(2)}`;
         if (descEl) descEl.textContent = p.description || '';
