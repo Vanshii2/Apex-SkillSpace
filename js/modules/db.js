@@ -7,7 +7,7 @@
 
 import { PROJECTS, CREATORS, NOTIFICATIONS } from './data.js';
 const DB_KEY_PREFIX = 'fpm_';
-const DB_SEED_VERSION = 'apex-skillspace-demo-v8';
+const DB_SEED_VERSION = 'apex-skillspace-demo-v13';
 
 
 
@@ -43,11 +43,24 @@ export function initDB() {
             profileProgress: 85
         };
         localStorage.setItem(DB_KEY_PREFIX + 'user_session', JSON.stringify(activeUser));
-        localStorage.setItem('apex_user_data', JSON.stringify({
-            name: 'Nova Stark',
-            email: 'nova@stark.com',
-            password: 'password123'
-        }));
+        // Only seed demo user credentials if no real user account exists yet
+        const existingUserData = localStorage.getItem('apex_user_data');
+        const isRealUser = (() => {
+            if (!existingUserData) return false;
+            try {
+                const u = JSON.parse(existingUserData);
+                // It's a real user if it's not the demo account
+                return u.email && u.email !== 'nova@stark.com';
+            } catch (e) { return false; }
+        })();
+
+        if (!isRealUser) {
+            localStorage.setItem('apex_user_data', JSON.stringify({
+                name: 'Nova Stark',
+                email: 'nova@stark.com',
+                password: 'password123'
+            }));
+        }
 
         // Seed 365-day activity records (past year visit logs to fill heatmap immediately!)
         const activityLog = [];

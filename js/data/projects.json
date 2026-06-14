@@ -10,7 +10,7 @@
             "React",
             "Motion"
         ],
-        "price": 49.00,
+        "price": 1999.00,
         "thumbnail": "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?auto=format&fit=crop&w=800&q=80",
         "featured": true
     },
@@ -26,7 +26,7 @@
             "CSS",
             "WebGL"
         ],
-        "price": 79.00,
+        "price": 799.00,
         "thumbnail": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80",
         "featured": true
     },
@@ -42,7 +42,7 @@
             "MongoDB",
             "Vue"
         ],
-        "price": 29.00,
+        "price": 2999.00,
         "thumbnail": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80",
         "featured": false
     },
@@ -58,7 +58,7 @@
             "OpenAI",
             "Stripe"
         ],
-        "price": 149.00,
+        "price": 1499.00,
         "thumbnail": "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=800&q=80",
         "featured": true
     },
@@ -73,7 +73,7 @@
             "Flutter",
             "UI Kit"
         ],
-        "price": 59.00,
+        "price": 599.00,
         "thumbnail": "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80",
         "featured": false
     },
@@ -88,7 +88,7 @@
             "PWA",
             "PDF.js"
         ],
-        "price": 19.00,
+        "price": 919.00,
         "thumbnail": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
         "featured": false
     },
@@ -103,7 +103,7 @@
             "TailwindCSS",
             "Shopify API"
         ],
-        "price": 89.00,
+        "price": 989.00,
         "thumbnail": "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=800&q=80",
         "featured": false
     },
@@ -118,7 +118,7 @@
             "Kotlin",
             "Firebase"
         ],
-        "price": 120.00,
+        "price": 1299.00,
         "thumbnail": "https://images.unsplash.com/photo-1526506114811-38fb6561f221?auto=format&fit=crop&w=800&q=80",
         "featured": false
     }

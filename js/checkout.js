@@ -6,7 +6,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Bind functions globally since it's a module now
     window.selectPayment = selectPayment;
-    window.placeOrder = placeOrder;
+
+    const form = document.getElementById('checkout-form');
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            placeOrder();
+        });
+    }
 });
 
 function loadCheckoutSummary() {

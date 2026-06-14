@@ -8,7 +8,7 @@
 import { initDB, getProjects, getCreators, likeProject, bookmarkProject } from './modules/db.js';
 import { initTheme } from './core/theme.js';
 import { initCustomCursor, initSpotlightCards, initScrollProgress, initLazyLoadSections, initPageTransitions, showToast, initAntigravityParticles, initTypewriter } from './core/global.js';
-import { initNavbarScroll,  initCommandPalette } from './core/ui.js';
+import { initNavbarScroll, initCommandPalette } from './core/ui.js';
 import { addToCart, getCart, removeFromCart } from './modules/db.js';
 import { getImage } from './modules/images.js';
 
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     schedule(() => {
         // REMOVE THIS — it runs a ghost mouse listener that hits the DOM layout engine hard
         // initCustomCursor(); 
-        
+
         initFloatingDock();
         initNotifications();
         initCommandPalette();
@@ -94,7 +94,26 @@ function updateNavbarAuthButtons() {
         // Inject profile avatar circle + dropdown (if not already injected)
         if (!document.getElementById('nav-profile-wrap')) {
             const userData = JSON.parse(localStorage.getItem('apex_user_data') || '{}');
-            const initials = (userData.name || 'U').charAt(0).toUpperCase();
+            const dxUser = (() => { try { return JSON.parse(localStorage.getItem('dx_user') || '{}'); } catch(e) { return {}; } })();
+            const authUser = (() => { try { return JSON.parse(localStorage.getItem('apex_user_data') || '{}'); } catch(e) { return {}; } })();
+            const displayName = dxUser.name || authUser.name || 'User';
+            const initials = displayName.charAt(0).toUpperCase();
+
+            // Resolve avatar: try dx_user.avatar first, then apex_user_data.avatar
+            const rawAvatar = dxUser.avatar || authUser.avatar || '';
+            const resolvedAvatar = (() => {
+                if (!rawAvatar) return '';
+                if (rawAvatar.startsWith('http') || rawAvatar.startsWith('assets/') || rawAvatar.startsWith('data:image/')) return rawAvatar;
+                // It's a localStorage image ID — resolve it
+                try {
+                    const imgs = JSON.parse(localStorage.getItem('dx_images') || '{}');
+                    return imgs[rawAvatar] || '';
+                } catch(e) { return ''; }
+            })();
+
+            const avatarInner = resolvedAvatar
+                ? `<img src="${resolvedAvatar}" alt="Profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">`
+                : initials;
 
             const wrap = document.createElement('div');
             wrap.id = 'nav-profile-wrap';
@@ -107,13 +126,23 @@ function updateNavbarAuthButtons() {
                     color:#fff; font-weight:700; font-size:0.85rem;
                     display:flex; align-items:center; justify-content:center;
                     cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;
-                ">${initials}</button>
+                    overflow:hidden; padding:0;
+                ">${avatarInner}</button>
                 <div id="nav-profile-dropdown" style="
                     display:none; position:absolute; top:calc(100% + 10px); right:0;
-                    min-width:160px; background:var(--bg-surface); border:1px solid var(--border-color);
+                    min-width:175px; background:var(--bg-surface); border:1px solid var(--border-color);
                     border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.25);
                     padding:8px; z-index:1100; flex-direction:column; gap:4px;
                 ">
+                    <a href="profile.html" class="nav-dropdown-item" style="
+                        width:100%; padding:10px 14px; background:transparent; border:none;
+                        color:var(--text-primary); font-size:0.9rem; text-align:left; border-radius:8px;
+                        cursor:pointer; display:flex; align-items:center; gap:10px;
+                        transition:background 0.15s; text-decoration:none; box-sizing:border-box;
+                    ">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        My Profile
+                    </a>
                     <button class="nav-dropdown-item cart-toggle-btn" style="
                         width:100%; padding:10px 14px; background:transparent; border:none;
                         color:var(--text-primary); font-size:0.9rem; text-align:left; border-radius:8px;
@@ -166,6 +195,29 @@ function updateNavbarAuthButtons() {
             // Close dropdown on outside click
             document.addEventListener('click', () => {
                 dropdown.style.display = 'none';
+            });
+
+            // Live-update avatar when user saves profile photo
+            window.addEventListener('userUpdated', (e) => {
+                const updatedUser = e.detail || {};
+                const rawAv = updatedUser.avatar || '';
+                let resolved = '';
+                if (rawAv) {
+                    if (rawAv.startsWith('http') || rawAv.startsWith('assets/') || rawAv.startsWith('data:image/')) {
+                        resolved = rawAv;
+                    } else {
+                        try {
+                            const imgs = JSON.parse(localStorage.getItem('dx_images') || '{}');
+                            resolved = imgs[rawAv] || '';
+                        } catch(e) {}
+                    }
+                }
+                if (resolved) {
+                    profileBtn.innerHTML = `<img src="${resolved}" alt="Profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">`;
+                } else {
+                    const name = updatedUser.name || 'U';
+                    profileBtn.textContent = name.charAt(0).toUpperCase();
+                }
             });
         }
     }
@@ -386,21 +438,21 @@ function detectPageAndLoadModule() {
 //                         <img src="${p.image}" alt="${p.title}" style="width:100%;height:180px;object-fit:cover;">
 //                         <span class="badge badge-primary" style="position:absolute;top:12px;left:12px;backdrop-filter:blur(8px);">${p.status}</span>
 //                     </div>
-                    
+
 //                     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
 //                         <span class="text-mono" style="font-size:0.65rem;">BY @${p.seller}</span>
 //                         <span style="font-weight:bold;color:var(--primary);font-size:0.95rem;">₹${p.price.toFixed(2)}</span>
 //                     </div>
-                    
+
 //                     <h3 style="font-size:1.15rem;margin-bottom:8px;line-height:1.3;max-height:2.6em;overflow:hidden;">${p.title}</h3>
 //                     <p style="font-size:0.8rem;line-height:1.5;color:var(--text-secondary);max-height:3em;overflow:hidden;margin-bottom:16px;">${p.description}</p>
 //                 </div>
-                
+
 //                 <div>
 //                     <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
 //                         ${p.tags.slice(0, 3).map(t => `<span class="badge badge-outline" style="font-size:0.65rem;">${t}</span>`).join('')}
 //                     </div>
-                    
+
 //                     <div style="display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid var(--border-color);">
 //                         <div style="display:flex;gap:8px;">
 //                             <button class="btn btn-secondary clickable home-like-btn" style="width:36px;height:36px;padding:0;border-radius:50%;" title="Like Product">
@@ -429,11 +481,11 @@ function detectPageAndLoadModule() {
 //                     <h3 style="font-size:1.15rem;margin-bottom:4px;">${c.name}</h3>
 //                     <span class="text-mono" style="font-size:0.7rem;margin-bottom:12px;">@${c.username}</span>
 //                     <p style="font-size:0.8rem;line-height:1.5;color:var(--text-secondary);max-height:4.5em;overflow:hidden;">${c.bio}</p>
-                    
+
 //                     <div class="creator-skills-row">
 //                         ${c.skills.slice(0, 3).map(skill => `<span class="badge badge-outline" style="font-size:0.6rem;">${skill}</span>`).join('')}
 //                     </div>
-                    
+
 //                     <div style="display:flex;justify-content:space-around;width:100%;margin-top:auto;padding-top:16px;border-top:1px solid var(--border-color);font-size:0.8rem;">
 //                         <div><span style="font-weight:bold;color:var(--text-primary);">${c.stats.projects}</span> <span style="color:var(--text-muted);">Assets</span></div>
 //                         <div><span style="font-weight:bold;color:var(--text-primary);">${c.stats.likes}</span> <span style="color:var(--text-muted);">Likes</span></div>
@@ -651,7 +703,7 @@ export function initMarqueeCarousel() {
 
     let centerIndex = total * CLONES_PER_SIDE;
     let animating = false;
-    
+
     // Core performance fix: Measure once here
     let cachedCenterX = container.offsetWidth / 2;
     let offset = cachedCenterX - centerIndex * STEP - cardWidth / 2;
@@ -712,6 +764,8 @@ export function initMarqueeCarousel() {
 
         function frame(now) {
             if (!document.getElementById('marquee-track')) return; // Exit if page changed
+            if (!animating) return; // Step already finished/snapped — drop stale frame
+
             const progress = Math.min((now - start) / MOVE_MS, 1);
             const eased = progress < 0.5
                 ? 2 * progress * progress
@@ -731,17 +785,18 @@ export function initMarqueeCarousel() {
             offset = target;
             centerIndex++;
 
+            // When we've scrolled past the duplicated set, wrap offset seamlessly
             if (centerIndex >= total * (CLONES_PER_SIDE + 1)) {
+                // Move back by one full set of original cards (total * STEP)
                 centerIndex = total * CLONES_PER_SIDE;
-                const newOffset = cachedCenterX - centerIndex * STEP - cardWidth / 2;
-
+                offset += total * STEP;
+                // Apply instant translation without animation
                 track.style.transition = 'none';
-                updateCardStyles(newOffset);
-                track.style.transform = `translateX(${newOffset}px)`;
+                updateCardStyles(offset);
+                track.style.transform = `translateX(${offset}px)`;
 
-                void track.offsetWidth; // Force reflow safely
-
-                offset = newOffset;
+                // Force reflow to ensure the browser applies the changes
+                void track.offsetWidth;
             }
 
             animating = false;

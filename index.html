@@ -27,7 +27,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">    <link rel="preload" as="image" href="assets/infi1.webp" fetchpriority="high">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@300;400;500;600;700&display=swap">
 
     <!-- <link rel="stylesheet" href="css/variables.css"> -->
@@ -158,13 +157,12 @@
                         fetchpriority="high" + decoding="sync" matches the <link rel="preload"> in <head>.
                     -->
                     <div class="marquee-card">
-                        <img src="assets/infi1.webp"
-                             width="420" height="360"
-                             fetchpriority="high"
-                             decoding="sync"
+                        <img src="assets/infi1.webp" width="400" height="300"
+                             class="marquee-img"
+                             fetchpriority="high" decoding="sync"
                              alt="Frontend Developer portfolio example">
                         <div class="marquee-overlay">
-                            <h3 class="marquee-title">Frontend Developer</h3>
+                            <div class="marquee-title">Frontend Developer</div>
                         </div>
                     </div>
 
@@ -175,7 +173,7 @@
                              loading="lazy" decoding="async"
                              alt="UI/UX Designer portfolio example">
                         <div class="marquee-overlay">
-                            <h3 class="marquee-title">UI/UX Designer</h3>
+                            <div class="marquee-title">UI/UX Designer</div>
                         </div>
                     </div>
 
@@ -185,7 +183,7 @@
                              loading="lazy" decoding="async"
                              alt="Student portfolio example">
                         <div class="marquee-overlay">
-                            <h3 class="marquee-title">Student Portfolio</h3>
+                            <div class="marquee-title">Student Portfolio</div>
                         </div>
                     </div>
 
@@ -195,7 +193,7 @@
                              loading="lazy" decoding="async"
                              alt="Creative developer portfolio example">
                         <div class="marquee-overlay">
-                            <h3 class="marquee-title">Creative Developer</h3>
+                            <div class="marquee-title">Creative Developer</div>
                         </div>
                     </div>
 
@@ -205,7 +203,7 @@
                              loading="lazy" decoding="async"
                              alt="Software engineer portfolio example">
                         <div class="marquee-overlay">
-                            <h3 class="marquee-title">Software Engineer</h3>
+                            <div class="marquee-title">Software Engineer</div>
                         </div>
                     </div>
 
@@ -215,7 +213,7 @@
                              loading="lazy" decoding="async"
                              alt="Product designer portfolio example">
                         <div class="marquee-overlay">
-                            <h3 class="marquee-title">Product Designer</h3>
+                            <div class="marquee-title">Product Designer</div>
                         </div>
                     </div>
 
@@ -281,30 +279,24 @@
                 <div class="fp-grid">
                     <a href="marketplace.html" class="fp-card">
                         <div class="fp-img-wrap">
-                            <img src="assets/project1.webp"
-                                 alt="Face Recognition Dashboard"
-                                 class="fp-img"
-                                 width="560" height="420"
-                                 loading="lazy" decoding="async">
+                            <img src="assets/project1.webp" width="500" height="288" loading="lazy" alt="Face Recognition Dashboard UI mockup"
+                                class="fp-img">
                             <span class="fp-cat">AI · Vision</span>
                         </div>
                         <div class="fp-footer">
-                            <h3 class="fp-title">Face Recognition Dashboard</h3>
-                            <span class="fp-price">₹49</span>
+                            <h3 class="fp-title">AI Face Recognition Project</h3>
+                            <span class="fp-price">₹4999</span>
                         </div>
                     </a>
                     <a href="marketplace.html" class="fp-card">
                         <div class="fp-img-wrap">
-                            <img src="assets/project2.webp"
-                                 alt="Health Monitoring System"
-                                 class="fp-img"
-                                 width="560" height="420"
-                                 loading="lazy" decoding="async">
+                            <img src="assets/project2.webp" width="500" height="288" loading="lazy" alt="Health Monitoring System UI mockup"
+                                class="fp-img">
                             <span class="fp-cat">ML · Health</span>
                         </div>
                         <div class="fp-footer">
-                            <h3 class="fp-title">Health Monitoring System</h3>
-                            <span class="fp-price">₹39</span>
+                            <h3 class="fp-title">Heart Disease Tracking</h3>
+                            <span class="fp-price">₹2499</span>
                         </div>
                     </a>
                     <a href="marketplace.html" class="fp-card">
@@ -318,7 +310,7 @@
                         </div>
                         <div class="fp-footer">
                             <h3 class="fp-title">Shoe Mark Recognition</h3>
-                            <span class="fp-price">₹59</span>
+                            <span class="fp-price">₹2999</span>
                         </div>
                     </a>
                 </div>
@@ -339,11 +331,8 @@
                             Replace 800/600 with your actual image dimensions.
                             Explicit w/h prevents CLS while lazy loads.
                         -->
-                        <img src="assets/right2.webp"
-                             class="preview-main"
-                             width="800" height="600"
-                             loading="lazy" decoding="async"
-                             alt="Portfolio preview screenshot">
+                        <img src="assets/right2.webp" width="600" height="400" loading="lazy" alt="Premium Platform Features UI Illustration"
+                            class="premium-img">
                     </div>
                     <div class="features-side">
                         <div class="grid grid-2" style="gap:24px;">
@@ -389,24 +378,14 @@
                     <div class="footer-brand">
                         <a href="index.html" class="logo">
                             <!-- Footer logos: lazy is fine, they're well below fold -->
-                            <img src="logo_black.webp"
-                                 alt="DesignX"
-                                 width="200" height="70"
-                                 style="height:70px;width:auto;"
-                                 class="nav-logo-img light-logo"
-                                 loading="lazy" decoding="async">
-                            <img src="logo_white.webp"
-                                 alt="DesignX"
-                                 width="200" height="70"
-                                 style="height:70px;width:auto;"
-                                 class="nav-logo-img dark-logo"
-                                 loading="lazy" decoding="async">
+                            <img src="logo_black.webp" alt="Logo" width="200" height="70" loading="lazy" style="height: 70px;" class="nav-logo-img light-logo">
+                            <img src="logo_white.webp" alt="Logo" width="200" height="70" loading="lazy" style="height: 70px;" class="nav-logo-img dark-logo">
                         </a>
                         <p class="footer-desc">The ultimate platform for building stunning,
                             high-converting professional portfolios.</p>
                     </div>
                     <div>
-                        <h4 class="footer-title">Platform</h4>
+                        <h3 class="footer-title">Platform</h3>
                         <ul class="footer-links">
                             <li><a href="index.html"  class="footer-link">Home</a></li>
                             <li><a href="login.html"  class="footer-link">Login</a></li>
@@ -414,7 +393,7 @@
                         </ul>
                     </div>
                     <div>
-                        <h4 class="footer-title">Legal</h4>
+                        <h3 class="footer-title">Legal</h3>
                         <ul class="footer-links">
                             <li><a href="#" class="footer-link">Privacy Policy</a></li>
                             <li><a href="#" class="footer-link">Terms of Service</a></li>

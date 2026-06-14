@@ -22,7 +22,7 @@ export function storeImage(base64) {
 
 export function getImage(id) {
     if (!id) return '';
-    if (id.startsWith('http') || id.startsWith('assets/')) return id; // already a real URL
+    if (id.startsWith('http') || id.startsWith('assets/') || id.startsWith('data:image/')) return id; // already a real URL or data URI
     const images = getImages();
     return images[id] || '';
 }

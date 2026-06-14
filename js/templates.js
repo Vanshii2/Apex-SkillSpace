@@ -6,7 +6,7 @@
 export const templates = {};
 
 export async function loadTemplates() {
-    const templateIds = ['minimal', 'business', 'executive', 'developer', 'glass', 'founder', 'beige_combo', 'floral_elegance', 'executive_prestige'];
+    const templateIds = ['minimal', 'business', 'executive', 'developer', 'glass', 'founder', 'beige_combo', 'floral_elegance'];
     
     for (const templateId of templateIds) {
         try {

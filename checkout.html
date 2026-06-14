@@ -11,12 +11,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DesignX</title>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap"
-        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/core.css">
     <link rel="stylesheet" href="css/utilities.css">
@@ -48,7 +45,7 @@
                     style="display:inline-block;margin-top:24px;color:var(--text-secondary);font-size:0.9rem;text-decoration:none;">←
                     Back to Marketplace</a>
 
-                <div class="checkout-layout">
+                <form id="checkout-form" class="checkout-layout">
                     <!-- Form Column -->
                     <div>
                         <h1 style="font-size:2.5rem;font-family:var(--font-display);margin-bottom:32px;">Checkout</h1>
@@ -84,43 +81,22 @@
                                     </svg>
                                     <div>Credit Card</div>
                                 </div>
-                                <div class="payment-method-card" onclick="selectPayment(this)">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" style="margin-bottom:8px;">
-                                        <rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect>
-                                        <path d="M2 10h20"></path>
-                                    </svg>
-                                    <div>UPI</div>
-                                </div>
-                                <div class="payment-method-card" onclick="selectPayment(this)">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" style="margin-bottom:8px;">
-                                        <path d="M3 21h18"></path>
-                                        <path d="M3 10h18"></path>
-                                        <path d="M5 6l7-3 7 3"></path>
-                                        <path d="M4 10v11"></path>
-                                        <path d="M20 10v11"></path>
-                                        <path d="M8 14v3"></path>
-                                        <path d="M12 14v3"></path>
-                                        <path d="M16 14v3"></path>
-                                    </svg>
-                                    <div>Net Banking</div>
-                                </div>
+
                             </div>
 
                             <div id="card-details-form">
                                 <div class="form-group" style="margin-bottom:20px;">
                                     <label>Card Number</label>
-                                    <input type="text" placeholder="0000 0000 0000 0000">
+                                    <input type="text" placeholder="0000 0000 0000 0000" required>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label>Expiry Date</label>
-                                        <input type="text" placeholder="MM/YY">
+                                        <input type="text" placeholder="MM/YY" required>
                                     </div>
                                     <div class="form-group">
                                         <label>CVC</label>
-                                        <input type="text" placeholder="123">
+                                        <input type="text" placeholder="123" required>
                                     </div>
                                 </div>
                             </div>
@@ -151,11 +127,10 @@
                                 </div>
                             </div>
 
-                            <button class="btn btn-glow clickable" style="width:100%;font-size:1.1rem;padding:16px;"
-                                onclick="placeOrder()">Place Order</button>
+                            <button type="submit" class="btn btn-glow clickable" style="width:100%;font-size:1.1rem;padding:16px;">Place Order</button>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </main>
     </div>

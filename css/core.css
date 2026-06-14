@@ -27,6 +27,12 @@ body {
     overflow-x: hidden;
     transition: background-color var(--transition-normal), color var(--transition-normal);
     line-height: 1.6;
+    animation: smoothLoadFade 0.5s ease forwards;
+}
+
+@keyframes smoothLoadFade {
+    from { opacity: 0; visibility: hidden; }
+    to { opacity: 1; visibility: visible; }
 }
 
 /* --- Premium Custom Scrollbar --- */

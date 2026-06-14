@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="dark">
 
 <head>
@@ -95,7 +95,7 @@
             <h1 id="portfolio-name">Name</h1>
             <p id="portfolio-role">Role</p>
             <p id="portfolio-tagline"
-                style="margin-top: 10px; font-size: 1.15rem; opacity: 0.85; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+                style="margin-top: 10px; font-size: 1.15rem; opacity: 0.85; max-width: 600px; line-height: 1.5;">
             </p>
             <div id="portfolio-location"
                 style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; margin-top: 12px; margin-bottom: 8px; opacity: 0.75; font-family: var(--font-mono); padding: 4px 10px; border-radius: 99px;">
@@ -103,7 +103,7 @@
                 <span id="portfolio-location-text">Location</span>
             </div>
             <div id="portfolio-quickconnect"
-                style="display: flex; justify-content: center; gap: 16px; font-size: 0.85rem; margin-top: 14px; opacity: 0.8;">
+                style="display: flex; gap: 16px; font-size: 0.85rem; margin-top: 14px; opacity: 0.8;">
                 <!-- Connect row -->
             </div>
         </header>
@@ -140,7 +140,7 @@
 
         <!-- Project Showcases -->
         <section class="portfolio-section" id="sec-projects" data-section="projects">
-            <h2 class="section-title">Featured Works & Assets</h2>
+            <h2 class="section-title">Work Assets</h2>
             <div class="projects-display-grid" id="portfolio-projects">
                 <!-- Project cards loaded dynamically -->
             </div>
@@ -150,16 +150,16 @@
         <!-- <section class="portfolio-section" id="sec-certifications" data-section="certifications">
             <h2 class="section-title">Certifications & Awards</h2>
             <div class="experience-timeline" id="portfolio-certifications"> -->
-                <!-- Items loaded dynamically -->
-            <!-- </div>
+        <!-- Items loaded dynamically -->
+        <!-- </div>
         </section> -->
 
         <!-- Testimonials -->
         <!-- <section class="portfolio-section" id="sec-testimonials" data-section="testimonials">
             <h2 class="section-title">Testimonials</h2>
             <div class="experience-timeline" id="portfolio-testimonials"> -->
-                <!-- Items loaded dynamically -->
-            <!-- </div>
+        <!-- Items loaded dynamically -->
+        <!-- </div>
         </section> -->
 
         <!-- Contact Form Section -->
@@ -399,7 +399,7 @@
                 expTimeline.innerHTML = data.experience.map(e => `
                     <div class="timeline-card">
                         <div class="card-icon-container" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: ${isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)'}; color: ${accent}; flex-shrink: 0;">
-                            <i data-lucide="briefcase" style="width: 18px; height: 18px;"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                         </div>
                         <div class="timeline-header">
                             <h4 class="timeline-title">${e.title}</h4>
@@ -418,7 +418,7 @@
                 eduTimeline.innerHTML = data.education.map(ed => `
                     <div class="timeline-card">
                         <div class="card-icon-container" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: ${isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)'}; color: ${accent}; flex-shrink: 0;">
-                            <i data-lucide="graduation-cap" style="width: 18px; height: 18px;"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a2 2 0 0 0-.019-3.838L12.83 4.34a2 2 0 0 0-1.66 0L2.6 7.08a2 2 0 0 0 0 3.832l8.58 3.698a2 2 0 0 0 1.64 0l8.6-3.688Z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>
                         </div>
                         <div class="timeline-header">
                             <h4 class="timeline-title">${ed.degree}</h4>
@@ -435,15 +435,12 @@
             const projectsGrid = document.getElementById('portfolio-projects');
             const allProjects = getProjects();
             const savedProjects = Array.isArray(data.projects) ? data.projects : [];
-            const matchingProjects = savedProjects.length
-                ? savedProjects
-                : allProjects.filter(p => p.seller === data.username || p.seller === username || (username === 'current' && p.seller === 'apex_user'));
+            const matchingProjects = savedProjects;
 
             if (matchingProjects.length > 0) {
                 projectsGrid.innerHTML = matchingProjects.map(p => `
-                    <div class="port-project-card" style="cursor: ${p.link ? 'pointer' : 'default'};" ${p.link ? `onclick="window.open('${p.link}', '_blank')"` : ''}>
-                        <img src="${getImage(p.image) || 'assets/right2.jpg'}" alt="${p.title}" class="port-proj-img">
-                        <div class="port-proj-content">
+                    <div class="port-project-card" style="cursor: ${p.link ? 'pointer' : 'default'}; padding: 24px;" ${p.link ? `onclick="window.open('${p.link}', '_blank')"` : ''}>
+                        <div class="port-proj-content" style="padding: 0;">
                             <span class="port-proj-status">${p.status || 'Demo Project'}</span>
                             <h3 class="port-proj-title">${p.title}</h3>
                             <p class="port-proj-desc">${p.description}</p>
@@ -464,7 +461,7 @@
                 certsTimeline.innerHTML = data.certifications.map(c => `
                     <div class="timeline-card">
                         <div class="card-icon-container" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: ${isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)'}; color: ${accent}; flex-shrink: 0;">
-                            <i data-lucide="award" style="width: 18px; height: 18px;"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
                         </div>
                         <div class="timeline-header">
                             <h4 class="timeline-title">${c.title}</h4>
@@ -484,7 +481,7 @@
                 testimonialsTimeline.innerHTML = data.testimonials.map(t => `
                     <div class="timeline-card" style="align-items: flex-start;">
                         <div class="card-icon-container" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: ${isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)'}; color: ${accent}; flex-shrink: 0; margin-top: 2px;">
-                            <i data-lucide="quote" style="width: 16px; height: 16px;"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
                         </div>
                         <div style="flex: 1; min-width: 0;">
                             <p style="font-style:italic; font-size:0.95rem; line-height:1.6; margin:0 0 12px 0; color:inherit;">"${t.quote}"</p>
@@ -572,29 +569,29 @@
         function formatDateString(dateStr) {
             if (!dateStr) return '';
             if (dateStr.toLowerCase() === 'present') return 'Present';
-            
+
             const parts = dateStr.split('-');
             if (parts.length === 1) {
                 return dateStr;
             }
-            
+
             const year = parts[0];
             const monthIndex = parseInt(parts[1], 10) - 1;
-            
+
             const monthNames = [
                 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
             ];
-            
+
             const monthName = monthNames[monthIndex] || parts[1];
             const yy = year.length >= 4 ? year.slice(-2) : year;
-            
+
             if (parts.length >= 3) {
                 const day = parseInt(parts[2], 10);
                 const dd = day < 10 ? '0' + day : day.toString();
                 return `${dd}/${monthName}/${yy}`;
             }
-            
+
             return `${monthName}/${yy}`;
         }
 
@@ -647,8 +644,8 @@
             return `
                 ${s} ${sel.heroSelector} {
                     display: flex; flex-direction: column;
-                    align-items: ${ isCentered ? 'center' : 'flex-start' } !important;
-                    text-align: ${ isCentered ? 'center' : 'left' } !important;
+                    align-items: ${isCentered ? 'center' : 'flex-start'} !important;
+                    text-align: ${isCentered ? 'center' : 'left'} !important;
                 }
                 ${s} ${sel.nameSelector} {
                     font-size: 1.85em; font-weight: 700;
@@ -659,6 +656,12 @@
                     font-size: 0.8em; color: ${accent};
                     font-family: var(--font-mono); text-transform: uppercase;
                     letter-spacing: 0.1em; margin: 0;
+                }
+                ${s} ${sel.taglineSelector} {
+                    margin: 10px ${isCentered ? 'auto' : '0'} 0 ${isCentered ? 'auto' : '0'} !important;
+                }
+                ${s} #portfolio-quickconnect {
+                    justify-content: ${isCentered ? 'center' : 'flex-start'} !important;
                 }
                 ${s} ${sel.locationBadgeSelector} { color: ${accent}dd; border: 1px solid ${accent}25; background: ${accent}0a; }
                 ${s} ${sel.aboutSelector} { font-size: 0.9em; line-height: 1.7; color: ${text}dd; margin: 0; }
@@ -676,15 +679,15 @@
                 }
                 ${s} ${sel.skillSelector} {
                     padding: 0.3em 0.75em; border-radius: 99px; font-size: 0.75em; font-weight: 500;
-                    background: ${isCustom ? hexToRgba(accent,'0.08') : (isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)')} !important;
+                    background: ${isCustom ? hexToRgba(accent, '0.08') : (isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)')} !important;
                     color: ${isCustom ? accent : (isLight ? '#111111' : '#ffffff')} !important;
-                    border: 1px solid ${isCustom ? hexToRgba(accent,'0.25') : (isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.12)')} !important;
+                    border: 1px solid ${isCustom ? hexToRgba(accent, '0.25') : (isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.12)')} !important;
                     font-family: var(--font-mono);
                 }
                 ${s} ${sel.expItemSelector} {
                     padding: 1em; border-radius: 0.75em;
-                    background: ${isCustom ? hexToRgba(cardBgColor,'0.9') : (isLight ? 'rgba(255,255,255,0.65)' : 'rgba(255,255,255,0.035)')} !important;
-                    border: 1px solid ${isCustom ? hexToRgba(accent,'0.15') : (isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.08)')} !important;
+                    background: ${isCustom ? hexToRgba(cardBgColor, '0.9') : (isLight ? 'rgba(255,255,255,0.65)' : 'rgba(255,255,255,0.035)')} !important;
+                    border: 1px solid ${isCustom ? hexToRgba(accent, '0.15') : (isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.08)')} !important;
                     box-shadow: ${isLight ? '0 8px 32px 0 rgba(31,38,135,0.04)' : '0 8px 32px 0 rgba(0,0,0,0.2)'} !important;
                     backdrop-filter: blur(12px) !important; -webkit-backdrop-filter: blur(12px) !important;
                     color: ${text} !important; display: flex; gap: 1em; align-items: center;
@@ -694,9 +697,9 @@
                 ${s} ${sel.expPeriodSelector} { font-size: 0.7em; color: ${isLight ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.6)'} !important; font-family: var(--font-mono) !important; }
                 ${s} ${sel.photoSelector} {
                     border: 3px solid ${accent};
-                    border-radius: ${ avatarShape === 'circle' ? '50%' : avatarShape === 'square' ? '4px' : '20px' };
+                    border-radius: ${avatarShape === 'circle' ? '50%' : avatarShape === 'square' ? '4px' : '20px'};
                     width: 7.5em; height: 7.5em; overflow: hidden;
-                    margin: 0 auto 1.25em auto; box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+                    margin: 0 ${isCentered ? 'auto' : '0'} 1.25em ${isCentered ? 'auto' : '0'}; box-shadow: 0 8px 30px rgba(0,0,0,0.15);
                 }
                 ${s} ${sel.photoSelector} img { width: 100%; height: 100%; object-fit: cover; }
                 .social-anchor { font-weight: 500; color: ${text}99; text-decoration: none; transition: color 0.2s ease; }
@@ -723,29 +726,29 @@
                 }
 
                 /* Creative A4 Paper Style */
-                ${ isCreativeA4 ? `
-                body { background: ${bgStyle} !important; }
+                ${isCreativeA4 ? `
                 ${s} {
                     background: rgba(250,246,240,0.97) !important;
                     border: 6px double ${accent} !important;
                     outline: 2px solid ${accent}55 !important; outline-offset: -16px !important;
                     border-radius: 4px !important;
                     box-shadow: 0 12px 60px rgba(0,0,0,0.35) !important;
-                    padding: 48px !important; max-width: 860px !important;
+                    padding: 48px !important; max-width: 860px !important; margin: 0 auto;
                 }
                 ${s} ${sel.sectionContainerSelector} {
                     background: transparent !important; border: none !important;
                     box-shadow: none !important; backdrop-filter: none !important;
                     border-radius: 0 !important;
                     border-top: 1px dashed ${accent}30 !important; padding: 1.5em 0 !important;
+                    margin-bottom: 0 !important;
                 }
                 ${s} ${sel.expItemSelector} {
                     background: transparent !important; border: none !important;
                     box-shadow: none !important;
                     border-bottom: 1px solid ${accent}18 !important;
-                    border-radius: 0 !important; padding: 0.75em 0 !important;
+                    border-radius: 0 !important; padding: 0.75em 0 !important; margin-bottom: 0 !important;
                 }
-                ` : '' }
+                ` : ''}
 
                 @media (max-width: 720px) {
                     body { padding: 4.75em 1em 2.5em; }
@@ -776,11 +779,12 @@
             let bgStyle = '';
             let bgIsImage = false;
             const rawBg = (isCustom && customTheme)
-                ? (customTheme.backgroundType === 'gradient' ? null : customTheme.backgroundSolid)
+                ? (customTheme.backgroundType === 'gradient' ? customTheme.backgroundGradientStart : customTheme.backgroundSolid)
                 : t.colors.background;
 
             if (rawBg && (rawBg.startsWith('http') || rawBg.startsWith('url('))) {
-                bgStyle = `url('${rawBg}') center/cover no-repeat fixed`;
+                let finalUrl = rawBg.startsWith('http') ? `url('${rawBg}')` : rawBg;
+                bgStyle = `${finalUrl} center/cover no-repeat fixed`;
                 bgIsImage = true;
             } else if (isCustom && customTheme) {
                 bgStyle = customTheme.backgroundType === 'gradient'
@@ -805,12 +809,12 @@
             let cardBg = '', cardBorder = '', cardShadow = '';
             if (isCustom && customTheme) {
                 cardBg = cardBgColor;
-                if (isGlass) { cardBg = hexToRgba(cardBgColor, isLight ? '0.025' : '0.045'); cardBorder = `1px solid ${isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,' + borderOp + ')' }`; cardShadow = 'none'; }
+                if (isGlass) { cardBg = hexToRgba(cardBgColor, isLight ? '0.025' : '0.045'); cardBorder = `1px solid ${isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,' + borderOp + ')'}`; cardShadow = 'none'; }
                 else if (isGlow) { cardBorder = `1px solid ${accent}44`; cardShadow = `0 10px 30px ${accent}12, 0 0 20px ${accent}04`; }
                 else if (cardStyle === 'shadow') { cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1e293b'; cardShadow = '0 10px 25px -5px rgba(0,0,0,0.05)'; }
                 else { cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1a1d35'; cardShadow = 'none'; }
             } else {
-                if (isGlass) { cardBg = isLight ? 'rgba(0,0,0,0.025)' : 'rgba(255,255,255,0.045)'; cardBorder = `1px solid ${isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,' + borderOp + ')' }`; cardShadow = 'none'; }
+                if (isGlass) { cardBg = isLight ? 'rgba(0,0,0,0.025)' : 'rgba(255,255,255,0.045)'; cardBorder = `1px solid ${isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,' + borderOp + ')'}`; cardShadow = 'none'; }
                 else if (isGlow) { cardBg = isLight ? '#ffffff' : '#0f1220'; cardBorder = `1px solid ${accent}44`; cardShadow = `0 10px 30px ${accent}12`; }
                 else if (cardStyle === 'shadow') { cardBg = isLight ? '#ffffff' : '#111322'; cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1e293b'; cardShadow = '0 10px 25px -5px rgba(0,0,0,0.05)'; }
                 else { cardBg = isLight ? '#f9fafb' : '#0e101f'; cardBorder = isLight ? '1px solid #e5e7eb' : '1px solid #1a1d35'; cardShadow = 'none'; }
@@ -859,7 +863,7 @@
                 ${buildPortfolioCSS(sel, tok)}
             `;
         }
-    
+
     </script>
 </body>
 

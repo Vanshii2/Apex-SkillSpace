@@ -652,11 +652,11 @@ function bindColorSync(pickerId, textId, stateKey) {
             const val = e.target.value.trim();
             if (/^#[0-9A-F]{6}$/i.test(val)) {
                 picker.value = val;
-                portfolioState.selectedTemplate = 'custom';
-                portfolioState.customTheme[stateKey] = val;
-                savePortfolioData();
-                updatePreview();
             }
+            portfolioState.selectedTemplate = 'custom';
+            portfolioState.customTheme[stateKey] = val;
+            savePortfolioData();
+            updatePreview();
         });
     }
 }
@@ -1087,10 +1087,14 @@ function renderProjects() {
                     <div class="exp-item-sub" style="font-size: 11px; margin-top: 2px;">${project.description.substring(0, 45)}...</div>
                     <div class="exp-item-date" style="font-size: 10px; font-family: var(--font-mono); margin-top: 2px;">${(project.tags || []).join(', ')}</div>
                 </div>
-                <button onclick="window.portfolioBuilder.removeProject(${idx})" style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px;">&times;</button>
+                <div style="display:flex; gap:8px;">
+                    <button onclick="window.portfolioBuilder.openProjectModal(${idx})" style="background: none; border: none; color: var(--primary); cursor: pointer; font-size: 14px;"><i data-lucide="edit-2" style="width:14px;height:14px;"></i></button>
+                    <button onclick="window.portfolioBuilder.removeProject(${idx})" style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 16px;">&times;</button>
+                </div>
             </div>
         </div>
     `).join('');
+    if (window.lucide) window.lucide.createIcons();
 }
 
 // Remove project
@@ -1318,7 +1322,26 @@ export function saveEducation() {
 }
 
 // Project Modal actions
-export function openProjectModal() { toggleModal('projectModal', 'open'); }
+// Project Modal actions
+export function openProjectModal(idx = null) {
+    toggleModal('projectModal', 'open');
+    if (idx !== null && typeof idx === 'number') {
+        const p = portfolioState.projects[idx];
+        document.getElementById('projTitle').value = p.title || '';
+        document.getElementById('projDesc').value = p.description || '';
+        document.getElementById('projTags').value = (p.tags || []).join(', ');
+        document.getElementById('projLink').value = p.link || '';
+        document.getElementById('projStatus').value = p.status || 'Featured';
+        window.editingProjectIdx = idx;
+    } else {
+        window.editingProjectIdx = null;
+        document.getElementById('projTitle').value = '';
+        document.getElementById('projDesc').value = '';
+        document.getElementById('projTags').value = '';
+        document.getElementById('projLink').value = '';
+        document.getElementById('projStatus').value = 'Featured';
+    }
+}
 export function closeProjectModal() {
     toggleModal('projectModal', 'close');
     const ids = ['projTitle', 'projDesc', 'projTags', 'projLink'];
@@ -1330,6 +1353,7 @@ export function closeProjectModal() {
         }
     });
     document.getElementById('projStatus').value = 'Featured';
+    window.editingProjectIdx = null;
 }
 export function saveProjectItem() {
     const titleEl = document.getElementById('projTitle');
@@ -1362,8 +1386,11 @@ export function saveProjectItem() {
         descEl.closest('.form-group').classList.remove('invalid');
     }
 
-    // Validate URL (if provided)
-    if (link) {
+    // Validate URL (Mandatory)
+    if (!link) {
+        linkEl.closest('.form-group').classList.add('invalid');
+        modalValid = false;
+    } else {
         const urlPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9\-._~:\/?#\[\]@!$&'()*+,;=]*)?$/i;
         if (!urlPattern.test(link)) {
             linkEl.closest('.form-group').classList.add('invalid');
@@ -1374,8 +1401,6 @@ export function saveProjectItem() {
                 link = 'https://' + link;
             }
         }
-    } else {
-        linkEl.closest('.form-group').classList.remove('invalid');
     }
 
     if (!modalValid) {
@@ -1386,15 +1411,26 @@ export function saveProjectItem() {
         ? tagsVal.split(',').map(t => t.trim()).filter(Boolean)
         : ['Portfolio', 'Project'];
 
-    portfolioState.projects.push({
-        id: 'proj_' + Date.now(),
-        title,
-        description,
-        tags,
-        status,
-        link,
-        image: 'assets/right2.jpg'
-    });
+    if (window.editingProjectIdx !== null && window.editingProjectIdx !== undefined) {
+        portfolioState.projects[window.editingProjectIdx] = {
+            ...portfolioState.projects[window.editingProjectIdx],
+            title,
+            description,
+            tags,
+            status,
+            link
+        };
+    } else {
+        portfolioState.projects.push({
+            id: 'proj_' + Date.now(),
+            title,
+            description,
+            tags,
+            status,
+            link,
+            image: 'assets/right2.jpg'
+        });
+    }
 
     savePortfolioData();
     renderProjects();
@@ -1499,9 +1535,13 @@ function injectPreviewStyles(t, isCustom = false) {
     const isCreativeA4 = cardStyle === 'creative-a4';
 
     // Resolve the raw background value (could be a URL for template presets)
-    const rawBg = isCustom ? ct.backgroundSolid : t.colors.background;
+    const rawBg = isCustom
+        ? (ct.backgroundType === 'gradient' ? ct.backgroundGradientStart : ct.backgroundSolid)
+        : t.colors.background;
+
     if (rawBg && (rawBg.startsWith('http') || rawBg.startsWith('url('))) {
-        bgStyle = `url('${rawBg}') center/cover no-repeat fixed`;
+        let finalUrl = rawBg.startsWith('http') ? `url('${rawBg}')` : rawBg;
+        bgStyle = `${finalUrl} center/cover no-repeat fixed`;
         bgIsImage = true;
     } else if (isCustom) {
         if (ct.backgroundType === 'gradient') {
@@ -1662,8 +1702,8 @@ function buildPortfolioCSS(sel, tok) {
         ${s} ${sel.heroSelector} {
             display: flex;
             flex-direction: column;
-            align-items: ${ (isCentered) ? 'center' : 'flex-start' } !important;
-            text-align: ${ (isCentered) ? 'center' : 'left' } !important;
+            align-items: ${(isCentered) ? 'center' : 'flex-start'} !important;
+            text-align: ${(isCentered) ? 'center' : 'left'} !important;
         }
         ${s} ${sel.nameSelector} {
             color: ${text} !important;
@@ -1714,17 +1754,17 @@ function buildPortfolioCSS(sel, tok) {
 
         /* ── Skills ── */
         ${s} ${sel.skillSelector} {
-            background: ${isCustom ? hexToRgba(accent,'0.08') : (isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)')} !important;
+            background: ${isCustom ? hexToRgba(accent, '0.08') : (isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.06)')} !important;
             color: ${isCustom ? accent : text} !important;
-            border: 1px solid ${isCustom ? hexToRgba(accent,'0.25') : (isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.12)')} !important;
+            border: 1px solid ${isCustom ? hexToRgba(accent, '0.25') : (isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.12)')} !important;
             font-family: var(--font-mono) !important;
             font-size: 0.75em !important;
         }
 
         /* ── Timeline / Experience Items ── */
         ${s} ${sel.expItemSelector} {
-            background: ${isCustom ? hexToRgba(cardBgColor,'0.9') : (isLight ? 'rgba(255,255,255,0.65)' : 'rgba(255,255,255,0.035)')} !important;
-            border: 1px solid ${isCustom ? hexToRgba(accent,'0.15') : (isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.08)')} !important;
+            background: ${isCustom ? hexToRgba(cardBgColor, '0.9') : (isLight ? 'rgba(255,255,255,0.65)' : 'rgba(255,255,255,0.035)')} !important;
+            border: 1px solid ${isCustom ? hexToRgba(accent, '0.15') : (isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.08)')} !important;
             box-shadow: ${isLight ? '0 8px 32px 0 rgba(31,38,135,0.04)' : '0 8px 32px 0 rgba(0,0,0,0.2)'} !important;
             backdrop-filter: blur(12px) !important;
             -webkit-backdrop-filter: blur(12px) !important;
@@ -1739,7 +1779,7 @@ function buildPortfolioCSS(sel, tok) {
         /* ── Avatar ── */
         ${s} ${sel.photoSelector} {
             border: 3.5px solid ${accent} !important;
-            border-radius: ${ avatarShape === 'circle' ? '50%' : avatarShape === 'square' ? '4px' : '18px' } !important;
+            border-radius: ${avatarShape === 'circle' ? '50%' : avatarShape === 'square' ? '4px' : '18px'} !important;
         }
 
         /* ── Social Links ── */
@@ -1753,6 +1793,9 @@ function buildPortfolioCSS(sel, tok) {
         ${s}.layout-left-aligned ${sel.heroSelector} {
             text-align: left !important; align-items: flex-start !important;
         }
+        ${s}.layout-left-aligned .preview-photo-wrapper { align-self: flex-start !important; text-align: left !important; margin: 0 0 14px 0 !important; }
+        ${s}.layout-left-aligned ${sel.taglineSelector} { margin: 10px 0 0 0 !important; }
+        ${s}.layout-left-aligned .preview-quick-connect { justify-content: flex-start !important; }
         ${s}.layout-left-aligned ${sel.locationBadgeSelector} { align-self: flex-start !important; }
 
         /* ── Layout: Split (Two-Column, desktop only) ── */
@@ -1774,21 +1817,28 @@ function buildPortfolioCSS(sel, tok) {
         }
 
         /* ── Creative A4 Paper Style ── */
-        ${ isCreativeA4 ? `
-        ${s} ${sel.sectionContainerSelector},
-        ${s} ${sel.expItemSelector} {
+        ${isCreativeA4 ? `
+        ${s} {
+            background: rgba(250,246,240,0.97) !important;
+            border: 6px double ${accent} !important;
+            outline: 2px solid ${accent}55 !important; outline-offset: -16px !important;
+            border-radius: 4px !important;
+            box-shadow: 0 12px 60px rgba(0,0,0,0.35) !important;
+        }
+        ${s} ${sel.sectionContainerSelector} {
             background: transparent !important; border: none !important;
             box-shadow: none !important; backdrop-filter: none !important;
+            border-radius: 0 !important;
+            border-top: 1px dashed ${accent}30 !important; padding: 1.5em 0 !important;
+            margin-bottom: 0 !important;
         }
-        ${s} > * {
-            background: rgba(250,246,240,0.96) !important;
-            border: 5px double ${accent} !important;
-            outline: 2px solid ${accent}44 !important; outline-offset: -12px !important;
-            border-radius: 4px !important;
-            box-shadow: 0 8px 48px rgba(0,0,0,0.25) !important;
-            padding: 40px !important;
+        ${s} ${sel.expItemSelector} {
+            background: transparent !important; border: none !important;
+            box-shadow: none !important;
+            border-bottom: 1px solid ${accent}18 !important;
+            border-radius: 0 !important; padding: 0.75em 0 !important; margin-bottom: 0 !important;
         }
-        ` : '' }
+        ` : ''}
     `;
 }
 
@@ -2031,7 +2081,6 @@ function updatePreviewProjects() {
 
     projectsContainer.innerHTML = portfolioState.projects.map(project => `
         <div class="preview-experience-item" style="align-items: flex-start; cursor: ${project.link ? 'pointer' : 'default'};" ${project.link ? `onclick="window.open('${project.link}', '_blank')"` : ''}>
-            <img src="${project.image || 'assets/right2.jpg'}" alt="${project.title}" style="width: 72px; height: 72px; object-fit: cover; border-radius: 8px; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.05);">
             <div style="flex: 1; min-width: 0;">
                 <div class="preview-exp-title" style="font-weight:600; font-size:1rem;">${project.title}</div>
                 <div class="preview-exp-company" style="font-size:0.85rem; margin: 4px 0 8px 0; line-height: 1.4; color: inherit; opacity: 0.85;">${project.description}</div>
@@ -2121,16 +2170,6 @@ async function setupTemplateGallery() {
 
     const allTemplates = getAllTemplates();
 
-    // Add custom template card at the end
-    const customCardHtml = `
-        <div class="theme-card ${portfolioState.selectedTemplate === 'custom' ? 'selected' : ''}" onclick="window.portfolioBuilder.selectTemplate('custom')">
-            <div class="theme-card-preview" style="background: linear-gradient(135deg, #1f1f2e 0%, #111119 100%); color:#dc2626; font-family: monospace;">
-                CUSTOM
-            </div>
-            <div class="theme-card-name">Custom Builder</div>
-        </div>
-    `;
-
     templatesContainer.innerHTML = allTemplates.map(template => {
         const isSelected = template.id === portfolioState.selectedTemplate;
         const bg = template.colors.background || '#ffffff';
@@ -2149,8 +2188,6 @@ async function setupTemplateGallery() {
             cardBgStyle = `background: linear-gradient(135deg, #1e1b4b 0%, #090514 100%); color: ${text};`;
         } else if (template.id === 'floral_elegance') {
             cardBgStyle = `background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%); color: #831843;`;
-        } else if (template.id === 'executive_prestige') {
-            cardBgStyle = `background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #f8fafc;`;
         } else {
             cardBgStyle = `background: ${bg}; color: ${text};`;
         }
@@ -2167,7 +2204,7 @@ async function setupTemplateGallery() {
                 <div class="theme-card-name">${template.name}</div>
             </div>
         `;
-    }).join('') + customCardHtml;
+    }).join('');
 
     if (window.lucide) window.lucide.createIcons();
 }
@@ -2426,6 +2463,21 @@ function validateField(input) {
             isValid = false;
             errorMsg = 'Full Name is required.';
         }
+    } else if (id === 'tagline') {
+        if (value === '') {
+            isValid = false;
+            errorMsg = 'Tagline is required.';
+        }
+    } else if (id === 'location') {
+        if (value === '') {
+            isValid = false;
+            errorMsg = 'Location is required.';
+        }
+    } else if (id === 'about') {
+        if (value === '') {
+            isValid = false;
+            errorMsg = 'Bio is required.';
+        }
     } else if (id === 'role') {
         if (value === '') {
             isValid = false;
@@ -2500,6 +2552,9 @@ function validateSidebarForm() {
     const fields = [
         'fullName',
         'role',
+        'tagline',
+        'location',
+        'about',
         'phone',
         'email',
         'websiteUrl',
@@ -2537,6 +2592,22 @@ function validateSidebarForm() {
         }, 300);
     }
 
+    if (allValid) {
+        // Also check arrays
+        if (!portfolioState.skills || portfolioState.skills.length === 0) {
+            window.showToast?.('Please add at least one Skill.', 'error');
+            return false;
+        }
+        if (!portfolioState.education || portfolioState.education.length === 0) {
+            window.showToast?.('Please add at least one Education.', 'error');
+            return false;
+        }
+        if (!portfolioState.projects || portfolioState.projects.length === 0) {
+            window.showToast?.('Please add at least one Project.', 'error');
+            return false;
+        }
+    }
+
     return allValid;
 }
 
@@ -2544,6 +2615,9 @@ function setupValidationListeners() {
     const fields = [
         'fullName',
         'role',
+        'tagline',
+        'location',
+        'about',
         'phone',
         'email',
         'websiteUrl',

@@ -16,13 +16,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&display=swap"
-        rel="stylesheet">
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap"
-        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@300;400;500;600;700&display=swap">
 
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -144,6 +139,7 @@
                 <!-- Borderless Sliding Tabs bar -->
                 <div class="profile-tabs-nav">
                     <button class="profile-tab-btn active" data-tab="published">Published</button>
+                    <button class="profile-tab-btn" data-tab="purchased">Purchased</button>
                     <button class="profile-tab-btn upload-tab" data-tab="upload">+ Upload</button>
                     <div class="tab-indicator"></div>
                 </div>
@@ -151,6 +147,13 @@
                 <!-- Tab 1: Published Projects -->
                 <div class="profile-tab-content active" id="tab-published">
                     <div class="projects-grid" id="prof-uploaded-projects-grid">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Tab 2: Purchased Projects -->
+                <div class="profile-tab-content" id="tab-purchased">
+                    <div class="projects-grid" id="prof-purchased-projects-grid">
                         <!-- Populated dynamically -->
                     </div>
                 </div>
@@ -257,103 +260,105 @@
             </section>
         </main>
 
-    <!-- Redesigned project details drawer -->
-    <div class="preview-drawer" id="project-detail-drawer">
-        <div class="drawer-header">
-            <h3 id="drawer-project-title">Project Detail</h3>
-            <button class="nav-btn clickable" id="btn-close-detail-drawer"
-                style="background:none; border:none; color:var(--text-secondary); font-size:1.4rem; cursor:pointer;">✕</button>
-        </div>
-        <div class="drawer-body"
-            style="padding: 24px; display:flex; flex-direction:column; gap:20px; overflow-y:auto; height:calc(100% - 140px);">
-            <img src="" alt="Thumbnail" id="drawer-project-img"
-                style="width:100%; height:220px; object-fit:cover; border-radius:12px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span class="badge" id="drawer-project-category"
-                    style="padding: 6px 14px; background: rgba(128,128,128,0.06); border: 1px solid var(--border-color); border-radius: 99px; font-size: 0.8rem; font-family:var(--font-mono); text-transform:uppercase;">Web
-                    App</span>
-                <span id="drawer-project-price"
-                    style="font-weight:700; font-size:1.2rem; color:var(--text-primary);">₹0.00</span>
+        <!-- Redesigned project details drawer -->
+        <div class="preview-drawer" id="project-detail-drawer">
+            <div class="drawer-header">
+                <h3 id="drawer-project-title">Project Detail</h3>
+                <button class="nav-btn clickable" id="btn-close-detail-drawer"
+                    style="background:none; border:none; color:var(--text-secondary); font-size:1.4rem; cursor:pointer;">✕</button>
             </div>
-            <p id="drawer-project-desc"
-                style="color:var(--text-secondary); line-height:1.6; font-size:0.95rem; margin:0;"></p>
-            <a href="" target="_blank" id="drawer-project-demo-link" class="pill-btn outline clickable"
-                style="display:inline-flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; width: fit-content; font-size:0.85rem; padding:8px 16px;">
-                Live Demo <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
-            </a>
+            <div class="drawer-body"
+                style="padding: 24px; display:flex; flex-direction:column; gap:20px; overflow-y:auto; height:calc(100% - 140px);">
+                <img src="" alt="Thumbnail" id="drawer-project-img"
+                    style="width:100%; height:220px; object-fit:cover; border-radius:12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="badge" id="drawer-project-category"
+                        style="padding: 6px 14px; background: rgba(128,128,128,0.06); border: 1px solid var(--border-color); border-radius: 99px; font-size: 0.8rem; font-family:var(--font-mono); text-transform:uppercase;">Web
+                        App</span>
+                    <span id="drawer-project-price"
+                        style="font-weight:700; font-size:1.2rem; color:var(--text-primary);">₹0.00</span>
+                </div>
+                <p id="drawer-project-desc"
+                    style="color:var(--text-secondary); line-height:1.6; font-size:0.95rem; margin:0;"></p>
+                <a href="" target="_blank" id="drawer-project-demo-link" class="pill-btn outline clickable"
+                    style="display:inline-flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; width: fit-content; font-size:0.85rem; padding:8px 16px;">
+                    Live Demo <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
+                </a>
+            </div>
+            <div class="drawer-footer"
+                style="padding: 20px 24px; border-top:1px solid var(--border-color); display:flex; gap:12px; position:absolute; bottom:0; left:0; width:100%; box-sizing:border-box; background: var(--bg-base);">
+                <button class="pill-btn outline clickable" id="btn-delete-project"
+                    style="flex:1; border-color: rgba(239, 68, 68, 0.4); color: #ef4444; font-size:0.9rem; padding: 10px 14px;">Delete
+                    Project</button>
+                <button class="pill-btn solid clickable" id="btn-view-marketplace"
+                    style="flex:1; font-size:0.9rem; padding: 10px 14px;">View in Marketplace</button>
+            </div>
         </div>
-        <div class="drawer-footer"
-            style="padding: 20px 24px; border-top:1px solid var(--border-color); display:flex; gap:12px; position:absolute; bottom:0; left:0; width:100%; box-sizing:border-box; background: var(--bg-base);">
-            <button class="pill-btn outline clickable" id="btn-delete-project"
-                style="flex:1; border-color: rgba(239, 68, 68, 0.4); color: #ef4444; font-size:0.9rem; padding: 10px 14px;">Delete
-                Project</button>
-            <button class="pill-btn solid clickable" id="btn-view-marketplace"
-                style="flex:1; font-size:0.9rem; padding: 10px 14px;">View in Marketplace</button>
-        </div>
-    </div>
 
-    <!-- PROFILE EDIT MODAL -->
-    <div class="modal-overlay" id="profileEditModal">
-        <div class="modal-container"
-            style="background: var(--bg-base); border: 1px solid var(--border-color); width: 90%; max-width: 500px; max-height: 90vh; display:flex; flex-direction:column;">
-            <div class="modal-header" style="border-bottom: 1px solid var(--border-color);">
-                <h3
-                    style="margin:0; font-family:var(--font-display); font-weight:700; font-size:1.1rem; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
-                    <i data-lucide="user" style="color:#ffffff; width:16px; height:16px;"></i> Edit Profile Details
-                </h3>
-                <button type="button" class="clickable" id="btn-close-profile-modal"
-                    style="background:none; border:none; color:var(--text-secondary); cursor:pointer; font-size:1.4rem; line-height:1;">&times;</button>
-            </div>
-            <div class="modal-body" style="padding: 24px; overflow-y:auto; flex:1;">
-                <div class="form-group" style="margin-bottom: 16px;">
-                    <label class="form-label">Profile Photo</label>
-                    <div class="profile-upload-zone" id="prof-upload-zone">
-                        <i data-lucide="image"
-                            style="width: 24px; height: 24px; margin-bottom: 8px; color: var(--text-secondary);"></i>
-                        <p style="margin: 0; font-size: 0.85rem; color: var(--text-secondary);">Drag &amp; drop or click
-                            to upload</p>
-                        <span id="prof-upload-filename"
-                            style="display: block; font-size: 0.8rem; color: var(--text-primary); margin-top: 6px; font-weight: 500;"></span>
-                        <input type="file" id="prof-avatar-file-input" accept="image/*" style="display: none;">
+        <!-- PROFILE EDIT MODAL -->
+        <div class="modal-overlay" id="profileEditModal">
+            <div class="modal-container"
+                style="background: var(--bg-base); border: 1px solid var(--border-color); width: 90%; max-width: 500px; max-height: 90vh; display:flex; flex-direction:column;">
+                <div class="modal-header" style="border-bottom: 1px solid var(--border-color);">
+                    <h3
+                        style="margin:0; font-family:var(--font-display); font-weight:700; font-size:1.1rem; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+                        <i data-lucide="user" style="color:#ffffff; width:16px; height:16px;"></i> Edit Profile Details
+                    </h3>
+                    <button type="button" class="clickable" id="btn-close-profile-modal"
+                        style="background:none; border:none; color:var(--text-secondary); cursor:pointer; font-size:1.4rem; line-height:1;">&times;</button>
+                </div>
+                <div class="modal-body" style="padding: 24px; overflow-y:auto; flex:1;">
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label class="form-label">Profile Photo</label>
+                        <div class="profile-upload-zone" id="prof-upload-zone">
+                            <i data-lucide="image"
+                                style="width: 24px; height: 24px; margin-bottom: 8px; color: var(--text-secondary);"></i>
+                            <p style="margin: 0; font-size: 0.85rem; color: var(--text-secondary);">Drag &amp; drop or
+                                click
+                                to upload</p>
+                            <span id="prof-upload-filename"
+                                style="display: block; font-size: 0.8rem; color: var(--text-primary); margin-top: 6px; font-weight: 500;"></span>
+                            <input type="file" id="prof-avatar-file-input" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" id="prof-name-input" placeholder="Your Name">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label class="form-label">Username (handle)</label>
+                        <input type="text" class="form-input" id="prof-username-input" placeholder="username">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label class="form-label">Biography</label>
+                        <textarea class="form-textarea" id="prof-bio-input" rows="3"
+                            placeholder="Draft your professional summary details..."></textarea>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label class="form-label">Skills (comma-separated)</label>
+                        <input type="text" class="form-input" id="prof-skills-input"
+                            placeholder="e.g. WebGL, Figma, React">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label class="form-label">Availability</label>
+                        <select class="form-select" id="prof-availability-select"
+                            style="width: 100%; background: transparent; border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 12px; padding: 14px; outline:none; height: 50px;">
+                            <option value="Available for Work">Available for Work</option>
+                            <option value="Open to Freelance">Open to Freelance</option>
+                            <option value="Busy">Busy</option>
+                            <option value="Hiring">Hiring</option>
+                        </select>
                     </div>
                 </div>
-                <div class="form-group" style="margin-bottom: 16px;">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-input" id="prof-name-input" placeholder="Your Name">
+                <div class="modal-footer"
+                    style="padding: 20px 24px; border-top:1px solid var(--border-color); display:flex; justify-content:flex-end; gap:12px;">
+                    <button type="button" class="pill-btn outline clickable" id="btn-cancel-profile"
+                        style="padding: 10px 20px; font-size: 0.85rem;">Cancel</button>
+                    <button type="button" class="pill-btn solid clickable" id="prof-save-bio-btn"
+                        style="padding: 10px 20px; font-size: 0.85rem;">Save Changes</button>
                 </div>
-                <div class="form-group" style="margin-bottom: 16px;">
-                    <label class="form-label">Username (handle)</label>
-                    <input type="text" class="form-input" id="prof-username-input" placeholder="username">
-                </div>
-                <div class="form-group" style="margin-bottom: 16px;">
-                    <label class="form-label">Biography</label>
-                    <textarea class="form-textarea" id="prof-bio-input" rows="3"
-                        placeholder="Draft your professional summary details..."></textarea>
-                </div>
-                <div class="form-group" style="margin-bottom: 16px;">
-                    <label class="form-label">Skills (comma-separated)</label>
-                    <input type="text" class="form-input" id="prof-skills-input" placeholder="e.g. WebGL, Figma, React">
-                </div>
-                <div class="form-group" style="margin-bottom: 8px;">
-                    <label class="form-label">Availability</label>
-                    <select class="form-select" id="prof-availability-select"
-                        style="width: 100%; background: transparent; border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 12px; padding: 14px; outline:none; height: 50px;">
-                        <option value="Available for Work">Available for Work</option>
-                        <option value="Open to Freelance">Open to Freelance</option>
-                        <option value="Busy">Busy</option>
-                        <option value="Hiring">Hiring</option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer"
-                style="padding: 20px 24px; border-top:1px solid var(--border-color); display:flex; justify-content:flex-end; gap:12px;">
-                <button type="button" class="pill-btn outline clickable" id="btn-cancel-profile"
-                    style="padding: 10px 20px; font-size: 0.85rem;">Cancel</button>
-                <button type="button" class="pill-btn solid clickable" id="prof-save-bio-btn"
-                    style="padding: 10px 20px; font-size: 0.85rem;">Save Changes</button>
             </div>
         </div>
-    </div>
     </div>
 
     <script type="module" src="js/index.js"></script>

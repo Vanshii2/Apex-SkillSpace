@@ -82,7 +82,7 @@ export function initShopPage() {
             return;
         }
 
-        projectsGrid.innerHTML = items.map(p => {
+        projectsGrid.innerHTML = items.map((p, index) => {
             const inCart = cartSet.has(p.id);
             const inWish = getWishlist().includes(p.id);
             const hasDemo = p.demoUrl && p.demoUrl !== '#';
@@ -90,7 +90,7 @@ export function initShopPage() {
             return `
                 <div class="project-card shop-product-card" data-id="${p.id}">
                     <div class="project-card-img-wrapper">
-                        <img src="${getImage(p.image)}" alt="${p.title}" loading="lazy">
+                        <img src="${getImage(p.image)}" alt="${p.title}" ${index === 0 ? 'fetchpriority="high"' : ''} loading="${index < 4 ? 'eager' : 'lazy'}">
                         <div class="project-card-overlay">
                             <button
                                 class="btn btn-primary preview-trigger-btn clickable"
@@ -101,15 +101,9 @@ export function initShopPage() {
                     </div>
                     <div class="project-card-content">
                         <div class="project-card-header">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <h3 class="project-card-title">${p.title}</h3>
-                            <button
-                                class="btn btn-secondary wishlist-action-btn clickable"
-                                data-id="${p.id}"
-                                style="width:28px;height:28px;padding:0;font-size:0.8rem;border-radius:50%;flex-shrink:0;
-                                    color:${inWish ? 'var(--danger)' : ''};
-                                    border-color:${inWish ? 'var(--danger)' : ''};"
-                                title="Wishlist">♥</button>
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-direction:column;">
+                            <h3 class="project-card-title" style="margin-bottom: 4px;">${p.title}</h3>
+                            <span style="font-size: 0.8rem; color: var(--text-secondary);">By ${p.seller || 'Unknown'}</span>
                         </div>
                     </div>
                         <div class="project-card-tags">
@@ -180,28 +174,6 @@ export function initShopPage() {
             });
         });
 
-        // Wishlist heart toggle
-        projectsGrid.querySelectorAll('.wishlist-action-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const id = btn.dataset.id;
-                const currentlyWishlisted = getWishlist().includes(id);
-
-                if (currentlyWishlisted) {
-                    removeFromWishlist(id);
-                    btn.style.color = '';
-                    btn.style.borderColor = '';
-                    btn.style.background = '';
-                    showToast('Removed from your wishlist.', 'info');
-                } else {
-                    addToWishlist(id);
-                    btn.style.color = 'var(--danger)';
-                    btn.style.borderColor = 'var(--danger)';
-                    btn.style.background = 'rgba(239,68,68,0.1)';
-                    showToast('Added to your wishlist!', 'success');
-                }
-            });
-        });
     };
 
     // Keep cartSet in sync when drawer's "Add to Cart" button is used externally

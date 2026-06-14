@@ -51,15 +51,21 @@ export function registerUser(name, email, password) {
 }
 
 export function loginUser(email, password) {
+    const trimmedEmail = (email || '').trim().toLowerCase();
+    const trimmedPassword = (password || '').trim();
+
     const storedData = localStorage.getItem(USER_DATA_KEY);
     
     if (!storedData) {
-        return { success: false, message: 'No account found. Please sign up.' };
+        return { success: false, message: 'No account found. Please sign up first.' };
     }
     
     try {
         const user = JSON.parse(storedData);
-        if (user.email === email && user.password === password) {
+        const storedEmail = (user.email || '').trim().toLowerCase();
+        const storedPassword = (user.password || '').trim();
+
+        if (storedEmail === trimmedEmail && storedPassword === trimmedPassword) {
             localStorage.setItem(IS_LOGGED_IN_KEY, 'true');
 
             // Sync dx_user with the stored name on every login (ensures profile shows real name)
@@ -92,10 +98,14 @@ export function loginUser(email, password) {
             window.location.href = 'showcase.html';
             return { success: true };
         } else {
-            return { success: false, message: 'Invalid email or password.' };
+            // Give specific hints
+            if (storedEmail !== trimmedEmail) {
+                return { success: false, message: 'No account found with that email address.' };
+            }
+            return { success: false, message: 'Incorrect password. Please try again.' };
         }
     } catch (e) {
-        return { success: false, message: 'Error reading account data.' };
+        return { success: false, message: 'Error reading account data. Please try signing up again.' };
     }
 }
 

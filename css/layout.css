@@ -168,7 +168,7 @@
 }
 
 /* Notification Badge */
-.notification-dot {
+/* .notification-dot {
     position: absolute;
     top: 6px;
     right: 6px;
@@ -177,7 +177,7 @@
     background: var(--danger);
     border-radius: 50%;
     box-shadow: 0 0 8px var(--danger);
-}
+} */
 
 /* --- Floating Bottom Action Dock Menu --- */
 .floating-dock-container {
@@ -718,7 +718,8 @@
     }
 
     .nav-menu {
-        display: none !important; /* hide full nav links on mobile */
+        display: none !important;
+        /* hide full nav links on mobile */
     }
 
     .nav-actions {

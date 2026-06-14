@@ -76,6 +76,8 @@ export function getUser() {
 
 export function saveUser(user) {
     localStorage.setItem('dx_user', JSON.stringify(user));
+    // Notify any listeners (e.g. navbar avatar) that user data changed
+    window.dispatchEvent(new CustomEvent('userUpdated', { detail: user }));
 }
 
 export function getProjects() {
@@ -151,7 +153,8 @@ export function saveProjects(projects) {
         likes: p.likes || 0,
         bookmarks: p.bookmarks || 0,
         views: p.views || 1,
-        image: p.thumbnail || p.image || 'assets/project1.webp',
+        image: p.image || p.thumbnail || 'assets/project1.webp',   // preserve raw ID so getImage() can resolve it
+        thumbnail: p.thumbnail || p.image || 'assets/project1.webp',
         demoUrl: p.demoUrl || '#',
         liveDemo: p.demoUrl || '#',
         github: '#',
@@ -282,6 +285,27 @@ function updateAvailabilityUI(user) {
 function updateStatsAndSummary() {
     const user = getUser();
     const projects = getProjects().filter(p => p.seller === user.username);
+    const myProjectIds = new Set(projects.map(p => p.id));
+
+    // Calculate actual earned revenue from completed orders
+    let actualRevenue = 0;
+    try {
+        const ordersRaw = localStorage.getItem('apex_orders');
+        if (ordersRaw) {
+            const orders = JSON.parse(ordersRaw);
+            orders.forEach(order => {
+                if (order.items && Array.isArray(order.items)) {
+                    order.items.forEach(item => {
+                        if (myProjectIds.has(item.id)) {
+                            actualRevenue += (item.price || 0);
+                        }
+                    });
+                }
+            });
+        }
+    } catch (e) {
+        console.error('Error calculating revenue:', e);
+    }
 
     // Update main metrics safely
     const followersEl = document.getElementById('prof-followers-count');
@@ -290,9 +314,7 @@ function updateStatsAndSummary() {
 
     if (followersEl) followersEl.textContent = user.followers || 0;
     if (projectsEl) projectsEl.textContent = projects.length;
-
-    const revenueSum = projects.reduce((sum, p) => sum + (p.price || 0), 0);
-    if (revenueEl) revenueEl.textContent = `₹${revenueSum.toFixed(2)}`;
+    if (revenueEl) revenueEl.textContent = `₹${actualRevenue.toFixed(2)}`;
 
     // Update Seller Summary card
     const summaryPublished = document.getElementById('summary-published-count');
@@ -301,9 +323,11 @@ function updateStatsAndSummary() {
     const summaryCategories = document.getElementById('summary-categories');
 
     if (summaryPublished) summaryPublished.textContent = `${projects.length} project${projects.length === 1 ? '' : 's'}`;
-    if (summaryRevenue) summaryRevenue.textContent = `₹${revenueSum.toFixed(2)}`;
+    if (summaryRevenue) summaryRevenue.textContent = `₹${actualRevenue.toFixed(2)}`;
 
-    const avg = projects.length > 0 ? (revenueSum / projects.length) : 0;
+    // Average selling price (listing price avg — still useful for seller context)
+    const priceSum = projects.reduce((sum, p) => sum + (p.price || 0), 0);
+    const avg = projects.length > 0 ? (priceSum / projects.length) : 0;
     if (summaryAvgPrice) summaryAvgPrice.textContent = `₹${avg.toFixed(2)}`;
 
     const uniqueCats = [...new Set(projects.map(p => p.category).filter(Boolean))];
@@ -343,6 +367,8 @@ function initTabs() {
 
             if (tab.dataset.tab === 'published') {
                 renderPublishedTab();
+            } else if (tab.dataset.tab === 'purchased') {
+                renderPurchasedTab();
             } else if (tab.dataset.tab === 'portfolios') {
                 renderPortfoliosTab();
             }
@@ -395,8 +421,8 @@ function renderPublishedTab() {
     }
 
     grid.innerHTML = owned.map(p => `
-        <div class="project-card clickable" data-id="${p.id}">
-            <img src="${p.thumbnail || 'assets/project1.webp'}" alt="${p.title}" class="project-img">
+        <div class="project-card" data-id="${p.id}">
+            <img src="${p.image ? getImage(p.image) : (p.thumbnail ? getImage(p.thumbnail) : 'assets/project1.webp')}" alt="${p.title}" class="project-img">
             <div class="project-info">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 8px; gap: 8px;">
                     <h3 class="project-title" style="font-size: 1rem; margin:0; line-height:1.3; font-weight:600; font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.02em;">${p.title}</h3>
@@ -407,15 +433,57 @@ function renderPublishedTab() {
         </div>
     `).join('');
 
-    grid.querySelectorAll('.project-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const id = card.dataset.id;
-            openProjectDetailDrawer(id);
-        });
-    });
+    // Removed click listener that opens detail drawer, as requested by user.
+    if (window.lucide) window.lucide.createIcons();
+}
+
+function renderPurchasedTab() {
+    const grid = document.getElementById('prof-purchased-projects-grid');
+    if (!grid) return;
+
+    let purchasedItems = [];
+    const ordersData = localStorage.getItem('apex_orders');
+    if (ordersData) {
+        try {
+            const orders = JSON.parse(ordersData);
+            orders.forEach(order => {
+                if (order.items && Array.isArray(order.items)) {
+                    purchasedItems = purchasedItems.concat(order.items);
+                }
+            });
+        } catch (e) {
+            console.error('Error parsing apex_orders:', e);
+        }
+    }
+
+    if (purchasedItems.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state">
+                <i data-lucide="shopping-bag" style="width: 48px; height: 48px; color: var(--text-secondary);"></i>
+                <p style="color:var(--text-secondary); font-size:0.95rem; margin: 0 0 8px 0;">You have not purchased any projects yet.</p>
+                <button class="pill-btn solid clickable" onclick="window.location.href='marketplace.html'" style="padding: 10px 20px; font-size: 0.85rem;">Explore Marketplace</button>
+            </div>
+        `;
+        if (window.lucide) window.lucide.createIcons();
+        return;
+    }
+
+    grid.innerHTML = purchasedItems.map(p => `
+        <div class="project-card" data-id="${p.id}">
+            <img src="${p.image ? getImage(p.image) : (p.thumbnail ? getImage(p.thumbnail) : 'assets/project1.webp')}" alt="${p.title}" class="project-img">
+            <div class="project-info">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 8px; gap: 8px;">
+                    <h3 class="project-title" style="font-size: 1rem; margin:0; line-height:1.3; font-weight:600; font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.02em;">${p.title}</h3>
+                    <span class="badge" style="padding: 4px 8px; background: rgba(128,128,128,0.06); border: 1px solid var(--border-color); border-radius: 99px; font-size: 0.7rem; font-family:var(--font-mono); text-transform:uppercase; flex-shrink:0;">${p.category || 'Dashboard'}</span>
+                </div>
+                <div style="font-weight:700; color:var(--text-primary); font-size:0.95rem;">₹${(p.price || 0).toFixed(2)}</div>
+            </div>
+        </div>
+    `).join('');
 
     if (window.lucide) window.lucide.createIcons();
 }
+
 
 function deletePortfolioItem(portId) {
     if (confirm('Are you sure you want to delete this portfolio? This action cannot be undone.')) {
@@ -655,6 +723,7 @@ function setupUploadForm() {
                 price: price,
                 tags: tagsRaw.split(',').map(t => t.trim()).filter(Boolean),
                 demoUrl,
+                image: selectedThumbId,
                 thumbnail: selectedThumbId,
                 seller: userObj.username,
                 createdAt: new Date().toISOString()

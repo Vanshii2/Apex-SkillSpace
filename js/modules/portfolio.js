@@ -1,5 +1,6 @@
 import { getProjects, getCreators, bookmarkProject, addToCart } from './db.js';
 import { showToast } from '../core/global.js';
+import { getImage } from './images.js';
 
 /* ==========================================================================
    HELPERS
@@ -17,7 +18,7 @@ function renderProjectCard(project) {
         <div class="project-card" data-id="${project.id}">
 
             <div class="project-img-wrap">
-                <img src="${project.image}" alt="${project.title}" width="500" height="288" loading="lazy" decoding="async">
+                <img src="${getImage(project.image)}" alt="${project.title}" width="500" height="288" loading="lazy" decoding="async">
 
                
 
@@ -135,10 +136,41 @@ export function openGlobalPreviewDrawer(id, cartSet, syncCartSet) {
             return;
         }
 
-        const drawer = document.getElementById('preview-drawer');
+        let drawer = document.getElementById('preview-drawer');
         if (!drawer) {
-            console.warn("Preview drawer element '#preview-drawer' not found");
-            return;
+            drawer = document.createElement('div');
+            drawer.className = 'preview-drawer';
+            drawer.id = 'preview-drawer';
+            drawer.innerHTML = `
+                <div class="notification-header" style="border-bottom:1px solid var(--border-color);padding:20px 24px; display:flex; justify-content:space-between; align-items:center;">
+                    <h3 id="drawer-title" style="margin:0;font-size:1.15rem;">Project Preview</h3>
+                    <button class="nav-btn clickable" id="drawer-close" style="width:32px;height:32px; display:flex; align-items:center; justify-content:center;">✕</button>
+                </div>
+                <div style="flex-grow:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:20px;">
+                    <img src="" alt="Thumbnail" id="drawer-img" style="width:100%;height:220px;object-fit:cover;border-radius:12px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span class="badge badge-primary" id="drawer-badge">Web Experience</span>
+                        <span style="font-weight:bold;color:var(--primary);font-size:1.2rem;" id="drawer-price">₹1099.00</span>
+                    </div>
+                    <p id="drawer-desc" style="font-size:0.9rem;line-height:1.6;color:var(--text-secondary);"></p>
+                    <div style="display:flex;flex-direction:column;gap:8px;">
+                        <h4 style="font-size:0.8rem;text-transform:uppercase;color:var(--text-muted);letter-spacing:0.05em;">Tech Specs</h4>
+                        <div style="display:flex;flex-wrap:wrap;gap:6px;" id="drawer-tags"></div>
+                    </div>
+                </div>
+                <div style="padding:20px 24px;border-top:1px solid var(--border-color);display:flex;gap:12px;">
+                    <button class="btn btn-glow clickable" style="flex-grow:1;" id="drawer-buy-btn">Add to Cart</button>
+                </div>
+            `;
+            document.body.appendChild(drawer);
+
+            // Re-bind the close button since we just created it
+            const closeBtn = drawer.querySelector('#drawer-close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    drawer.classList.remove('show');
+                });
+            }
         }
 
         const titleEl = document.getElementById('drawer-title');
@@ -150,7 +182,7 @@ export function openGlobalPreviewDrawer(id, cartSet, syncCartSet) {
         const buyBtn = document.getElementById('drawer-buy-btn');
 
         if (titleEl) titleEl.textContent = p.title || '';
-        if (imgEl) imgEl.src = p.image || '';
+        if (imgEl) imgEl.src = p.image ? getImage(p.image) : '';
         if (badgeEl) badgeEl.textContent = p.status || p.category || '';
         if (priceEl) priceEl.textContent = `₹${(p.price || 0).toFixed(2)}`;
         if (descEl) descEl.textContent = p.description || '';
@@ -238,8 +270,8 @@ export function openGlobalPreviewDrawer(id, cartSet, syncCartSet) {
                         if (syncCartSet) syncCartSet();
                         newBtn.textContent = 'Added ✓';
                         newBtn.style.background = 'rgba(16,185,129,0.15)';
-                        newBtn.style.color = '#10b981';
-                        newBtn.style.borderColor = '#10b981';
+                        newBtn.style.color = '#065a1dff';
+                        newBtn.style.borderColor = '#077528ff';
                         showToast(`${p.title} added to cart!`, 'success');
                         if (window.updateCartDrawer) window.updateCartDrawer();
                         if (window.filterAndRenderProjects) window.filterAndRenderProjects();
@@ -250,13 +282,7 @@ export function openGlobalPreviewDrawer(id, cartSet, syncCartSet) {
             });
         }
 
-        const wishBtn = document.getElementById('drawer-wishlist-btn');
-        if (wishBtn) {
-            wishBtn.onclick = () => {
-                showToast(`Saved ${p.title} to your wishlist!`, 'success');
-                drawer.classList.remove('show');
-            };
-        }
+        // Wishlist removed
 
         drawer.classList.add('show');
         console.log("Preview drawer opened successfully for:", p.title);

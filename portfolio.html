@@ -6,6 +6,8 @@
         * {
             transition: none !important;
         }
+        body { opacity: 0; visibility: hidden; }
+        body.loaded { opacity: 1; visibility: visible; transition: opacity 0.4s ease !important; }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,12 +20,7 @@
     <!-- Google Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;1,300&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Fira+Code:wght@400;500&display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap"
-        rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@300;400;500;600;700&display=swap">
 
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -115,16 +112,19 @@
                             <span class="error-msg">Professional Role is required.</span>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Tagline / Headline</label>
+                            <label class="form-label">Tagline / Headline <span class="required-asterisk">*</span></label>
                             <input type="text" class="form-input" id="tagline">
+                            <span class="error-msg">Tagline is required.</span>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Location</label>
+                            <label class="form-label">Location <span class="required-asterisk">*</span></label>
                             <input type="text" class="form-input" id="location">
+                            <span class="error-msg">Location is required.</span>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Bio Narrative <span class="required-asterisk">*</span></label>
                             <textarea class="form-textarea" id="about"></textarea>
+                            <span class="error-msg">Bio Narrative is required.</span>
                         </div>
 
                         <div style="margin-top: 14px; border-top: 1px solid var(--border-subtle); padding-top: 12px;">
@@ -397,7 +397,7 @@
                             <select class="form-select" id="themeLayout">
                                 <option value="centered">Centered Stack</option>
                                 <option value="left-aligned">Left Aligned Stack</option>
-                                <option value="split">Modern Split (Two-Column)</option>
+
                             </select>
                         </div>
 
@@ -448,7 +448,7 @@
                         <h1 class="preview-name">Your Name</h1>
                         <p class="preview-role">Your Professional Role</p>
                         <p class="preview-tagline"
-                            style="font-size:1rem; opacity:0.7; margin-top:8px; margin-bottom:12px; text-align:center; line-height:1.5;">
+                            style="font-size:1rem; opacity:0.7; margin-top:8px; margin-bottom:12px; line-height:1.5;">
                             Crafting beautiful and functional digital experiences.
                         </p>
                         <div class="preview-location-badge"
@@ -457,7 +457,7 @@
                             <span class="preview-location-text">San Francisco, CA</span>
                         </div>
                         <div class="preview-quick-connect"
-                            style="display:flex; justify-content:center; gap:16px; font-size:0.82rem; opacity:0.75; margin-bottom:8px; flex-wrap:wrap;">
+                            style="display:flex; gap:16px; font-size:0.82rem; opacity:0.75; margin-bottom:8px; flex-wrap:wrap;">
                             <!-- Loaded dynamically -->
                         </div>
                     </div>

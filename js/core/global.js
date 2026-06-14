@@ -40,12 +40,20 @@ export function initScrollProgress() {
     const progressBar = document.querySelector('.scroll-progress-bar');
     if (!progressBar) return;
 
+    let ticking = false;
+
     window.addEventListener('scroll', () => {
-        const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
-        progressBar.style.width = scrolled + '%';
-    });
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+                progressBar.style.width = scrolled + '%';
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
 }
 
 // --- 4. Centralized Toast Notification System ---
@@ -410,7 +418,7 @@ export function initPageTransitions() {
     // Central dynamic navigator swap controller
     const navigateTo = (url, pushToHistory = true) => {
         const key = getNormalizedPath(url);
-        
+
         // Gate profile.html and portfolio.html for unlogged-in users
         if (key === 'profile.html' || key === 'portfolio.html') {
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -572,14 +580,14 @@ export function initTypewriter() {
 
     // Use <br> for the line break requested
     const textHtml = "Build a Portfolio That Helps You<br>Get Hired and Grow";
-    
+
     // Convert to nodes. Wrap text characters in hidden spans. Keep <br> as is.
     container.innerHTML = '';
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = textHtml;
-    
+
     const chars = [];
-    
+
     // We will build the content inside container
     Array.from(tempDiv.childNodes).forEach(node => {
         if (node.nodeType === Node.TEXT_NODE) {

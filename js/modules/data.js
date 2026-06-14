@@ -15,8 +15,8 @@ export const PROJECTS = [
         bookmarks: 200,
         views: 3200,
         image: 'assets/project1.webp',
-        demoUrl: 'https://designx-ai-project.vercel.app',
-        liveDemo: 'https://designx-ai-project.vercel.app',
+        demoUrl: 'https://www.behance.net/',
+        liveDemo: 'https://www.behance.net/',
         github: 'https://github.com/apex-skillspace/ai-face-recognition'
     },
     {
@@ -31,8 +31,8 @@ export const PROJECTS = [
         bookmarks: 128,
         views: 2310,
         image: 'assets/project7.webp',
-        demoUrl: 'https://designx-demo-dashboard.vercel.app',
-        liveDemo: 'https://designx-demo-dashboard.vercel.app',
+        demoUrl: 'https://www.behance.net/',
+        liveDemo: 'https://www.behance.net/',
         github: 'https://github.com/apex-skillspace/heart-tracker'
     },
     {
@@ -47,8 +47,8 @@ export const PROJECTS = [
         bookmarks: 72,
         views: 980,
         image: 'assets/project6.webp',
-        demoUrl: 'https://designx-analytics.vercel.app',
-        liveDemo: 'https://designx-analytics.vercel.app',
+        demoUrl: 'https://www.behance.net/',
+        liveDemo: 'https://www.behance.net/',
         github: 'https://github.com/apex-skillspace/expense-tracker'
     },
     {
@@ -63,8 +63,8 @@ export const PROJECTS = [
         bookmarks: 41,
         views: 740,
         image: 'assets/project4.webp',
-        demoUrl: 'https://designx-minimalist.vercel.app',
-        liveDemo: 'https://designx-minimalist.vercel.app',
+        demoUrl: 'https://www.behance.net/',
+        liveDemo: 'https://www.behance.net/',
         github: 'https://github.com/apex-skillspace/nutrition-site'
     },
     {
@@ -79,8 +79,8 @@ export const PROJECTS = [
         bookmarks: 92,
         views: 1450,
         image: 'assets/project5.webp',
-        demoUrl: 'https://designx-editorial.framer.website',
-        liveDemo: 'https://designx-editorial.framer.website',
+        demoUrl: 'https://www.behance.net/',
+        liveDemo: 'https://www.behance.net/',
         github: 'https://github.com/apex-skillspace/entertainment-hub'
     },
     {
@@ -95,8 +95,8 @@ export const PROJECTS = [
         bookmarks: 45,
         views: 890,
         image: 'assets/right1.webp',
-        demoUrl: 'https://designx-premium-landing.webflow.io',
-        liveDemo: 'https://designx-premium-landing.webflow.io',
+        demoUrl: 'https://www.behance.net/',
+        liveDemo: 'https://www.behance.net/',
         github: 'https://github.com/apex-skillspace/live-stream-platform'
     },
     {
@@ -111,8 +111,8 @@ export const PROJECTS = [
         bookmarks: 110,
         views: 1560,
         image: 'assets/project8.webp',
-        demoUrl: 'https://designx-uikit-preview.vercel.app',
-        liveDemo: 'https://designx-uikit-preview.vercel.app',
+        demoUrl: 'https://www.behance.net/',
+        liveDemo: 'https://www.behance.net/',
         github: 'https://github.com/apex-skillspace/resume-builder'
     },
     {
@@ -127,8 +127,8 @@ export const PROJECTS = [
         bookmarks: 180,
         views: 2800,
         image: 'assets/project3.webp',
-        demoUrl: 'https://designx-motion-kit.framer.website',
-        liveDemo: 'https://designx-motion-kit.framer.website',
+        demoUrl: 'https://www.behance.net/',
+        liveDemo: 'https://www.behance.net/',
         github: 'https://github.com/apex-skillspace/shoe-recognition'
     },
     {
@@ -143,8 +143,8 @@ export const PROJECTS = [
         bookmarks: 84,
         views: 1240,
         image: 'assets/project9.webp',
-        demoUrl: 'https://designx-ai-project.vercel.app',
-        liveDemo: 'https://designx-ai-project.vercel.app',
+        demoUrl: 'https://www.behance.net/',
+        liveDemo: 'https://www.behance.net/',
         github: 'https://github.com/apex-skillspace/ai-presentation'
     },
     {
@@ -159,8 +159,8 @@ export const PROJECTS = [
         bookmarks: 240,
         views: 4100,
         image: 'assets/project2.webp',
-        demoUrl: 'https://designx-demo-dashboard.vercel.app',
-        liveDemo: 'https://designx-demo-dashboard.vercel.app',
+        demoUrl: 'https://www.behance.net/',
+        liveDemo: 'https://www.behance.net/',
         github: 'https://github.com/apex-skillspace/analytics-dashboard'
     },
     {
@@ -175,8 +175,8 @@ export const PROJECTS = [
         bookmarks: 310,
         views: 5200,
         image: 'assets/project10.webp',
-        demoUrl: 'https://designx-premium-landing.webflow.io',
-        liveDemo: 'https://designx-premium-landing.webflow.io',
+        demoUrl: 'https://www.behance.net/',
+        liveDemo: 'https://www.behance.net/',
         github: 'https://github.com/apex-skillspace/landing-system'
     }
 ];
@@ -184,28 +184,40 @@ export const CREATORS = [
     {
         id: 'creator_1',
         username: 'hyper_arch',
-        name: 'Aron Thorne',
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
+        name: 'Aarav Sharma',
+        location: 'Bengaluru, India',
+        avatar: 'assets/aarav.png',
         banner: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
-        role: 'Creative Frontend Engineer',
-        bio: 'Cinematic 3D web experiences and motion architecture. Developing interactive micro-spaces for forward-thinking brands like Lusion and Nike.',
-        skills: ['WebGL', 'Three.js', 'Creative Direction', 'GSAP', 'CSS Grid'],
+        role: 'Full-Stack UI Engineer',
+        bio: 'Crafting immersive digital experiences with modern web technologies. Specializing in high-performance web applications and interactive architectures for top-tier Indian startups.',
+        skills: ['React', 'Next.js', 'Creative Direction', 'GSAP', 'CSS Grid'],
         experience: [
-            { title: 'Creative Developer', company: 'Aether Studio', startDate: '2024', endDate: 'Present' },
-            { title: 'Frontend Motion Engineer', company: 'Pixel Foundry', startDate: '2022', endDate: '2024' }
+            { title: 'Senior Frontend Engineer', company: 'TechNova Solutions', startDate: '2024', endDate: 'Present' },
+            { title: 'UI Developer', company: 'Bangalore Tech Lab', startDate: '2022', endDate: '2024' }
         ],
         projects: [
             {
                 id: 'hyper_arch_case',
-                title: 'Aether Portfolio Experience',
-                description: 'A cinematic WebGL portfolio concept with interactive sections, motion-led project storytelling, and recruiter-ready case studies.',
-                tags: ['WebGL', 'Three.js', 'GSAP'],
+                title: 'Fintech Dashboard Architecture',
+                description: 'A robust and scalable fintech dashboard built for real-time stock tracking and portfolio management, featuring seamless animations and micro-interactions.',
+                tags: ['React', 'Next.js', 'Framer Motion'],
                 status: 'Featured',
                 image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'
             }
         ],
-        socialLinks: { github: 'hyper-arch', linkedin: 'aron-thorne', twitter: 'hyper_arch' },
-        selectedTemplate: 'glass',
+        socialLinks: { github: 'hyper-arch', linkedin: 'aarav-sharma', twitter: 'hyper_arch' },
+        selectedTemplate: 'custom',
+        customTheme: {
+            backgroundType: 'solid',
+            backgroundSolid: '#f4f4f5',
+            cardStyle: 'shadow',
+            font: 'Outfit',
+            accent: '#4f46e5',
+            text: '#18181b',
+            layout: 'centered',
+            avatarShape: 'circle',
+            dividerStyle: 'solid'
+        },
         followers: 1240,
         following: 184,
         stats: { projects: 8, likes: 3410, sales: 142 }
@@ -213,28 +225,40 @@ export const CREATORS = [
     {
         id: 'creator_2',
         username: 'linear_flow',
-        name: 'Sarah K.',
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+        name: 'Priya Patel',
+        location: 'Mumbai, India',
+        avatar: 'assets/priya.png',
         banner: 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=800&q=80',
-        role: 'Design Systems Engineer',
-        bio: 'Design systems engineer crafting minimalist UI structures and modular frontend architectures. Obsessed with micro-interactions and typographic grids.',
-        skills: ['Sass', 'CSS Variables', 'Vanilla JS', 'SVG Anim', 'Figma'],
+        role: 'UX Designer & Developer',
+        bio: 'Bridging the gap between beautiful design and robust engineering. Passionate about creating accessible, user-centric interfaces with clean, semantic code.',
+        skills: ['Sass', 'Vue.js', 'Tailwind CSS', 'Figma', 'UI/UX'],
         experience: [
-            { title: 'Design Systems Engineer', company: 'Linear Labs', startDate: '2023', endDate: 'Present' },
-            { title: 'UI Developer', company: 'Gridline Co.', startDate: '2021', endDate: '2023' }
+            { title: 'Design Systems Lead', company: 'Mumbai Design Co.', startDate: '2023', endDate: 'Present' },
+            { title: 'Frontend Developer', company: 'Creative Web Studios', startDate: '2021', endDate: '2023' }
         ],
         projects: [
             {
                 id: 'linear_flow_case',
-                title: 'MonoGrid Portfolio System',
-                description: 'A clean portfolio layout for students and junior developers, focused on readable projects, skill badges, and simple contact links.',
-                tags: ['CSS Variables', 'Vanilla JS', 'Figma'],
+                title: 'E-commerce UI Framework',
+                description: 'A comprehensive UI component library designed specifically for modern e-commerce platforms, optimizing conversion rates through intuitive design.',
+                tags: ['UI/UX', 'Tailwind', 'Vue.js'],
                 status: 'Demo Project',
                 image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80'
             }
         ],
-        socialLinks: { github: 'linear-flow', linkedin: 'sarah-k-design', twitter: 'linear_flow' },
-        selectedTemplate: 'minimal',
+        socialLinks: { github: 'linear-flow', linkedin: 'priya-patel-design', twitter: 'linear_flow' },
+        selectedTemplate: 'custom',
+        customTheme: {
+            backgroundType: 'solid',
+            backgroundSolid: '#fdfbf7',
+            cardStyle: 'flat',
+            font: 'Playfair Display',
+            accent: '#be185d',
+            text: '#1c1917',
+            layout: 'left-aligned',
+            avatarShape: 'circle',
+            dividerStyle: 'solid'
+        },
         followers: 920,
         following: 245,
         stats: { projects: 5, likes: 2180, sales: 89 }
@@ -242,28 +266,40 @@ export const CREATORS = [
     {
         id: 'creator_3',
         username: 'nothing_core',
-        name: 'Marcus V.',
-        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
+        name: 'Vikram Singh',
+        location: 'New Delhi, India',
+        avatar: 'assets/vikram.png',
         banner: 'https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?auto=format&fit=crop&w=800&q=80',
-        role: 'Hardware UI Specialist',
-        bio: 'Developing visual design components resembling raw physical product hardware. Minimalist, transparent aesthetics, high contrast dot-matrix setups.',
-        skills: ['Custom Elements', 'SVG Filters', 'CSS Houdini', 'Accessibility'],
+        role: 'AI & Web Solutions Architect',
+        bio: 'Building intelligent web solutions that leverage AI to solve real-world problems. Focused on data-driven design, complex integrations, and scalable system architecture.',
+        skills: ['Python', 'AI/ML Integration', 'Node.js', 'System Architecture'],
         experience: [
-            { title: 'Interface Engineer', company: 'Nothing Core Lab', startDate: '2022', endDate: 'Present' },
-            { title: 'Accessibility Developer', company: 'Open Interface', startDate: '2020', endDate: '2022' }
+            { title: 'AI Solutions Architect', company: 'Delhi AI Labs', startDate: '2022', endDate: 'Present' },
+            { title: 'Backend Developer', company: 'CloudData India', startDate: '2020', endDate: '2022' }
         ],
         projects: [
             {
                 id: 'nothing_core_case',
-                title: 'Accessible Hardware-Inspired Portfolio',
-                description: 'A portfolio demo with stark contrast, clear typography, accessible sections, and product-style project cards.',
-                tags: ['Accessibility', 'SVG Filters', 'Custom Elements'],
+                title: 'AI Healthcare Portal',
+                description: 'An advanced healthcare platform that uses machine learning to predict patient needs, wrapped in a clean, accessible interface with real-time data.',
+                tags: ['AI/ML', 'Python', 'React'],
                 status: 'Case Study',
                 image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80'
             }
         ],
-        socialLinks: { github: 'nothing-core', linkedin: 'marcus-v-interface', twitter: 'nothing_core' },
-        selectedTemplate: 'developer',
+        socialLinks: { github: 'nothing-core', linkedin: 'vikram-singh-dev', twitter: 'nothing_core' },
+        selectedTemplate: 'custom',
+        customTheme: {
+            backgroundType: 'solid',
+            backgroundSolid: '#ffffff',
+            cardStyle: 'flat',
+            font: 'Space Grotesk',
+            accent: '#10b981',
+            text: '#111111',
+            layout: 'centered',
+            avatarShape: 'square',
+            dividerStyle: 'dotted'
+        },
         followers: 1850,
         following: 92,
         stats: { projects: 12, likes: 5890, sales: 312 }
@@ -271,6 +307,6 @@ export const CREATORS = [
 ];
 export const NOTIFICATIONS = [
     { id: 'notif_1', text: 'Welcome to your futuristic dashboard. Get started by exploring the Shop.', time: 'Just now', unread: true },
-    { id: 'notif_2', text: 'Your project Chronos has been added to Marcus\'s wishlist.', time: '2 hours ago', unread: true },
+    { id: 'notif_2', text: 'Your project Chronos has been added to Vikram\'s wishlist.', time: '2 hours ago', unread: true },
     { id: 'notif_3', text: 'Your streak is currently active! Visit daily to build your contribution heatmap.', time: '1 day ago', unread: false }
 ];
