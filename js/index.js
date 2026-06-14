@@ -10,6 +10,7 @@ import { initTheme } from './core/theme.js';
 import { initCustomCursor, initSpotlightCards, initScrollProgress, initLazyLoadSections, initPageTransitions, showToast, initAntigravityParticles, initTypewriter } from './core/global.js';
 import { initNavbarScroll,  initCommandPalette } from './core/ui.js';
 import { addToCart, getCart, removeFromCart } from './modules/db.js';
+import { getImage } from './modules/images.js';
 
 // --- Page Specific Imports ---
 // import { initPortfolioPage, openGlobalPreviewDrawer, closeGlobalPreviewDrawer } from './modules/portfolio.js';
@@ -241,7 +242,7 @@ function initGlobalCart() {
                     total += item.price;
                     return `
                         <div class="cart-item">
-                            <img src="${item.image}" alt="" class="cart-item-img">
+                            <img src="${getImage(item.image)}" alt="" class="cart-item-img">
                             <div class="cart-item-details">
                                 <h4 class="cart-item-title">${item.title}</h4>
                                 <span class="cart-item-price">₹${item.price.toFixed(2)}</span>
@@ -290,7 +291,12 @@ function initGlobalCart() {
         if (checkoutBtn) {
             e.preventDefault();
             e.stopPropagation();
-            window.location.href = 'checkout.html';
+            const cart = getCart();
+            if (!cart || cart.length === 0) {
+                showToast('Your cart is empty. Please add items to your cart before checking out.', 'error');
+            } else {
+                window.location.href = 'checkout.html';
+            }
         }
     });
 

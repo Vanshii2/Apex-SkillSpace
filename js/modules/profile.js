@@ -3,7 +3,7 @@
    FUTURISTIC PORTFOLIO - PROFILE PAGE LOGIC (RE-ENGINEERED)
    ==========================================================================
 */
-import { storeImage } from './images.js';
+import { storeImage, getImage } from './images.js';
 // --- LOCAL STORAGE DATA LAYER ---
 export function getUser() {
     let u = localStorage.getItem('dx_user');
@@ -233,7 +233,7 @@ function updateAvatarUI(user) {
 
     if (user.avatar) {
         if (avatarImg) {
-            avatarImg.src = user.avatar;
+            avatarImg.src = getImage(user.avatar);
             avatarImg.style.display = 'block';
         }
         if (initialsSpan) {

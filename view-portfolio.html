@@ -191,6 +191,7 @@
     <!-- Script to load, fetch, and style dynamic portfolios -->
     <script type="module">
         import { initDB, getCreators, getProjects } from './js/modules/db.js';
+        import { getImage } from './js/modules/images.js';
 
         // Make sure DB is loaded in LocalStorage
         initDB();
@@ -375,7 +376,7 @@
             // Avatar Photo
             const avatarImg = document.getElementById('portfolio-avatar');
             if (data.photo) {
-                avatarImg.src = data.photo;
+                avatarImg.src = getImage(data.photo);
                 avatarImg.style.display = 'block';
             } else {
                 avatarImg.style.display = 'none';
@@ -441,7 +442,7 @@
             if (matchingProjects.length > 0) {
                 projectsGrid.innerHTML = matchingProjects.map(p => `
                     <div class="port-project-card" style="cursor: ${p.link ? 'pointer' : 'default'};" ${p.link ? `onclick="window.open('${p.link}', '_blank')"` : ''}>
-                        <img src="${p.image || 'assets/right2.jpg'}" alt="${p.title}" class="port-proj-img">
+                        <img src="${getImage(p.image) || 'assets/right2.jpg'}" alt="${p.title}" class="port-proj-img">
                         <div class="port-proj-content">
                             <span class="port-proj-status">${p.status || 'Demo Project'}</span>
                             <h3 class="port-proj-title">${p.title}</h3>
