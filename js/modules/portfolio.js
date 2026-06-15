@@ -80,20 +80,56 @@ export function initPortfolioPage() {
     // ── Render creator cards ──────────────────────────────────────────────────
     const creators = getCreators();
     creatorsSection.innerHTML = creators.map(creator => `
-        <div class="creator-card" data-username="${creator.username}">
-            <div class="creator-banner" style="background-image: url('${creator.banner}');"></div>
+        <div class="creator-card" data-username="${creator.username}" style="position: relative;">
+            <div class="creator-banner" style="background-image: url('${creator.banner}'); position: relative;">
+                <button class="follow-icon-btn" title="Follow" style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; backdrop-filter: blur(4px); transition: all 0.2s;" onclick="
+                    const isFollowing = this.getAttribute('data-following') === 'true';
+                    const countSpan = this.closest('.creator-card').querySelector('.follower-count');
+                    let count = parseInt(countSpan.getAttribute('data-count'));
+                    if (isFollowing) {
+                        this.setAttribute('data-following', 'false');
+                        this.innerHTML = '<svg width=\\'18\\' height=\\'18\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'2\\'><path d=\\'M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\\'></path><circle cx=\\'8.5\\' cy=\\'7\\' r=\\'4\\'></circle><line x1=\\'20\\' y1=\\'8\\' x2=\\'20\\' y2=\\'14\\'></line><line x1=\\'23\\' y1=\\'11\\' x2=\\'17\\' y2=\\'11\\'></line></svg>';
+                        this.style.background = 'rgba(0,0,0,0.5)';
+                        this.style.color = '#fff';
+                        countSpan.textContent = count;
+                    } else {
+                        this.setAttribute('data-following', 'true');
+                        this.innerHTML = '<svg width=\\'18\\' height=\\'18\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'2\\'><path d=\\'M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\\'></path><circle cx=\\'8.5\\' cy=\\'7\\' r=\\'4\\'></circle><polyline points=\\'17 11 19 13 23 9\\'></polyline></svg>';
+                        this.style.background = 'var(--primary)';
+                        this.style.color = 'var(--bg-base)';
+                        countSpan.textContent = count + 1;
+                    }
+                ">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                </button>
+            </div>
             <div class="creator-body">
                 <div class="creator-avatar">
                     <img src="${creator.avatar}" alt="${creator.name}" width="64" height="64" loading="lazy" decoding="async">
                 </div>
-                <p class="creator-name">${creator.name}</p>
+                <p class="creator-name" style="display: flex; align-items: center; gap: 8px;">
+                    ${creator.name}
+                    ${creator.stats && creator.stats.sales >= 300 ? '<span title="Elite Seller: 300+ Sales" style="background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary); padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">Elite</span>' : 
+                      creator.stats && creator.stats.sales >= 100 ? '<span title="Pro Seller: 100+ Sales" style="background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary); padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">Pro</span>' : 
+                      creator.stats && creator.stats.sales > 0 ? '<span title="Rising Seller" style="background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary); padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">Rising</span>' : 
+                      '<span title="New Creator" style="background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary); padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">New</span>'}
+                </p>
                 <p class="creator-handle">@${creator.username}</p>
                 <p class="creator-bio">${creator.bio}</p>
                 <div class="skills-row">
                     ${creator.skills.slice(0, 3).map(s => `<span class="skill-tag">${s}</span>`).join('')}
                 </div>
-                <div class="creator-stats"></div>
-                <a href="view-portfolio.html?user=${creator.username}" class="btn-view">View portfolio</a>
+                ${(() => {
+                    const dummyFollowers = Math.floor(Math.random() * 900) + 100;
+                    return `
+                    <div class="creator-stats" style="margin: 12px 0; font-size: 0.9rem; color: var(--text-secondary);">
+                        <span class="follower-count" data-count="${dummyFollowers}" style="font-weight: 600; color: var(--text-primary);">${dummyFollowers}</span> Followers
+                    </div>
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <a href="view-portfolio.html?user=${creator.username}" class="btn-view" style="flex: 1; text-align: center; padding: 10px; border-radius: 8px;">View Portfolio</a>
+                    </div>
+                    `;
+                })()}
             </div>
         </div>
     `).join('');

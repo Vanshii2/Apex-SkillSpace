@@ -57,7 +57,7 @@ body {
     position: relative;
     overflow: hidden;
     background-color: var(--bg-base);
-    background-image: 
+    background-image:
         radial-gradient(circle at top right, var(--border-color) 0%, transparent 60%),
         radial-gradient(rgba(128, 128, 128, 0.08) 1px, transparent 1px);
     background-size: 100% 100%, 20px 20px;
@@ -114,10 +114,7 @@ body {
     color: var(--text-primary);
 }
 
-.huge-name.outline {
-    color: transparent;
-    -webkit-text-stroke: 2px var(--text-primary);
-}
+
 
 .hero-handle {
     font-size: 1.05rem;
@@ -482,8 +479,13 @@ body {
 }
 
 @keyframes marquee-scroll {
-    0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-50%, 0, 0); }
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+
+    100% {
+        transform: translate3d(-50%, 0, 0);
+    }
 }
 
 /* Availability Status Pill & Pulse */
@@ -524,16 +526,28 @@ body {
 }
 
 /* Pulsing dot states */
-.pulsing-dot.available { background-color: #10b981; }
-.pulsing-dot.freelance { background-color: #10b981; }
-.pulsing-dot.busy { background-color: #f59e0b; }
-.pulsing-dot.hiring { background-color: #3b82f6; }
+.pulsing-dot.available {
+    background-color: #10b981;
+}
+
+.pulsing-dot.freelance {
+    background-color: #10b981;
+}
+
+.pulsing-dot.busy {
+    background-color: #f59e0b;
+}
+
+.pulsing-dot.hiring {
+    background-color: #3b82f6;
+}
 
 @keyframes pulse-dot {
     0% {
         transform: scale(1);
         opacity: 0.6;
     }
+
     100% {
         transform: scale(2.4);
         opacity: 0;
@@ -736,6 +750,7 @@ body {
         opacity: 0;
         transform: translateY(30px) scale(0.9);
     }
+
     100% {
         opacity: 1;
         transform: translateY(0) scale(1);

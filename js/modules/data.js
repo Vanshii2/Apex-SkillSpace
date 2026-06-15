@@ -202,7 +202,8 @@ export const CREATORS = [
                 description: 'A robust and scalable fintech dashboard built for real-time stock tracking and portfolio management, featuring seamless animations and micro-interactions.',
                 tags: ['React', 'Next.js', 'Framer Motion'],
                 status: 'Featured',
-                image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'
+                image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
+                link: 'https://www.behance.net/'
             }
         ],
         socialLinks: { github: 'hyper-arch', linkedin: 'aarav-sharma', twitter: 'hyper_arch' },
@@ -243,7 +244,8 @@ export const CREATORS = [
                 description: 'A comprehensive UI component library designed specifically for modern e-commerce platforms, optimizing conversion rates through intuitive design.',
                 tags: ['UI/UX', 'Tailwind', 'Vue.js'],
                 status: 'Demo Project',
-                image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80'
+                image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
+                link: 'https://www.behance.net/'
             }
         ],
         socialLinks: { github: 'linear-flow', linkedin: 'priya-patel-design', twitter: 'linear_flow' },
@@ -284,7 +286,8 @@ export const CREATORS = [
                 description: 'An advanced healthcare platform that uses machine learning to predict patient needs, wrapped in a clean, accessible interface with real-time data.',
                 tags: ['AI/ML', 'Python', 'React'],
                 status: 'Case Study',
-                image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80'
+                image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+                link: 'https://www.behance.net/'
             }
         ],
         socialLinks: { github: 'nothing-core', linkedin: 'vikram-singh-dev', twitter: 'nothing_core' },

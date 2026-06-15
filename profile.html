@@ -86,8 +86,30 @@
                         <h1 class="huge-name solid" id="prof-name-solid">Creator</h1>
                         <h1 class="huge-name outline" id="prof-name-outline">Name</h1>
                     </div>
+                    <div class="hero-stats" style="display: flex; align-items: center; gap: 12px; margin-top: 12px; font-size: 0.95rem; color: var(--text-secondary);">
+                        <div><span id="prof-follower-count" data-count="1234" style="font-weight: 600; color: var(--text-primary);">1234</span> Followers</div>
+                        <span id="prof-badge-container"></span>
+                    </div>
                     <div class="hero-meta" style="display: flex; align-items: center; gap: 20px; margin-top: 24px;">
                         <span class="text-mono hero-handle" id="prof-handle">@username</span>
+                        <button class="pill-btn solid clickable" id="prof-follow-btn"
+                            style="padding: 10px 24px; font-size: 0.85rem; border: 1px solid transparent; box-sizing: border-box;" onclick="
+                                const countSpan = document.getElementById('prof-follower-count');
+                                let count = parseInt(countSpan.getAttribute('data-count'));
+                                if (this.textContent.trim() === 'Follow') {
+                                    this.textContent = 'Following';
+                                    this.style.background = 'transparent';
+                                    this.style.borderColor = 'var(--border-color)';
+                                    this.style.color = 'var(--text-primary)';
+                                    countSpan.textContent = count + 1;
+                                } else {
+                                    this.textContent = 'Follow';
+                                    this.style.background = 'var(--primary)';
+                                    this.style.borderColor = 'transparent';
+                                    this.style.color = 'var(--bg-base)';
+                                    countSpan.textContent = count;
+                                }
+                            ">Follow</button>
                         <button class="pill-btn outline clickable" id="prof-edit-bio-btn"
                             style="padding: 10px 24px; font-size: 0.85rem;">Edit Profile</button>
                     </div>

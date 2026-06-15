@@ -7,7 +7,7 @@
 
 import { PROJECTS, CREATORS, NOTIFICATIONS } from './data.js';
 const DB_KEY_PREFIX = 'fpm_';
-const DB_SEED_VERSION = 'apex-skillspace-demo-v13';
+const DB_SEED_VERSION = 'apex-skillspace-demo-v14';
 
 
 

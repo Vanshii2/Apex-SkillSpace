@@ -334,6 +334,49 @@ function updateStatsAndSummary() {
     if (summaryCategories) {
         summaryCategories.textContent = uniqueCats.length > 0 ? uniqueCats.join(', ') : 'None';
     }
+
+    // Badge Logic
+    let totalSales = 0;
+    // Calculate total actual sales from orders
+    try {
+        const ordersRaw = localStorage.getItem('apex_orders');
+        if (ordersRaw) {
+            const orders = JSON.parse(ordersRaw);
+            orders.forEach(order => {
+                if (order.items && Array.isArray(order.items)) {
+                    order.items.forEach(item => {
+                        if (myProjectIds.has(item.id)) {
+                            totalSales += 1;
+                        }
+                    });
+                }
+            });
+        }
+    } catch (e) {
+        console.error('Error calculating sales count:', e);
+    }
+    // Fallback to seeded stats if no actual orders
+    if (totalSales === 0) {
+        if (user.stats && user.stats.sales) {
+            totalSales = user.stats.sales;
+        } else {
+            const fpm = JSON.parse(localStorage.getItem('fpm_user_session') || '{}');
+            if (fpm.stats && fpm.stats.sales) totalSales = fpm.stats.sales;
+        }
+    }
+
+    const badgeContainer = document.getElementById('prof-badge-container');
+    if (badgeContainer) {
+        if (totalSales >= 300) {
+            badgeContainer.innerHTML = '<span title="Elite Seller: 300+ Sales" style="background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary); padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">Elite</span>';
+        } else if (totalSales >= 100) {
+            badgeContainer.innerHTML = '<span title="Pro Seller: 100+ Sales" style="background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary); padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">Pro</span>';
+        } else if (totalSales > 0) {
+            badgeContainer.innerHTML = '<span title="Rising Seller" style="background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary); padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">Rising</span>';
+        } else {
+            badgeContainer.innerHTML = '<span title="New Creator" style="background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary); padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">New</span>';
+        }
+    }
 }
 
 // --- TABS SYSTEM ---
