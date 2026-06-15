@@ -73,7 +73,7 @@
                         <div class="checkout-section">
                             <h3 class="checkout-section-title">2. Payment Method</h3>
                             <div class="payment-methods">
-                                <div class="payment-method-card active" onclick="selectPayment(this)">
+                                <div class="payment-method-card active" onclick="selectPayment(this, 'card')">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" style="margin-bottom:8px;">
                                         <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
@@ -81,7 +81,17 @@
                                     </svg>
                                     <div>Credit Card</div>
                                 </div>
-
+                                <div class="payment-method-card" onclick="selectPayment(this, 'qr')">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" style="margin-bottom:8px;">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        <rect x="7" y="7" width="3" height="3"></rect>
+                                        <rect x="14" y="7" width="3" height="3"></rect>
+                                        <rect x="7" y="14" width="3" height="3"></rect>
+                                        <rect x="14" y="14" width="3" height="3"></rect>
+                                    </svg>
+                                    <div>QR Code</div>
+                                </div>
                             </div>
 
                             <div id="card-details-form">
@@ -99,6 +109,11 @@
                                         <input type="text" placeholder="123" required>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div id="qr-code-form" style="display: none; text-align: center; padding: 32px 20px; border: 1px dashed var(--border-color); border-radius: 12px; margin-top: 20px;">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DummyPayment" alt="Dummy QR Code" style="width: 150px; height: 150px; border-radius: 8px; margin-bottom: 16px;">
+                                <p style="color: var(--text-secondary); margin: 0;">Scan with any payment app to pay</p>
                             </div>
                         </div>
                     </div>

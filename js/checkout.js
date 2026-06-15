@@ -52,10 +52,21 @@ function loadCheckoutSummary() {
     if(totalEl) totalEl.textContent = `₹${total.toFixed(2)}`;
 }
 
-function selectPayment(element) {
+function selectPayment(element, type = 'card') {
     const cards = document.querySelectorAll('.payment-method-card');
     cards.forEach(card => card.classList.remove('active'));
     element.classList.add('active');
+
+    const cardForm = document.getElementById('card-details-form');
+    const qrForm = document.getElementById('qr-code-form');
+
+    if (type === 'qr') {
+        if (cardForm) cardForm.style.display = 'none';
+        if (qrForm) qrForm.style.display = 'block';
+    } else {
+        if (cardForm) cardForm.style.display = 'block';
+        if (qrForm) qrForm.style.display = 'none';
+    }
 }
 
 function placeOrder() {
